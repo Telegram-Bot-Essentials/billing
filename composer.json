@@ -1,7 +1,7 @@
 {
     "name": "telegram-bot-essentials/user-management",
     "version": "0.0.1",
-    "description": "User wallet feature built for telegram-bot-essentials/essence",
+    "description": "User management feature built for telegram-bot-essentials/essence",
     "type": "library",
     "require": {
         "php": "^8.2",
