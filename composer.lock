@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1fb159a34faa9ad6fc0c5fe261ab9345",
+    "content-hash": "1f865f6a90a2d3f97139a06d8cb2028f",
     "packages": [
         {
             "name": "brick/math",
@@ -6111,7 +6111,7 @@
             "dist": {
                 "type": "path",
                 "url": "../telegram-bot-essentials",
-                "reference": "13a7dfe9721c1802f62560ac7bf5c02948b20d75"
+                "reference": "cc48aa4013b347a1e87fd47dc1d2f667532ae021"
             },
             "require": {
                 "elyar/personal-laravel-helpers": "^0.0.2",

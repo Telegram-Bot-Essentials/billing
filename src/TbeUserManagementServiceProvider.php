@@ -9,7 +9,7 @@ use TelegramBotEssentials\UserWallet\Telegram\CallbackQueries\Admin\BotUsersQuer
 use TelegramBotEssentials\UserWallet\Telegram\ReplyKeys\Admin\BotUsersKey;
 use TelegramBotEssentials\UserWallet\Telegram\StateAnswers\Admin\BotUsersAnswer;
 
-class TbeUserWalletServiceProvider extends ServiceProvider
+class TbeUserManagementServiceProvider extends ServiceProvider
 {
     /**
      * @throws LogicException
