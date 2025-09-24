@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 use TelegramBotEssentials\Essence\Models\BotUser;
-use TelegramBotEssentials\Essence\Traits\HasInvoice;
+use TelegramBotEssentials\Billing\Traits\HasInvoice;
 use TelegramBotEssentials\Essence\Traits\HasMessageMeta;
 
 abstract class Order extends Model
