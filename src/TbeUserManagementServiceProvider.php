@@ -5,9 +5,9 @@ namespace TelegramBotEssentials\UserManagement;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\ServiceProvider;
 use TelegramBotEssentials\Essence\Exceptions\LogicException;
-use TelegramBotEssentials\UserWallet\Telegram\CallbackQueries\Admin\BotUsersQuery;
-use TelegramBotEssentials\UserWallet\Telegram\ReplyKeys\Admin\BotUsersKey;
-use TelegramBotEssentials\UserWallet\Telegram\StateAnswers\Admin\BotUsersAnswer;
+use TelegramBotEssentials\UserManagement\Telegram\CallbackQueries\Admin\BotUsersQuery;
+use TelegramBotEssentials\UserManagement\Telegram\ReplyKeys\Admin\BotUsersKey;
+use TelegramBotEssentials\UserManagement\Telegram\StateAnswers\Admin\BotUsersAnswer;
 
 class TbeUserManagementServiceProvider extends ServiceProvider
 {
@@ -17,6 +17,10 @@ class TbeUserManagementServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->registerPublishing();
+
+        $this->loadTranslationsFrom(__DIR__ . '/../lang', 'tbe-user-management');
+
         replyKeyBus()->addReplyKeys([
             BotUsersKey::class
         ]);
@@ -28,5 +32,14 @@ class TbeUserManagementServiceProvider extends ServiceProvider
         stateAnswerBus()->addStateAnswers([
             BotUsersAnswer::class
         ]);
+    }
+
+    protected function registerPublishing(): void
+    {
+        if ($this->app->runningInConsole()) {
+            $this->publishes([
+                __DIR__ . '/../lang' => resource_path('lang/vendor/tbe-user-management'),
+            ], 'tbe-user-management-translations');
+        }
     }
 }
