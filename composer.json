@@ -12,8 +12,11 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "TelegramBotEssentials\\UserManagement\\": "src/"
-        }
+            "TelegramBotEssentials\\Billing\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     },
     "authors": [
         {
