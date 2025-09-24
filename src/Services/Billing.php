@@ -5,7 +5,7 @@ namespace TelegramBotEssentials\Billing\Services;
 
 use TelegramBotEssentials\Billing\Models\Abstract\PaymentAttempt;
 use TelegramBotEssentials\Billing\Models\Invoice;
-use TelegramBotEssentials\Essence\Models\Abstract\Order;
+use TelegramBotEssentials\Billing\Models\Abstract\Order;
 
 class  Billing
 {
