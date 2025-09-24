@@ -15,7 +15,7 @@ class BotUsersKey extends ReplyKey
     public function __construct()
     {
         // Multilingual translations
-         $this->text = __('tbe::bot_users.reply_key');
+         $this->text = __('tbe-user-management::bot_users.reply_key');
         // $this->response = __('');
     }
 
