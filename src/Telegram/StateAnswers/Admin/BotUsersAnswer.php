@@ -14,8 +14,8 @@ use TelegramBotEssentials\Essence\Exceptions\TbeLogicException;
 use TelegramBotEssentials\Essence\Models\BotUser;
 use TelegramBotEssentials\Essence\Models\MessageMeta;
 use TelegramBotEssentials\Essence\Services\TelegramPaginator;
-use TelegramBotEssentials\Essence\Telegram\Features\Admin\BotUsersFeature;
 use TelegramBotEssentials\Essence\Telegram\StateAnswers\StateAnswer;
+use TelegramBotEssentials\UserManagement\Telegram\Features\Admin\BotUsersFeature;
 
 class BotUsersAnswer extends StateAnswer
 {

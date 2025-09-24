@@ -99,7 +99,7 @@ class BotUsersQuery extends CallbackQuery
         $botUser = BotUser::findOrFail($this->params[1]);
         $roles = array_map(fn($role) => $role->value, Roles::cases());
         \Log::error(json_encode($roles));
-        $next = getNextFromArray($roles, $botUser->power);
+        $next = nextInArray($roles, $botUser->power);
         \Log::error(json_encode($next));
         $botUser->power = $next ?? 0;
         $botUser->save();

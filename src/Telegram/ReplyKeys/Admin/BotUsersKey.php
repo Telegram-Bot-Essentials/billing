@@ -3,8 +3,8 @@
 namespace TelegramBotEssentials\UserManagement\Telegram\ReplyKeys\Admin;
 
 use TelegramBotEssentials\Essence\Enums\Roles;
-use TelegramBotEssentials\Essence\Telegram\Features\Admin\BotUsersFeature;
 use TelegramBotEssentials\Essence\Telegram\ReplyKeys\ReplyKey;
+use TelegramBotEssentials\UserManagement\Telegram\Features\Admin\BotUsersFeature;
 
 class BotUsersKey extends ReplyKey
 {

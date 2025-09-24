@@ -21,10 +21,6 @@ class TbeUserManagementServiceProvider extends ServiceProvider
 
         $this->loadTranslationsFrom(__DIR__ . '/../lang', 'tbe-user-management');
 
-        replyKeyBus()->addReplyKeys([
-            BotUsersKey::class
-        ]);
-
         callbackQueryBus()->addCallbackQueries([
             BotUsersQuery::class
         ]);
