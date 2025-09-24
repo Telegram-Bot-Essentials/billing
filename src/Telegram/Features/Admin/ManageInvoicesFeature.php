@@ -39,15 +39,15 @@ class ManageInvoicesFeature
         foreach ($invoices as $invoice) {
             $replyMarkup->row([
                 Keyboard::inlineButton([
-                    'text' => __('tbe::manage_invoices.main.keys.invoice', [
+                    'text' => __('tbe-billing::manage_invoices.main.keys.invoice', [
                         'invoiceId' => $invoice->id,
                         'resourceName' => getResourceName($invoice->payable_type),
                         'price' => currency()->priceFormat($invoice->price, currency: $invoice->currency),
                         'userFullName' => $invoice->botUser->telegramUser->full_name,
                         'status' => $invoice->status == 'paid' ?
-                            __('tbe::general.status.enabledEmoji') :
-                            ($invoice->status == 'failed' ? __('tbe::general.status.xEmoji')
-                                : __('tbe::general.status.pendingEmoji')),
+                            __('tbe-billing::general.status.enabledEmoji') :
+                            ($invoice->status == 'failed' ? __('tbe-billing::general.status.xEmoji')
+                                : __('tbe-billing::general.status.pendingEmoji')),
                     ]),
                     'callback_data' => encodeCallback(self::$type, ['show', $invoice->id, $page])
                 ])
@@ -65,7 +65,7 @@ class ManageInvoicesFeature
 
     public static function show(Invoice $invoice, int $lastPage = 1): TelegramResponse
     {
-        $text = __('tbe::manage_invoices.main.text.show', [
+        $text = __('tbe-billing::manage_invoices.main.text.show', [
             'invoiceId' => $invoice->id,
             'invoiceOwner' => "<a href=\"tg://user?id={$invoice->botUser->telegramUser->peer_id}\">{$invoice->botUser->telegramUser->full_name}</a>",
             'invoiceAmount' => currency()->priceFormat($invoice->price),
@@ -97,7 +97,7 @@ class ManageInvoicesFeature
 
         $replyMarkup->row([
             Keyboard::inlineButton([
-                'text' => __('tbe::general.keys.back'),
+                'text' => __('tbe-billing::general.keys.back'),
                 'callback_data' => encodeCallback(self::$type, ['start', $lastPage, 0])
             ])
         ]);

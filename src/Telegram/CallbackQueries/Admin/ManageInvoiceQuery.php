@@ -39,10 +39,10 @@ class ManageInvoiceQuery extends CallbackQuery
 
         $toCardAttempt->attemptSucceed();
         $invoice = $toCardAttempt->invoice;
-        $invoice->messageMeta->lockAction(__('tbe::invoice.to_card.lock-keys.user-payment_accepted'), customEmoji: "✅");
-        $toCardAttempt->messageMeta->lockAction(__('tbe::invoice.to_card.lock-keys.admin-payment_accepted_by', [
+        $invoice->messageMeta->lockAction(__('tbe-billing::invoice.to_card.lock-keys.user-payment_accepted'), customEmoji: "✅");
+        $toCardAttempt->messageMeta->lockAction(__('tbe-billing::invoice.to_card.lock-keys.admin-payment_accepted_by', [
             'adminName' => wHook()->user()->telegramUser->full_name]), customEmoji: "✅");
-        $this->answer(__('tbe::invoice.to_card.answers.admin-payment_accepted'));
+        $this->answer(__('tbe-billing::invoice.to_card.answers.admin-payment_accepted'));
     }
 
     /**
@@ -54,9 +54,9 @@ class ManageInvoiceQuery extends CallbackQuery
     {
         $toCardAttempt = ToCardAttempt::findOrFail($this->params[1]);
         wHook()->user()->changeState(encodeAnswerState($this->type, "reject_reason", ["to_card_attempt_id" => $toCardAttempt->id]));
-        $toCardAttempt->messageMeta->lockAction(__('tbe::invoice.to_card.lock-keys.admin-rejecting_payment'));
+        $toCardAttempt->messageMeta->lockAction(__('tbe-billing::invoice.to_card.lock-keys.admin-rejecting_payment'));
 
-        $text = __('tbe::invoice.to_card.text.admin_payment_rejection', [
+        $text = __('tbe-billing::invoice.to_card.text.admin_payment_rejection', [
             'toCardAttemptId' => $toCardAttempt->id,
         ]);
 
@@ -66,6 +66,6 @@ class ManageInvoiceQuery extends CallbackQuery
             'reply_markup' => wHook()->user()->getKeyboard(),
             'reply_to_message_id' => $toCardAttempt->messageMeta->message_id,
         ]);
-        $this->answer(__('tbe::invoice.to_card.answers.admin-rejecting_payment'));
+        $this->answer(__('tbe-billing::invoice.to_card.answers.admin-rejecting_payment'));
     }
 }

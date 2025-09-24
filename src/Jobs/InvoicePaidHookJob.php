@@ -55,7 +55,7 @@ class InvoicePaidHookJob implements ShouldQueue
             ]);
 
             $this->invoice->messageMeta()->where('tag', 'invoice_view')->get()->each(function ($messageMeta) {
-                $messageMeta->lockAction(__('tbe::invoice.to_card.lock-keys.user-payment_accepted'), customEmoji: "✅");
+                $messageMeta->lockAction(__('tbe-billing::invoice.to_card.lock-keys.user-payment_accepted'), customEmoji: "✅");
             });
         } catch (\Exception $e) {
             Log::error($e->getMessage());
