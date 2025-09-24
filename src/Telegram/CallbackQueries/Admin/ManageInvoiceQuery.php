@@ -6,7 +6,7 @@ use Illuminate\Contracts\Container\BindingResolutionException;
 use Telegram\Bot\Exceptions\TelegramSDKException;
 use TelegramBotEssentials\Essence\Enums\Roles;
 use TelegramBotEssentials\Essence\Exceptions\LogicException;
-use TelegramBotEssentials\Essence\Models\Billing\Attempts\ToCardAttempt;
+use TelegramBotEssentials\Billing\Models\Attempts\ToCardAttempt;
 use TelegramBotEssentials\Essence\Telegram\CallbackQueries\CallbackQuery;
 
 class ManageInvoiceQuery extends CallbackQuery
