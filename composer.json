@@ -1,5 +1,5 @@
 {
-    "name": "telegram-bot-essentials/user-management",
+    "name": "telegram-bot-essentials/billing",
     "version": "0.0.1",
     "description": "User management feature built for telegram-bot-essentials/essence",
     "type": "library",
@@ -7,7 +7,7 @@
         "php": "^8.2",
         "laravel/framework": "^12",
         "elyar/personal-laravel-helpers": "v0.0.2",
-        "telegram-bot-essentials/essence": "dev-separation-step-by-step"
+        "telegram-bot-essentials/essence": "*"
     },
     "license": "MIT",
     "autoload": {
@@ -27,14 +27,14 @@
     "minimum-stability": "stable",
     "repositories": [
         {
-            "type": "vcs",
-            "url": "https://github.com/elyar0/telegram-bot-essentials"
+            "type": "path",
+            "url": "../telegram-bot-essentials"
         }
     ],
     "extra": {
         "laravel": {
             "providers": [
-                "TelegramBotEssentials\\UserManagement\\TbeUserManagementServiceProvider"
+                "TelegramBotEssentials\\Billing\\TbeBillingServiceProvider"
             ]
         }
     }

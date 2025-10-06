@@ -49,7 +49,7 @@ class ManageInvoicesFeature
                             ($invoice->status == 'failed' ? __('tbe-billing::general.status.xEmoji')
                                 : __('tbe-billing::general.status.pendingEmoji')),
                     ]),
-                    'callback_data' => encodeCallback(self::$type, ['show', $invoice->id, $page])
+                    'callback_data' => encodeCallback(self::$type, 'show', [$invoice->id, $page])
                 ])
             ]);
         }

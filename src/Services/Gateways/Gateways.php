@@ -2,23 +2,30 @@
 
 namespace TelegramBotEssentials\Billing\Services\Gateways;
 
-use TelegramBotEssentials\Billing\Services\Gateways\ZarinPal\ZarinPal;
-use TelegramBotEssentials\GatewayZibal\Services\Zibal\Zibal;
+use Illuminate\Support\Collection;
+use TelegramBotEssentials\Billing\DTOs\Gateway;
 
 class Gateways
 {
-    public function zibal(): Zibal
+    private Collection $gateways;
+
+    public function __construct()
     {
-        return app(Zibal::class);
+        $this->gateways = collect();
     }
 
-    public function zarinpal(): Zarinpal
+    public function addGateway(Gateway $gateway): void
     {
-        return app(Zarinpal::class);
+        $this->gateways->put($gateway->key, $gateway);
     }
 
-    public function wallet(): Wallet
+    public function getGateways(): Collection
     {
-        return app(Wallet::class);
+        return $this->gateways;
+    }
+
+    public function getGateway(string $key): Gateway
+    {
+        return $this->gateways->get($key);
     }
 }

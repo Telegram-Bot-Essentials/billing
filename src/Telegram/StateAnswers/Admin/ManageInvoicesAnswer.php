@@ -14,10 +14,10 @@ class ManageInvoicesAnswer extends StateAnswer
         AllowableFields::TEXT->value
     ];
 
-    public function handle(string $method): void
-    {
-        switch (strtolower($method)) {
-
-        }
-    }
+//    public function handle(string $method): void
+//    {
+//        switch (strtolower($method)) {
+//
+//        }
+//    }
 }

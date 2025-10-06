@@ -3,8 +3,8 @@
 namespace TelegramBotEssentials\Billing\Telegram\Features\Member;
 
 use Telegram\Bot\Keyboard\Keyboard;
+use TelegramBotEssentials\Billing\DTOs\Gateway;
 use TelegramBotEssentials\Billing\Models\Invoice;
-use TelegramBotEssentials\Essence\Models\CreditOrder;
 use TelegramBotEssentials\Essence\Telegram\TelegramResponse;
 
 class InvoiceFeature
@@ -20,50 +20,54 @@ class InvoiceFeature
 
         $replyMarkup = Keyboard::make()->inline();
 
-        if(wHook()->bot()->settings->pay_with_card) {
-            $replyMarkup->row([Keyboard::inlineButton([
-                'text' => __('tbe-billing::invoice.summary.keys.to_card', [
-                    'price' => number_format(priceIn($invoice->price)->toIRT())
-                ]),
-                'callback_data' => encodeCallback(self::$type, ['to_card', $invoice->id])
-            ])]);
-        }
+        gateways()->getGateways()->each(function (Gateway $gateway) use ($invoice, $replyMarkup) {
+            $replyMarkup->row([$gateway->getInlineKeyboard($invoice)]);
+        });
 
-        if(wHook()->bot()->settings->zirgozar){
-            $replyMarkup->row([Keyboard::inlineButton([
-                'text' => __('tbe-billing::invoice.summary.keys.to_zirgozar', [
-                    'price' => number_format(priceIn($invoice->price)->toIRT())
-                ]),
-                'url' => route('invoice.zirgozar.pay', ['token' => $invoice->public_token])
-            ])]);
-        }
-
-        if(wHook()->bot()->settings->zibal){
-            $replyMarkup->row([Keyboard::inlineButton([
-                'text' => __('tbe-billing::invoice.summary.keys.to_zibal', [
-                    'price' => number_format(priceIn($invoice->price)->toIRT())
-                ]),
-                'url' => route('invoice.zibal.pay', ['token' => $invoice->public_token])
-            ])]);
-        }
-
-        if(wHook()->bot()->settings->zarinpal){
-            $replyMarkup->row([Keyboard::inlineButton([
-                'text' => __('tbe-billing::invoice.summary.keys.to_zarinpal', [
-                    'price' => number_format(priceIn($invoice->price)->toIRT())
-                ]),
-                'url' => route('invoice.zarinpal.pay', ['token' => $invoice->public_token])
-            ])]);
-        }
-
-        if(!($invoice->payable instanceof CreditOrder) && wHook()->bot()->settings->wallet){
-            $replyMarkup->row([Keyboard::inlineButton([
-                'text' => __('tbe-billing::invoice.summary.keys.by_wallet', [
-                    'price' => currency()->priceFormat($invoice->price)
-                ]),
-                'callback_data' => encodeCallback(self::$type, ['by_wallet', $invoice->id])
-            ])]);
-        }
+//        if(wHook()->bot()->settings->pay_with_card) {
+//            $replyMarkup->row([Keyboard::inlineButton([
+//                'text' => __('tbe-billing::invoice.summary.keys.to_card', [
+//                    'price' => number_format(priceIn($invoice->price)->toIRT())
+//                ]),
+//                'callback_data' => encodeCallback(self::$type, ['to_card', $invoice->id])
+//            ])]);
+//        }
+//
+//        if(wHook()->bot()->settings->zirgozar){
+//            $replyMarkup->row([Keyboard::inlineButton([
+//                'text' => __('tbe-billing::invoice.summary.keys.to_zirgozar', [
+//                    'price' => number_format(priceIn($invoice->price)->toIRT())
+//                ]),
+//                'url' => route('invoice.zirgozar.pay', ['token' => $invoice->public_token])
+//            ])]);
+//        }
+//
+//        if(wHook()->bot()->settings->zibal){
+//            $replyMarkup->row([Keyboard::inlineButton([
+//                'text' => __('tbe-billing::invoice.summary.keys.to_zibal', [
+//                    'price' => number_format(priceIn($invoice->price)->toIRT())
+//                ]),
+//                'url' => route('invoice.zibal.pay', ['token' => $invoice->public_token])
+//            ])]);
+//        }
+//
+//        if(wHook()->bot()->settings->zarinpal){
+//            $replyMarkup->row([Keyboard::inlineButton([
+//                'text' => __('tbe-billing::invoice.summary.keys.to_zarinpal', [
+//                    'price' => number_format(priceIn($invoice->price)->toIRT())
+//                ]),
+//                'url' => route('invoice.zarinpal.pay', ['token' => $invoice->public_token])
+//            ])]);
+//        }
+//
+//        if(!($invoice->payable instanceof CreditOrder) && wHook()->bot()->settings->wallet){
+//            $replyMarkup->row([Keyboard::inlineButton([
+//                'text' => __('tbe-billing::invoice.summary.keys.by_wallet', [
+//                    'price' => currency()->priceFormat($invoice->price)
+//                ]),
+//                'callback_data' => encodeCallback(self::$type, ['by_wallet', $invoice->id])
+//            ])]);
+//        }
 
         $noPaymentMethods = empty($replyMarkup->all());
 

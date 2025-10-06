@@ -2,6 +2,7 @@
 
 use TelegramBotEssentials\Billing\Services\Billing;
 use TelegramBotEssentials\Billing\Services\Currency;
+use TelegramBotEssentials\Billing\Services\Gateways\Gateways;
 
 if (!function_exists('billing')) {
     function billing(): Billing
