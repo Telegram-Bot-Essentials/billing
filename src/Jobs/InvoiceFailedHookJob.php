@@ -45,8 +45,6 @@ class InvoiceFailedHookJob implements ShouldQueue
         wHook()->setBot($this->bot);
         wHook()->setUser($this->botUser);
 
-        \App::setLocale(wHook()->bot()->settings->language);
-
         try {
             wHook()->api()->sendMessage([
                 'chat_id' => $this->invoice->botUser->telegramUser->peer_id,
