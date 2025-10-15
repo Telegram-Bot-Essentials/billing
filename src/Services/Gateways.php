@@ -1,6 +1,6 @@
 <?php
 
-namespace TelegramBotEssentials\Billing\Services\Gateways;
+namespace TelegramBotEssentials\Billing\Services;
 
 use Illuminate\Support\Collection;
 use TelegramBotEssentials\Billing\DTOs\Gateway;

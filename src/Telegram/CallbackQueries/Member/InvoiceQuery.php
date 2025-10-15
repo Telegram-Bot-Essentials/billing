@@ -2,15 +2,8 @@
 
 namespace TelegramBotEssentials\Billing\Telegram\CallbackQueries\Member;
 
-use Illuminate\Contracts\Container\BindingResolutionException;
-use Telegram\Bot\Exceptions\TelegramSDKException;
-use TelegramBotEssentials\Billing\Models\Attempts\ToCardAttempt;
-use TelegramBotEssentials\Billing\Models\Invoice;
 use TelegramBotEssentials\Essence\Enums\Roles;
-use TelegramBotEssentials\Essence\Exceptions\FeatureIsDisabled;
-use TelegramBotEssentials\Essence\Exceptions\LogicException;
 use TelegramBotEssentials\Essence\Telegram\CallbackQueries\CallbackQuery;
-use TelegramBotEssentials\UserWallet\Models\ByWalletAttempt;
 
 class InvoiceQuery extends CallbackQuery
 {

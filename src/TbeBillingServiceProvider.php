@@ -6,7 +6,7 @@ use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\ServiceProvider;
 use TelegramBotEssentials\Billing\Services\Billing;
 use TelegramBotEssentials\Billing\Services\Currency;
-use TelegramBotEssentials\Billing\Services\Gateways\Gateways;
+use TelegramBotEssentials\Billing\Services\Gateways;
 use TelegramBotEssentials\Essence\Exceptions\LogicException;
 
 class TbeBillingServiceProvider extends ServiceProvider
