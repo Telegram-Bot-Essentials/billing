@@ -3,8 +3,8 @@
 namespace TelegramBotEssentials\Billing\Telegram\Features\Admin;
 
 use Telegram\Bot\Keyboard\Keyboard;
-use TelegramBotEssentials\Essence\Exceptions\InvalidPageNumber;
 use TelegramBotEssentials\Billing\Models\Invoice;
+use TelegramBotEssentials\Essence\Exceptions\InvalidPageNumber;
 use TelegramBotEssentials\Essence\Services\TelegramPaginator;
 use TelegramBotEssentials\Essence\Telegram\TelegramResponse;
 
@@ -83,22 +83,22 @@ class ManageInvoicesFeature
         $replyMarkup->row([
             Keyboard::inlineButton([
                 'text' => 'failed' . ($invoice->status == 'failed' ? ' ✅' : ''),
-                'callback_data' => encodeCallback(self::$type, ['mark_as_failed', $invoice->id, $lastPage])
+                'callback_data' => encodeCallback(self::$type, 'mark_as_failed', [$invoice->id, $lastPage])
             ]),
             Keyboard::inlineButton([
                 'text' => 'pending' . ($invoice->status == 'pending' ? ' ✅' : ''),
-                'callback_data' => encodeCallback(self::$type, ['mark_as_pending', $invoice->id, $lastPage])
+                'callback_data' => encodeCallback(self::$type, 'mark_as_pending', [$invoice->id, $lastPage])
             ]),
             Keyboard::inlineButton([
                 'text' => 'paid' . ($invoice->status == 'paid' ? ' ✅' : ''),
-                'callback_data' => encodeCallback(self::$type, ['mark_as_paid', $invoice->id, $lastPage])
+                'callback_data' => encodeCallback(self::$type, 'mark_as_paid', [$invoice->id, $lastPage])
             ])
         ]);
 
         $replyMarkup->row([
             Keyboard::inlineButton([
                 'text' => __('tbe-billing::general.keys.back'),
-                'callback_data' => encodeCallback(self::$type, ['start', $lastPage, 0])
+                'callback_data' => encodeCallback(self::$type, 'start', [$lastPage, 0])
             ])
         ]);
 

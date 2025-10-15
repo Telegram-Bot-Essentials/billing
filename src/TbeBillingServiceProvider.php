@@ -7,14 +7,12 @@ use Illuminate\Support\ServiceProvider;
 use TelegramBotEssentials\Billing\Services\Billing;
 use TelegramBotEssentials\Billing\Services\Currency;
 use TelegramBotEssentials\Billing\Services\Gateways;
+use TelegramBotEssentials\Billing\Telegram\CallbackQueries\Admin\ManageInvoicesQuery;
+use TelegramBotEssentials\Billing\Telegram\StateAnswers\Admin\ManageInvoicesAnswer;
 use TelegramBotEssentials\Essence\Exceptions\LogicException;
 
 class TbeBillingServiceProvider extends ServiceProvider
 {
-    /**
-     * @throws LogicException
-     * @throws BindingResolutionException
-     */
     public function register(): void
     {
         $this->initializeSingletons();
@@ -22,14 +20,6 @@ class TbeBillingServiceProvider extends ServiceProvider
 
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
         $this->loadTranslationsFrom(__DIR__ . '/../lang', 'tbe-billing');
-
-        callbackQueryBus()->addCallbackQueries([
-
-        ]);
-
-        stateAnswerBus()->addStateAnswers([
-
-        ]);
     }
 
     private function initializeSingletons(): void
@@ -67,5 +57,20 @@ class TbeBillingServiceProvider extends ServiceProvider
                 __DIR__ . '/../lang' => resource_path('lang/vendor/tbe-billing'),
             ], 'tbe-billing');
         }
+    }
+
+    /**
+     * @throws LogicException
+     * @throws BindingResolutionException
+     */
+    function boot(): void
+    {
+        callbackQueryBus()->addCallbackQueries([
+            ManageInvoicesQuery::class
+        ]);
+
+        stateAnswerBus()->addStateAnswers([
+            ManageInvoicesAnswer::class
+        ]);
     }
 }

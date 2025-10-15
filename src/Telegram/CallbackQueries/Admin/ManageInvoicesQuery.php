@@ -13,53 +13,24 @@ class ManageInvoicesQuery extends CallbackQuery
     protected string $type = 'MANAGEINVOICES';
     protected int $perm = Roles::ADMIN->value;
 
-//    public function handle(array $params): void
-//    {
-//        $this->params = $params;
-//        switch (strtolower($params[0])) {
-//            case "start":
-//                // Use dependsOn() to give condition to check if the callback is allowed
-//                // dependsOn(false);
-//                $this->start();
-//                break;
-//            case "show":
-//                $this->show();
-//                break;
-//            case "mark_as_pending":
-//                $this->markAsPending();
-//                break;
-//            case "mark_as_paid":
-//                $this->markAsPaid();
-//                break;
-//            case "mark_as_failed":
-//                $this->markAsFailed();
-//                break;
-//        }
-//    }
-
-    public function start(): void
+    public function start(int $page = 1, int $currentPage = 0): void
     {
-        $page = intval($this->params[1] ?? 1);
-        $currentPage = intval($this->params[2] ?? 0);
         ManageInvoicesFeature::menu($page, $currentPage)->update();
     }
 
     /**
      * @throws TelegramSDKException
      */
-    private function show(): void
+    function show(Invoice $invoice, int $lastPage = 1): void
     {
-        $invoice = Invoice::findOrFail($this->params[1]);
-        $lastPage = intval($this->params[2] ?? 1);
         ManageInvoicesFeature::show($invoice, $lastPage)->update();
     }
 
     /**
      * @throws TelegramSDKException
      */
-    private function markAsPaid(): void
+    function markAsPaid(Invoice $invoice, int $lastPage = 1): void
     {
-        $invoice = Invoice::findOrFail($this->params[1]);
         if($invoice->status == 'paid') {
             wHook()->api()->answerCallbackQuery([
                 'callback_query_id' => wHook()->update()->callbackQuery->id,
@@ -69,16 +40,14 @@ class ManageInvoicesQuery extends CallbackQuery
             return;
         }
         $invoice->markAsPaid();
-        $lastPage = intval($this->params[2] ?? 1);
         ManageInvoicesFeature::show($invoice, $lastPage)->update();
     }
 
     /**
      * @throws TelegramSDKException
      */
-    private function markAsPending(): void
+    function markAsPending(Invoice $invoice, int $lastPage = 1): void
     {
-        $invoice = Invoice::findOrFail($this->params[1]);
         if($invoice->status == 'pending') {
             wHook()->api()->answerCallbackQuery([
                 'callback_query_id' => wHook()->update()->callbackQuery->id,
@@ -88,16 +57,14 @@ class ManageInvoicesQuery extends CallbackQuery
             return;
         }
         $invoice->markAsPending();
-        $lastPage = intval($this->params[2] ?? 1);
         ManageInvoicesFeature::show($invoice, $lastPage)->update();
     }
 
     /**
      * @throws TelegramSDKException
      */
-    private function markAsFailed(): void
+    function markAsFailed(Invoice $invoice, int $lastPage = 1): void
     {
-        $invoice = Invoice::findOrFail($this->params[1]);
         if($invoice->status == 'failed') {
             wHook()->api()->answerCallbackQuery([
                 'callback_query_id' => wHook()->update()->callbackQuery->id,
@@ -107,7 +74,6 @@ class ManageInvoicesQuery extends CallbackQuery
             return;
         }
         $invoice->markAsFailed();
-        $lastPage = intval($this->params[2] ?? 1);
         ManageInvoicesFeature::show($invoice, $lastPage)->update();
     }
 }

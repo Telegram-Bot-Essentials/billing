@@ -22,6 +22,5 @@ class ManageInvoicesKey extends ReplyKey
     public function handle(): void
     {
         ManageInvoicesFeature::menu()->send();
-        // Logic to execute
     }
 }

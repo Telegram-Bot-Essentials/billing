@@ -13,11 +13,4 @@ class ManageInvoicesAnswer extends StateAnswer
     protected array $allowedFields = [
         AllowableFields::TEXT->value
     ];
-
-//    public function handle(string $method): void
-//    {
-//        switch (strtolower($method)) {
-//
-//        }
-//    }
 }
