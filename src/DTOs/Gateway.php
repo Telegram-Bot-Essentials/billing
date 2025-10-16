@@ -17,7 +17,7 @@ class Gateway
     {
     }
 
-    public function getInlineKeyboard(Invoice $invoice): Button|array|string
+    public function getInlineKeyboard(Invoice $invoice): Button|array|string|null
     {
         return ($this->inlineButtonGenerator)($invoice);
     }

@@ -20,6 +20,7 @@ class InvoiceFeature
 
         $replyMarkup = Keyboard::make()->inline();
 
+        \Log::error(json_encode(gateways()->getGateways(), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
         gateways()->getGateways()->each(function (Gateway $gateway) use ($invoice, $replyMarkup) {
             $keyboard = $gateway->getInlineKeyboard($invoice);
             if($keyboard){
@@ -88,7 +89,7 @@ class InvoiceFeature
                     'orderDescription' => $invoice->payable->description ?? null
                 ]),
                 replyMarkup: empty($replyMarkup->all()) ? null : $replyMarkup,
-                answer: 'There is no available payment method'
+                answer: __('tbe-billing::invoice.summary.answers.noPaymentMethods')
             ))->messageMetaModel($invoice, 'invoice_view');
         }
 

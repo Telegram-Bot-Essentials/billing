@@ -34,7 +34,7 @@ class ManageInvoicesQuery extends CallbackQuery
         if($invoice->status == 'paid') {
             wHook()->api()->answerCallbackQuery([
                 'callback_query_id' => wHook()->update()->callbackQuery->id,
-                'text' => "Invoice is already paid", // TODO: Localize this message
+                'text' => __('tbe-billing::manage_invoices.alerts.already_paid'),
                 'show_alert' => true,
             ]);
             return;
@@ -51,7 +51,7 @@ class ManageInvoicesQuery extends CallbackQuery
         if($invoice->status == 'pending') {
             wHook()->api()->answerCallbackQuery([
                 'callback_query_id' => wHook()->update()->callbackQuery->id,
-                'text' => "Invoice is already pending", // TODO: Localize this message
+                'text' => __('tbe-billing::manage_invoices.alerts.already_pending'),
                 'show_alert' => true,
             ]);
             return;
@@ -68,7 +68,7 @@ class ManageInvoicesQuery extends CallbackQuery
         if($invoice->status == 'failed') {
             wHook()->api()->answerCallbackQuery([
                 'callback_query_id' => wHook()->update()->callbackQuery->id,
-                'text' => "Invoice is already failed", // TODO: Localize this message
+                'text' => __('tbe-billing::manage_invoices.alerts.already_failed'),
                 'show_alert' => true,
             ]);
             return;

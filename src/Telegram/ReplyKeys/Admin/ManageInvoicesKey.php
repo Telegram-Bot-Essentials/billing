@@ -8,15 +8,14 @@ use TelegramBotEssentials\Essence\Telegram\ReplyKeys\ReplyKey;
 
 class ManageInvoicesKey extends ReplyKey
 {
-    protected string $text = 'Manage Invoices';
+    protected string $text;
     protected int $perm = Roles::ADMIN->value;
-    protected string $response = 'Manage Invoices executed successfully.';
+    protected string $response;
 
     public function __construct()
     {
-        // Multilingual translations
-        // $this->text = __('');
-        // $this->response = __('');
+        $this->text = __('tbe-billing::manage_invoices.reply.keys.manage_invoices.text');
+        $this->response = __('tbe-billing::manage_invoices.reply.keys.manage_invoices.response');
     }
 
     public function handle(): void

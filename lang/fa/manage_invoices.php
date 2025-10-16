@@ -3,6 +3,8 @@
 return [
     'main' => [
         'text' => [
+            'list' => 'فاکتورها',
+            'empty' => 'هیچ فاکتوری یافت نشد',
             'show' => "#⃣ فاکتور :invoiceId"
                 . "\r\n"
                 . "\r\nمالک فاکتور: :invoiceOwner"
@@ -21,6 +23,25 @@ return [
         ],
         'keys' => [
             'invoice' => '#:invoiceId - :resourceName :price | :userFullName :status',
+            'status_failed' => 'ناموفق',
+            'status_pending' => 'در انتظار',
+            'status_paid' => 'پرداخت شده',
+            'status_selected_suffix' => ' ✅',
+        ],
+    ],
+
+    'alerts' => [
+        'already_paid' => 'این فاکتور قبلاً پرداخت شده است',
+        'already_pending' => 'این فاکتور هم‌اکنون در وضعیت در انتظار است',
+        'already_failed' => 'این فاکتور هم‌اکنون ناموفق است',
+    ],
+
+    'reply' => [
+        'keys' => [
+            'manage_invoices' => [
+                'text' => 'مدیریت فاکتورها',
+                'response' => 'دستور مدیریت فاکتورها با موفقیت اجرا شد.',
+            ],
         ],
     ],
 ];

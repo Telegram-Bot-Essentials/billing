@@ -19,7 +19,7 @@ class ManageInvoicesFeature
      */
     public static function menu(int $page = 1, int $currentPage = 0): TelegramResponse
     {
-        $text = 'invoices';
+        $text = __('tbe-billing::manage_invoices.main.text.list');
 
         $replyMarkup = Keyboard::make()
             ->inline();
@@ -29,7 +29,7 @@ class ManageInvoicesFeature
         TelegramPaginator::validatePageNumber($page, $currentPage, $invoices);
 
         if (count($invoices) == 0) {
-            $text = 'No invoices found';
+            $text = __('tbe-billing::manage_invoices.main.text.empty');
             return new TelegramResponse(
                 text: $text,
                 parseMode: 'HTML'
@@ -45,9 +45,9 @@ class ManageInvoicesFeature
                         'price' => currency()->priceFormat($invoice->price, currency: $invoice->currency),
                         'userFullName' => $invoice->botUser->telegramUser->full_name,
                         'status' => $invoice->status == 'paid' ?
-                            __('tbe-billing::general.status.enabledEmoji') :
-                            ($invoice->status == 'failed' ? __('tbe-billing::general.status.xEmoji')
-                                : __('tbe-billing::general.status.pendingEmoji')),
+                            __('tbe::general.status.enabledEmoji') :
+                            ($invoice->status == 'failed' ? __('tbe::general.status.xEmoji')
+                                : __('tbe::general.status.pendingEmoji')),
                     ]),
                     'callback_data' => encodeCallback(self::$type, 'show', [$invoice->id, $page])
                 ])
@@ -79,25 +79,29 @@ class ManageInvoicesFeature
         $replyMarkup = Keyboard::make()
             ->inline();
 
-        // TODO : Localize this buttons
+        $selectedSuffix = __('tbe-billing::manage_invoices.main.keys.status_selected_suffix');
+
         $replyMarkup->row([
             Keyboard::inlineButton([
-                'text' => 'failed' . ($invoice->status == 'failed' ? ' ✅' : ''),
+                'text' => __('tbe-billing::manage_invoices.main.keys.status_failed')
+                    . ($invoice->status == 'failed' ? $selectedSuffix : ''),
                 'callback_data' => encodeCallback(self::$type, 'mark_as_failed', [$invoice->id, $lastPage])
             ]),
             Keyboard::inlineButton([
-                'text' => 'pending' . ($invoice->status == 'pending' ? ' ✅' : ''),
+                'text' => __('tbe-billing::manage_invoices.main.keys.status_pending')
+                    . ($invoice->status == 'pending' ? $selectedSuffix : ''),
                 'callback_data' => encodeCallback(self::$type, 'mark_as_pending', [$invoice->id, $lastPage])
             ]),
             Keyboard::inlineButton([
-                'text' => 'paid' . ($invoice->status == 'paid' ? ' ✅' : ''),
+                'text' => __('tbe-billing::manage_invoices.main.keys.status_paid')
+                    . ($invoice->status == 'paid' ? $selectedSuffix : ''),
                 'callback_data' => encodeCallback(self::$type, 'mark_as_paid', [$invoice->id, $lastPage])
             ])
         ]);
 
         $replyMarkup->row([
             Keyboard::inlineButton([
-                'text' => __('tbe-billing::general.keys.back'),
+                'text' => __('tbe::general.keys.back'),
                 'callback_data' => encodeCallback(self::$type, 'start', [$lastPage, 0])
             ])
         ]);

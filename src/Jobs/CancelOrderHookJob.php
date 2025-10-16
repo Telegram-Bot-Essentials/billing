@@ -48,12 +48,12 @@ class CancelOrderHookJob implements ShouldQueue
         try {
             wHook()->api()->sendMessage([
                 'chat_id' => $this->invoice->botUser->telegramUser->peer_id,
-                'text' => "Your order reverted", // TODO: Localize this message
+                'text' => __('tbe-billing::invoice.hooks.order_reverted'),
                 'reply_markup' => wHook()->user()->getKeyboard(),
             ]);
 
             $this->invoice->messageMeta()->where('tag', 'invoice_view')->get()->each(function ($messageMeta) {
-                $messageMeta->lockAction(__('tbe-billing::invoice.to_card.lock-keys.user-payment_rejected'), customEmoji: '❌');
+                $messageMeta->lockAction(__('tbe-gateway-card::invoice.to_card.lock-keys.user-payment_rejected'), customEmoji: '❌');
             });
         } catch (\Exception $e) {
             Log::error($e->getMessage());

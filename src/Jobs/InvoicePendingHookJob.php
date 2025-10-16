@@ -50,7 +50,7 @@ class InvoicePendingHookJob implements ShouldQueue
         try {
             wHook()->api()->sendMessage([
                 'chat_id' => $this->invoice->botUser->telegramUser->peer_id,
-                'text' => "Your invoice status changed to pending", // TODO: Localize this message
+                'text' => __('tbe-billing::invoice.hooks.status_changed.pending'),
                 'reply_markup' => wHook()->user()->getKeyboard(),
             ]);
 
