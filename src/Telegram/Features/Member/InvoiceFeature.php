@@ -21,7 +21,10 @@ class InvoiceFeature
         $replyMarkup = Keyboard::make()->inline();
 
         gateways()->getGateways()->each(function (Gateway $gateway) use ($invoice, $replyMarkup) {
-            $replyMarkup->row([$gateway->getInlineKeyboard($invoice)]);
+            $keyboard = $gateway->getInlineKeyboard($invoice);
+            if($keyboard){
+                $replyMarkup->row([$keyboard]);
+            }
         });
 
 //        if(wHook()->bot()->settings->pay_with_card) {
