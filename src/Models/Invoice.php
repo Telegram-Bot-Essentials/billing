@@ -8,11 +8,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
-use TelegramBotEssentials\Billing\Jobs\InvoiceFailedHookJob;
-use TelegramBotEssentials\Billing\Jobs\InvoicePaidHookJob;
-use TelegramBotEssentials\Billing\Jobs\InvoicePendingHookJob;
+use TelegramBotEssentials\Billing\DTOs\WebhookContext;
+use TelegramBotEssentials\Billing\Events\InvoiceFailed;
+use TelegramBotEssentials\Billing\Events\InvoicePaid;
+use TelegramBotEssentials\Billing\Events\InvoicePending;
+use TelegramBotEssentials\Billing\Events\InvoiceRevoked;
 use TelegramBotEssentials\Essence\Database\factories\InvoiceFactory;
-use TelegramBotEssentials\Billing\Jobs\CancelOrderHookJob;
 use TelegramBotEssentials\Essence\Models\Bot;
 use TelegramBotEssentials\Essence\Models\BotUser;
 use TelegramBotEssentials\Essence\Traits\HasMessageMeta;
@@ -81,9 +82,17 @@ class Invoice extends Model
 
     public function setStatusAttribute($value): void
     {
-        if($this->status != $value && $this->status == 'paid') {
-            dispatch(new CancelOrderHookJob(wHook()->api(), wHook()->update(), wHook()->bot(), wHook()->user(), $this));
+        $previousStatus = $this->attributes['status'] ?? null;
+
+        if ($previousStatus === $value) {
+            $this->attributes['status'] = $value;
+            return;
         }
+
+        if ($previousStatus === 'paid' && $value !== 'paid') {
+            event(new InvoiceRevoked($this, $previousStatus, WebhookContext::capture()));
+        }
+
         $this->attributes['status'] = $value;
     }
 
@@ -94,22 +103,43 @@ class Invoice extends Model
 
     public function markAsPaid(): void
     {
+        $previousStatus = $this->status;
+        if ($previousStatus === 'paid') {
+            return;
+        }
+
         $this->setAttribute('status', 'paid');
         $this->save();
-        dispatch(new InvoicePaidHookJob(wHook()->api(), wHook()->update(), wHook()->bot(), wHook()->user(), $this));
+        $this->refresh();
+
+        event(new InvoicePaid($this, $previousStatus, WebhookContext::capture()));
     }
 
     public function markAsFailed(): void
     {
+        $previousStatus = $this->status;
+        if ($previousStatus === 'failed') {
+            return;
+        }
+
         $this->setAttribute('status', 'failed');
         $this->save();
-        dispatch(new InvoiceFailedHookJob(wHook()->api(), wHook()->update(), wHook()->bot(), wHook()->user(), $this));
+        $this->refresh();
+
+        event(new InvoiceFailed($this, $previousStatus, WebhookContext::capture()));
     }
 
     public function markAsPending(): void
     {
+        $previousStatus = $this->status;
+        if ($previousStatus === 'pending') {
+            return;
+        }
+
         $this->setAttribute('status', 'pending');
         $this->save();
-        dispatch(new InvoicePendingHookJob(wHook()->api(), wHook()->update(), wHook()->bot(), wHook()->user(), $this));
+        $this->refresh();
+
+        event(new InvoicePending($this, $previousStatus, WebhookContext::capture()));
     }
 }

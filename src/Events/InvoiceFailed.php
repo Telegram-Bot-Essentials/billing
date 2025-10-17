@@ -5,7 +5,7 @@ namespace TelegramBotEssentials\Billing\Events;
 use TelegramBotEssentials\Billing\DTOs\WebhookContext;
 use TelegramBotEssentials\Billing\Models\Invoice;
 
-class InvoicePaid extends InvoiceStatusEvent
+class InvoiceFailed extends InvoiceStatusEvent
 {
     public function __construct(Invoice $invoice, ?string $previousStatus = null, ?WebhookContext $context = null)
     {
@@ -14,6 +14,7 @@ class InvoicePaid extends InvoiceStatusEvent
 
     public function status(): string
     {
-        return 'paid';
+        return 'failed';
     }
 }
+

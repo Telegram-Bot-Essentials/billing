@@ -4,6 +4,7 @@ namespace TelegramBotEssentials\Billing;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\ServiceProvider;
+use TelegramBotEssentials\Billing\Providers\EventServiceProvider;
 use TelegramBotEssentials\Billing\Services\Billing;
 use TelegramBotEssentials\Billing\Services\Currency;
 use TelegramBotEssentials\Billing\Services\Gateways;
@@ -17,6 +18,7 @@ class TbeBillingServiceProvider extends ServiceProvider
     {
         $this->initializeSingletons();
         $this->registerPublishing();
+        $this->app->register(EventServiceProvider::class);
 
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
         $this->loadTranslationsFrom(__DIR__ . '/../lang', 'tbe-billing');

@@ -4,7 +4,10 @@ namespace TelegramBotEssentials\Billing\Jobs;
 
 use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use Telegram\Bot\Api;
 use Telegram\Bot\Objects\Update;
@@ -15,26 +18,18 @@ use TelegramBotEssentials\Essence\Models\BotUser;
 
 class InvoicePendingHookJob implements ShouldQueue
 {
+    use Dispatchable;
+    use InteractsWithQueue;
     use Queueable;
+    use SerializesModels;
 
-    private Invoice $invoice;
-    private Api $api;
-    private Update $update;
-    private Bot $bot;
-    private BotUser $botUser;
-
-    /**
-     * Create a new job instance.
-     */
-    public function __construct(Api $api, Update $update, Bot $bot, BotUser $botUser, Invoice $invoice)
-    {
+    public function __construct(
+        private readonly Invoice $invoice,
+        private readonly Bot $bot,
+        private readonly BotUser $botUser,
+        private readonly array $updatePayload = [],
+    ) {
         $this->queue = 'billing';
-
-        $this->api = $api;
-        $this->update = $update;
-        $this->bot = $bot;
-        $this->botUser = $botUser;
-        $this->invoice = $invoice;
     }
 
     /**
@@ -42,30 +37,41 @@ class InvoicePendingHookJob implements ShouldQueue
      */
     public function handle(): void
     {
-        wHook()->setApi($this->api);
-        wHook()->setUpdate($this->update);
-        wHook()->setBot($this->bot);
-        wHook()->setUser($this->botUser);
+        $invoice = $this->invoice->fresh();
+        $bot = $this->bot->fresh();
+        $botUser = $this->botUser->fresh();
+
+        if (!$invoice || !$bot || !$botUser) {
+            Log::warning('InvoicePendingHookJob skipped because dependencies could not be resolved.', [
+                'invoice_id' => $this->invoice->getKey(),
+                'bot_id' => $this->bot->getKey(),
+                'bot_user_id' => $this->botUser->getKey(),
+            ]);
+            return;
+        }
+
+        $api = new Api($bot->bot_token);
+        $update = new Update($this->updatePayload);
+
+        wHook()->setApi($api);
+        wHook()->setUpdate($update);
+        wHook()->setBot($bot);
+        wHook()->setUser($botUser);
 
         try {
             wHook()->api()->sendMessage([
-                'chat_id' => $this->invoice->botUser->telegramUser->peer_id,
+                'chat_id' => $invoice->botUser->telegramUser->peer_id,
                 'text' => __('tbe-billing::invoice.hooks.status_changed.pending'),
                 'reply_markup' => wHook()->user()->getKeyboard(),
             ]);
 
-            $telegramResponse = InvoiceFeature::invoice($this->invoice);
-            $this->invoice->messageMeta()->where('tag', 'invoice_view')->get()->each(function ($messageMeta) use ($telegramResponse) {
+            $telegramResponse = InvoiceFeature::invoice($invoice);
+            $invoice->messageMeta()->where('tag', 'invoice_view')->get()->each(function ($messageMeta) use ($telegramResponse) {
                 $messageMeta->updateAndContinueAction($telegramResponse);
             });
         } catch (Exception $e) {
             Log::error($e->getMessage());
         }
 
-        $payable = $this->invoice->payable ?? null;
-
-        if ($payable && method_exists($payable, 'invoicePendingHook')) {
-            $payable->invoicePendingHook();
-        }
     }
 }
