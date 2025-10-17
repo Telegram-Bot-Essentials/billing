@@ -7,6 +7,7 @@ use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Log;
 use Telegram\Bot\Api;
 use Telegram\Bot\Objects\Update;
+use TelegramBotEssentials\Billing\Events\InvoicePaid;
 use TelegramBotEssentials\Billing\Models\Invoice;
 use TelegramBotEssentials\Essence\Models\Bot;
 use TelegramBotEssentials\Essence\Models\BotUser;
@@ -63,5 +64,7 @@ class InvoicePaidHookJob implements ShouldQueue
         if ($payable && method_exists($payable, 'invoicePaidHook')) {
             $payable->invoicePaidHook();
         }
+
+        event(new InvoicePaid($this->invoice, $this->bot, $this->botUser));
     }
 }
