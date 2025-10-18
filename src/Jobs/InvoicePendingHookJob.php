@@ -15,6 +15,8 @@ use TelegramBotEssentials\Billing\Models\Invoice;
 use TelegramBotEssentials\Billing\Telegram\Features\Member\InvoiceFeature;
 use TelegramBotEssentials\Essence\Models\Bot;
 use TelegramBotEssentials\Essence\Models\BotUser;
+use TelegramBotEssentials\Essence\Support\Webhook;
+use TelegramBotEssentials\Essence\Support\WebhookContext;
 
 class InvoicePendingHookJob implements ShouldQueue
 {
@@ -27,7 +29,8 @@ class InvoicePendingHookJob implements ShouldQueue
         private readonly Invoice $invoice,
         private readonly Bot $bot,
         private readonly BotUser $botUser,
-        private readonly array $updatePayload = [],
+        private readonly array|Update $updatePayload = [],
+        private readonly ?WebhookContext $context = null,
     ) {
         $this->queue = 'billing';
     }
@@ -50,13 +53,18 @@ class InvoicePendingHookJob implements ShouldQueue
             return;
         }
 
-        $api = new Api($bot->bot_token);
-        $update = new Update($this->updatePayload);
+        $contextApplied = $this->context?->apply() ?? false;
 
-        wHook()->setApi($api);
-        wHook()->setUpdate($update);
-        wHook()->setBot($bot);
-        wHook()->setUser($botUser);
+        if (!$contextApplied) {
+            Webhook::clear();
+            Webhook::setApi(new Api($bot->bot_token));
+            $update = $this->updatePayload instanceof Update
+                ? $this->updatePayload
+                : new Update($this->updatePayload);
+            Webhook::setUpdate($update);
+            Webhook::setBot($bot);
+            Webhook::setUser($botUser);
+        }
 
         try {
             wHook()->api()->sendMessage([

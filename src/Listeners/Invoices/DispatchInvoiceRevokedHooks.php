@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Log;
 use TelegramBotEssentials\Billing\Events\InvoiceRevoked;
 use TelegramBotEssentials\Billing\Jobs\CancelOrderHookJob;
 use TelegramBotEssentials\Billing\Models\Invoice;
+use TelegramBotEssentials\Essence\Support\WebhookContext;
 
 class DispatchInvoiceRevokedHooks
 {
@@ -33,8 +34,15 @@ class DispatchInvoiceRevokedHooks
         }
 
         $updatePayload = $event->context?->updatePayload ?? [];
+        $context = $event->context ?? new WebhookContext(
+            botId: $bot->getKey(),
+            botUserId: $botUser->getKey(),
+            updatePayload: $updatePayload,
+            botToken: $bot->bot_token,
+            bot: $bot,
+            botUser: $botUser,
+        );
 
-        CancelOrderHookJob::dispatch($invoice, $bot, $botUser, $updatePayload);
+        CancelOrderHookJob::dispatch($invoice, $bot, $botUser, $updatePayload, $context);
     }
 }
-

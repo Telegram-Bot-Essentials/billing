@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Log;
 use TelegramBotEssentials\Billing\Events\InvoiceFailed;
 use TelegramBotEssentials\Billing\Jobs\InvoiceFailedHookJob;
 use TelegramBotEssentials\Billing\Models\Invoice;
+use TelegramBotEssentials\Essence\Support\WebhookContext;
 
 class DispatchInvoiceFailedHooks
 {
@@ -33,8 +34,15 @@ class DispatchInvoiceFailedHooks
         }
 
         $updatePayload = $event->context?->updatePayload ?? [];
+        $context = $event->context ?? new WebhookContext(
+            botId: $bot->getKey(),
+            botUserId: $botUser->getKey(),
+            updatePayload: $updatePayload,
+            botToken: $bot->bot_token,
+            bot: $bot,
+            botUser: $botUser,
+        );
 
-        InvoiceFailedHookJob::dispatch($invoice, $bot, $botUser, $updatePayload);
+        InvoiceFailedHookJob::dispatch($invoice, $bot, $botUser, $updatePayload, $context);
     }
 }
-

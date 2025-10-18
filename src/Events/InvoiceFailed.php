@@ -2,7 +2,7 @@
 
 namespace TelegramBotEssentials\Billing\Events;
 
-use TelegramBotEssentials\Billing\DTOs\WebhookContext;
+use TelegramBotEssentials\Essence\Support\WebhookContext;
 use TelegramBotEssentials\Billing\Models\Invoice;
 
 class InvoiceFailed extends InvoiceStatusEvent
@@ -17,4 +17,3 @@ class InvoiceFailed extends InvoiceStatusEvent
         return 'failed';
     }
 }
-

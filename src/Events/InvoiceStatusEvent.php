@@ -4,7 +4,7 @@ namespace TelegramBotEssentials\Billing\Events;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use TelegramBotEssentials\Billing\DTOs\WebhookContext;
+use TelegramBotEssentials\Essence\Support\WebhookContext;
 use TelegramBotEssentials\Billing\Models\Invoice;
 
 abstract class InvoiceStatusEvent
@@ -24,4 +24,3 @@ abstract class InvoiceStatusEvent
 
     abstract public function status(): string;
 }
-

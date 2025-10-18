@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Log;
 use TelegramBotEssentials\Billing\Events\InvoicePaid;
 use TelegramBotEssentials\Billing\Jobs\InvoicePaidHookJob;
 use TelegramBotEssentials\Billing\Models\Invoice;
+use TelegramBotEssentials\Essence\Support\WebhookContext;
 
 class DispatchInvoicePaidHooks
 {
@@ -33,8 +34,15 @@ class DispatchInvoicePaidHooks
         }
 
         $updatePayload = $event->context?->updatePayload ?? [];
+        $context = $event->context ?? new WebhookContext(
+            botId: $bot->getKey(),
+            botUserId: $botUser->getKey(),
+            updatePayload: $updatePayload,
+            botToken: $bot->bot_token,
+            bot: $bot,
+            botUser: $botUser,
+        );
 
-        InvoicePaidHookJob::dispatch($invoice, $bot, $botUser, $updatePayload);
+        InvoicePaidHookJob::dispatch($invoice, $bot, $botUser, $updatePayload, $context);
     }
 }
-
