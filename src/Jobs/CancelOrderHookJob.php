@@ -47,11 +47,10 @@ class CancelOrderHookJob implements ShouldQueue
             ]);
 
             $this->invoice->messageMeta()->where('tag', 'invoice_view')->get()->each(function ($messageMeta) {
-                $messageMeta->lockAction(__('tbe-gateway-card::invoice.to_card.lock-keys.user-payment_rejected'), customEmoji: '❌');
+                $messageMeta->lockAction(__('tbe-billing::invoice.locks.user_payment.cancelled'), customEmoji: '❌');
             });
         } catch (\Exception $e) {
             Log::error($e->getMessage());
         }
-
     }
 }

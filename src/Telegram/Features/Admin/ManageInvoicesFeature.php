@@ -37,6 +37,7 @@ class ManageInvoicesFeature
         }
 
         foreach ($invoices as $invoice) {
+            $statusIndicator = self::statusIndicator($invoice->status);
             $replyMarkup->row([
                 Keyboard::inlineButton([
                     'text' => __('tbe-billing::manage_invoices.main.keys.invoice', [
@@ -44,10 +45,7 @@ class ManageInvoicesFeature
                         'resourceName' => getResourceName($invoice->payable_type),
                         'price' => currency()->priceFormat($invoice->price, currency: $invoice->currency),
                         'userFullName' => $invoice->botUser->telegramUser->full_name,
-                        'status' => $invoice->status == 'paid' ?
-                            __('tbe::general.status.enabledEmoji') :
-                            ($invoice->status == 'failed' ? __('tbe::general.status.xEmoji')
-                                : __('tbe::general.status.pendingEmoji')),
+                        'status' => $statusIndicator,
                     ]),
                     'callback_data' => encodeCallback(self::$type, 'show', [$invoice->id, $page])
                 ])
@@ -65,13 +63,16 @@ class ManageInvoicesFeature
 
     public static function show(Invoice $invoice, int $lastPage = 1): TelegramResponse
     {
+        $statusIndicator = self::statusIndicator($invoice->status);
+        $attemptStatus = self::statusIndicator($invoice->paymentAttempt?->status);
+
         $text = __('tbe-billing::manage_invoices.main.text.show', [
             'invoiceId' => $invoice->id,
             'invoiceOwner' => "<a href=\"tg://user?id={$invoice->botUser->telegramUser->peer_id}\">{$invoice->botUser->telegramUser->full_name}</a>",
             'invoiceAmount' => currency()->priceFormat($invoice->price),
-            'invoiceStatus' => $invoice->status,
+            'invoiceStatus' => $statusIndicator,
             'paymentAttempt' => $invoice->paymentAttempt?->id,
-            'paymentAttemptStatus' => $invoice->status,
+            'paymentAttemptStatus' => $attemptStatus,
             'paymentAttemptDate' => $invoice->paymentAttempt?->created_at,
             'orderDescription' => $invoice->paymentAttempt?->description,
         ]);
@@ -101,7 +102,7 @@ class ManageInvoicesFeature
 
         $replyMarkup->row([
             Keyboard::inlineButton([
-                'text' => __('tbe::general.keys.back'),
+                'text' => __('tbe-billing::manage_invoices.main.keys.back_to_list'),
                 'callback_data' => encodeCallback(self::$type, 'start', [$lastPage, 0])
             ])
         ]);
@@ -111,5 +112,14 @@ class ManageInvoicesFeature
             replyMarkup: $replyMarkup,
             parseMode: 'HTML'
         );
+    }
+
+    private static function statusIndicator(?string $status): string
+    {
+        return match ($status) {
+            'paid' => __('tbe-billing::manage_invoices.main.keys.status_indicator.paid'),
+            'failed' => __('tbe-billing::manage_invoices.main.keys.status_indicator.failed'),
+            default => __('tbe-billing::manage_invoices.main.keys.status_indicator.pending'),
+        };
     }
 }

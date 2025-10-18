@@ -3,44 +3,50 @@
 return [
     'main' => [
         'text' => [
-            'list' => 'فاکتورها',
-            'empty' => 'هیچ فاکتوری یافت نشد',
-            'show' => "#⃣ فاکتور :invoiceId"
+            'list' => '📋 پیشخوان فاکتورها — برای بررسی، یک فاکتور را انتخاب کنید.',
+            'empty' => '😕 هنوز فاکتوری یافت نشد. لطفاً بعداً دوباره امتحان کنید!',
+            'show' => "🧾 فاکتور #:invoiceId"
                 . "\r\n"
-                . "\r\nمالک فاکتور: :invoiceOwner"
-                . "\r\nمبلغ فاکتور: :invoiceAmount"
-                . "\r\nوضعیت فاکتور: :invoiceStatus"
+                . "\r\n👤 مالک: :invoiceOwner"
+                . "\r\n💲 مبلغ: :invoiceAmount"
+                . "\r\n📌 وضعیت: :invoiceStatus"
                 . "\r\n"
-                . "\r\nآخرین تلاش پرداخت: :paymentAttempt"
-                . "\r\nوضعیت آخرین تلاش پرداخت: :paymentAttemptStatus"
-                . "\r\nتاریخ آخرین تلاش پرداخت: :paymentAttemptDate"
+                . "\r\n🕑 آخرین تلاش پرداخت: :paymentAttempt"
+                . "\r\n📋 وضعیت تلاش: :paymentAttemptStatus"
+                . "\r\n🗓️ تاریخ تلاش: :paymentAttemptDate"
                 . "\r\n"
-                . "\r\n📝 توضیحات: \r\n:orderDescription"
+                . "\r\n📝 توضیحات:\r\n:orderDescription"
                 . "\r\n"
-                . "\r\n👇 یکی از گزینه‌های پرداخت زیر را انتخاب کنید.",
+                . "\r\n⚙️ یک اقدام را از لیست زیر انتخاب کنید 👇",
         ],
         'answers' => [
         ],
         'keys' => [
-            'invoice' => '#:invoiceId - :resourceName :price | :userFullName :status',
-            'status_failed' => 'ناموفق',
-            'status_pending' => 'در انتظار',
-            'status_paid' => 'پرداخت شده',
-            'status_selected_suffix' => ' ✅',
+            'invoice' => ':status #:invoiceId · :resourceName :price | :userFullName',
+            'status_failed' => '❌ ثبت به‌عنوان ناموفق',
+            'status_pending' => '🕒 ثبت به‌عنوان در انتظار',
+            'status_paid' => '✅ ثبت به‌عنوان پرداخت شده',
+            'status_selected_suffix' => ' ⭐',
+            'status_indicator' => [
+                'paid' => '✅ پرداخت شده',
+                'pending' => '🕒 در انتظار',
+                'failed' => '❌ ناموفق',
+            ],
+            'back_to_list' => '🔙 بازگشت به فهرست فاکتورها',
         ],
     ],
 
     'alerts' => [
-        'already_paid' => 'این فاکتور قبلاً پرداخت شده است',
-        'already_pending' => 'این فاکتور هم‌اکنون در وضعیت در انتظار است',
-        'already_failed' => 'این فاکتور هم‌اکنون ناموفق است',
+        'already_paid' => '✅ این فاکتور پیش‌تر پرداخت شده است.',
+        'already_pending' => '🕒 وضعیت فاکتور هم‌اکنون «در انتظار» است.',
+        'already_failed' => '❌ این فاکتور هم‌اکنون در وضعیت ناموفق قرار دارد.',
     ],
 
     'reply' => [
         'keys' => [
             'manage_invoices' => [
-                'text' => 'مدیریت فاکتورها',
-                'response' => 'دستور مدیریت فاکتورها با موفقیت اجرا شد.',
+                'text' => '🧾 مدیریت فاکتورها',
+                'response' => '📋 پیشخوان مدیریت فاکتورها با موفقیت باز شد.',
             ],
         ],
     ],

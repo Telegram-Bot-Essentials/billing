@@ -3,44 +3,50 @@
 return [
     'main' => [
         'text' => [
-            'list' => 'Invoices',
-            'empty' => 'No invoices found',
-            'show' => "#⃣ Invoice :invoiceId"
+            'list' => '📋 Invoice dashboard — pick an invoice to review.',
+            'empty' => '😕 No invoices found yet. Check back soon!',
+            'show' => "🧾 Invoice #:invoiceId"
                 . "\r\n"
-                . "\r\nInvoice Owner: :invoiceOwner"
-                . "\r\nInvoice Amount: :invoiceAmount"
-                . "\r\nInvoice Status: :invoiceStatus"
+                . "\r\n👤 Owner: :invoiceOwner"
+                . "\r\n💲 Amount: :invoiceAmount"
+                . "\r\n📌 Status: :invoiceStatus"
                 . "\r\n"
-                . "\r\nLast Payment Attempt: :paymentAttempt"
-                . "\r\nLast Payment Attempt Status: :paymentAttemptStatus"
-                . "\r\nLast Payment Attempt Date: :paymentAttemptDate"
+                . "\r\n🕑 Last payment attempt: :paymentAttempt"
+                . "\r\n📋 Attempt status: :paymentAttemptStatus"
+                . "\r\n🗓️ Attempt date: :paymentAttemptDate"
                 . "\r\n"
-                . "\r\n📝 Description: \r\n:orderDescription"
+                . "\r\n📝 Notes:\r\n:orderDescription"
                 . "\r\n"
-                . "\r\n👇 Choose your payment option from below.",
+                . "\r\n⚙️ Choose an action below 👇",
         ],
         'answers' => [
         ],
         'keys' => [
-            'invoice' => '#:invoiceId - :resourceName :price | :userFullName :status',
-            'status_failed' => 'Failed',
-            'status_pending' => 'Pending',
-            'status_paid' => 'Paid',
-            'status_selected_suffix' => ' ✅',
+            'invoice' => ':status #:invoiceId · :resourceName :price | :userFullName',
+            'status_failed' => '❌ Mark as Failed',
+            'status_pending' => '🕒 Mark as Pending',
+            'status_paid' => '✅ Mark as Paid',
+            'status_selected_suffix' => ' ⭐',
+            'status_indicator' => [
+                'paid' => '✅ Paid',
+                'pending' => '🕒 Pending',
+                'failed' => '❌ Failed',
+            ],
+            'back_to_list' => '🔙 Back to invoice list',
         ],
     ],
 
     'alerts' => [
-        'already_paid' => 'Invoice is already paid',
-        'already_pending' => 'Invoice is already pending',
-        'already_failed' => 'Invoice is already failed',
+        'already_paid' => '✅ This invoice is already marked as paid.',
+        'already_pending' => '🕒 This invoice is already pending.',
+        'already_failed' => '❌ This invoice is already marked as failed.',
     ],
 
     'reply' => [
         'keys' => [
             'manage_invoices' => [
-                'text' => 'Manage Invoices',
-                'response' => 'Manage Invoices executed successfully.',
+                'text' => '🧾 Manage invoices',
+                'response' => '📋 Invoice manager opened successfully.',
             ],
         ],
     ],
