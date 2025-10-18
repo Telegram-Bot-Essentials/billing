@@ -7,9 +7,9 @@ use TelegramBotEssentials\Billing\Models\Invoice;
 
 class InvoicePaid extends InvoiceStatusEvent
 {
-    public function __construct(Invoice $invoice, ?string $previousStatus = null, ?WebhookContext $context = null)
+    public function __construct(Invoice $invoice, ?string $previousStatus = null)
     {
-        parent::__construct($invoice, $previousStatus, $context);
+        parent::__construct($invoice, $previousStatus);
     }
 
     public function status(): string

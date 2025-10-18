@@ -13,12 +13,13 @@ abstract class InvoiceStatusEvent
     use SerializesModels;
 
     public Invoice $invoice;
+    public WebhookContext $context;
 
     public function __construct(
         Invoice $invoice,
         public readonly ?string $previousStatus = null,
-        public readonly WebhookContext|null $context = null,
     ) {
+        $this->context = WebhookContext::capture();
         $this->invoice = $invoice->withoutRelations();
     }
 

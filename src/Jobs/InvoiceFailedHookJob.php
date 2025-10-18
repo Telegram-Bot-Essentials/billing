@@ -23,13 +23,15 @@ class InvoiceFailedHookJob implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
+    private WebhookContext $context;
+
     public function __construct(
         private readonly Invoice $invoice,
         private readonly Bot $bot,
         private readonly BotUser $botUser,
         private readonly array|Update $updatePayload = [],
-        private readonly ?WebhookContext $context = null,
     ) {
+        $this->context = WebhookContext::capture();
         $this->queue = 'billing';
     }
 
