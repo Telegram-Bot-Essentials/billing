@@ -90,7 +90,7 @@ class Invoice extends Model
         }
 
         if ($previousStatus === 'paid' && $value !== 'paid') {
-            event(new InvoiceRevoked($this, $previousStatus, WebhookContext::capture()));
+            event(new InvoiceRevoked($this, $previousStatus));
         }
 
         $this->attributes['status'] = $value;
@@ -112,7 +112,7 @@ class Invoice extends Model
         $this->save();
         $this->refresh();
 
-        event(new InvoicePaid($this, $previousStatus, WebhookContext::capture()));
+        event(new InvoicePaid($this, $previousStatus));
     }
 
     public function markAsFailed(): void
@@ -126,7 +126,7 @@ class Invoice extends Model
         $this->save();
         $this->refresh();
 
-        event(new InvoiceFailed($this, $previousStatus, WebhookContext::capture()));
+        event(new InvoiceFailed($this, $previousStatus));
     }
 
     public function markAsPending(): void
@@ -140,6 +140,6 @@ class Invoice extends Model
         $this->save();
         $this->refresh();
 
-        event(new InvoicePending($this, $previousStatus, WebhookContext::capture()));
+        event(new InvoicePending($this, $previousStatus));
     }
 }

@@ -29,9 +29,6 @@ class InvoicePendingHookJob implements ShouldQueue
 
     public function __construct(
         private readonly Invoice $invoice,
-        private readonly Bot $bot,
-        private readonly BotUser $botUser,
-        private readonly array|Update $updatePayload = [],
     ) {
         $this->context = WebhookContext::capture();
         $this->queue = 'billing';
