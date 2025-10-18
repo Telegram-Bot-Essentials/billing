@@ -27,7 +27,7 @@ class DispatchInvoicePendingHooks
                 'reply_markup' => wHook()->user()->getKeyboard(),
             ]);
 
-            $telegramResponse = InvoiceFeature::invoice($this->invoice);
+            $telegramResponse = InvoiceFeature::invoice($invoice);
             $invoice->messageMeta()->where('tag', 'invoice_view')->get()->each(function ($messageMeta) use ($telegramResponse) {
                 $messageMeta->updateAndContinueAction($telegramResponse);
             });
