@@ -4,7 +4,6 @@ namespace TelegramBotEssentials\Billing\Listeners\Invoices;
 
 use Illuminate\Support\Facades\Log;
 use TelegramBotEssentials\Billing\Events\InvoicePaid;
-use TelegramBotEssentials\Billing\Jobs\InvoicePaidHookJob;
 use TelegramBotEssentials\Billing\Models\Invoice;
 
 class DispatchInvoicePaidHooks
@@ -20,10 +19,18 @@ class DispatchInvoicePaidHooks
             return;
         }
 
-        $invoice->loadMissing(['bot', 'botUser']);
+        try {
+            wHook()->api()->sendMessage([
+                'chat_id' => $invoice->botUser->telegramUser->peer_id,
+                'text' => __('tbe-billing::invoice.hooks.status_changed.paid'),
+                'reply_markup' => wHook()->user()->getKeyboard(),
+            ]);
 
-        $event->context->apply();
-
-        InvoicePaidHookJob::dispatch($invoice);
+            $invoice->messageMeta()->where('tag', 'invoice_view')->get()->each(function ($messageMeta) {
+                $messageMeta->lockAction(__('tbe-billing::invoice.locks.user_payment.accepted'), customEmoji: "✅");
+            });
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+        }
     }
 }

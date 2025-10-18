@@ -4,9 +4,7 @@ namespace TelegramBotEssentials\Billing\Listeners\Invoices;
 
 use Illuminate\Support\Facades\Log;
 use TelegramBotEssentials\Billing\Events\InvoiceRevoked;
-use TelegramBotEssentials\Billing\Jobs\CancelOrderHookJob;
 use TelegramBotEssentials\Billing\Models\Invoice;
-use TelegramBotEssentials\Essence\Support\WebhookContext;
 
 class DispatchInvoiceRevokedHooks
 {
@@ -21,10 +19,18 @@ class DispatchInvoiceRevokedHooks
             return;
         }
 
-        $invoice->loadMissing(['bot', 'botUser']);
+        try {
+            wHook()->api()->sendMessage([
+                'chat_id' => $invoice->botUser->telegramUser->peer_id,
+                'text' => __('tbe-billing::invoice.hooks.order_reverted'),
+                'reply_markup' => wHook()->user()->getKeyboard(),
+            ]);
 
-        $event->context->apply();
-
-        CancelOrderHookJob::dispatch($invoice);
+            $invoice->messageMeta()->where('tag', 'invoice_view')->get()->each(function ($messageMeta) {
+                $messageMeta->lockAction(__('tbe-billing::invoice.locks.user_payment.cancelled'), customEmoji: '❌');
+            });
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+        }
     }
 }
