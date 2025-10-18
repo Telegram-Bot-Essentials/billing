@@ -20,7 +20,6 @@ class InvoiceFeature
 
         $replyMarkup = Keyboard::make()->inline();
 
-        \Log::error(json_encode(gateways()->getGateways(), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
         gateways()->getGateways()->each(function (Gateway $gateway) use ($invoice, $replyMarkup) {
             $keyboard = $gateway->getInlineKeyboard($invoice);
             if($keyboard){
