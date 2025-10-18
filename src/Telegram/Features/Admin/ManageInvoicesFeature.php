@@ -37,18 +37,20 @@ class ManageInvoicesFeature
         }
 
         foreach ($invoices as $invoice) {
-            $statusIndicator = self::statusIndicator($invoice->status);
             $replyMarkup->row([
                 Keyboard::inlineButton([
-                    'text' => __('tbe-billing::manage_invoices.main.keys.invoice', [
-                        'invoiceId' => $invoice->id,
-                        'resourceName' => getResourceName($invoice->payable_type),
-                        'price' => currency()->priceFormat($invoice->price, currency: $invoice->currency),
-                        'userFullName' => $invoice->botUser->telegramUser->full_name,
-                        'status' => $statusIndicator,
-                    ]),
+                    'text' => "#{$invoice->id} - ". $invoice->botUser->telegramUser->full_name,
                     'callback_data' => encodeCallback(self::$type, 'show', [$invoice->id, $page])
-                ])
+                ]),
+                Keyboard::inlineButton([
+                    'text' => getResourceName($invoice->payable_type),
+                    'callback_data' => encodeCallback(self::$type, 'show', [$invoice->id, $page])
+                ]),
+
+                Keyboard::inlineButton([
+                    'text' => currency()->priceFormat($invoice->price, currency: $invoice->currency) . ' ' . self::statusIndicatorEmoji($invoice->status),
+                    'callback_data' => encodeCallback(self::$type, 'show', [$invoice->id, $page])
+                ]),
             ]);
         }
 
@@ -67,6 +69,15 @@ class ManageInvoicesFeature
             'paid' => __('tbe-billing::manage_invoices.main.keys.status_indicator.paid'),
             'failed' => __('tbe-billing::manage_invoices.main.keys.status_indicator.failed'),
             default => __('tbe-billing::manage_invoices.main.keys.status_indicator.pending'),
+        };
+    }
+
+    private static function statusIndicatorEmoji(?string $status): string
+    {
+        return match ($status) {
+            'paid' => __('tbe::general.status.enabledEmoji'),
+            'failed' => __('tbe::general.status.xEmoji'),
+            default => __('tbe::general.status.pendingEmoji'),
         };
     }
 
