@@ -24,7 +24,7 @@ class ManageInvoicesFeature
         $replyMarkup = Keyboard::make()
             ->inline();
 
-        $invoices = Invoice::paginate(perPage: 10, page: $page);
+        $invoices = Invoice::query()->orderByDesc('id')->paginate(perPage: 10, page: $page);
 
         TelegramPaginator::validatePageNumber($page, $currentPage, $invoices);
 
