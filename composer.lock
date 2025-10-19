@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8f4bd1e3909a123101545f910be3dce7",
+    "content-hash": "a407987701d4fd14ae909e7a10daf312",
     "packages": [
         {
             "name": "brick/math",
@@ -6038,7 +6038,7 @@
             "dist": {
                 "type": "path",
                 "url": "../telegram-bot-essentials",
-                "reference": "f94f6ac5892f2f020e208a56fd000861c90bdd98"
+                "reference": "edc06a61d2fc6e91809772093ec06afdf2bae7e8"
             },
             "require": {
                 "elyar/personal-laravel-helpers": "^0.0.2",
@@ -6078,6 +6078,49 @@
                 }
             ],
             "description": "This is the how i like to develop my bots and handle different incoming requests",
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
+            "name": "telegram-bot-essentials/settings",
+            "version": "0.0.1",
+            "dist": {
+                "type": "path",
+                "url": "../tbe-settings",
+                "reference": "75f25bb18ef9b8122550c249cf4595510f62c269"
+            },
+            "require": {
+                "laravel/framework": "^12",
+                "php": "^8.2",
+                "telegram-bot-essentials/essence": "*"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "TelegramBotEssentials\\Settings\\TbeSettingsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "TelegramBotEssentials\\Settings\\": "src/"
+                },
+                "files": [
+                    "src/helpers.php"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Elyar",
+                    "email": "elyareranjbar@gmail.com"
+                }
+            ],
+            "description": "Settings support built for telegram-bot-essentials/essence",
             "transport-options": {
                 "relative": true
             }
@@ -6357,12 +6400,12 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
         "php": "^8.2"
     },
-    "platform-dev": {},
+    "platform-dev": [],
     "plugin-api-version": "2.6.0"
 }

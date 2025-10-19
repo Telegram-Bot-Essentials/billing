@@ -8,12 +8,12 @@ use Throwable;
 
 class Currency
 {
-    private ?string $currency = "USD";
+    private string $currency;
     private string $amount;
 
     public function __construct()
     {
-
+        $this->currency = settings()->get('billing.currency') ?? 'USD';
     }
 
     function getCurrentCurrencySymbol(): string
@@ -23,7 +23,7 @@ class Currency
 
     public function getCurrencySymbol(string $currency): string
     {
-        return collect(config('tbe-essence.supported_currencies') ?? [])
+        return collect(config('tbe-billing.supported_currencies') ?? [])
             ->where('name', $currency)->first()['symbol'] ?? '?';
     }
 
@@ -48,7 +48,7 @@ class Currency
 
     public function getCurrency(): string
     {
-        return wHook()->bot()->currency;
+        return settings()->get('billing.currency') ?? 'USD';
     }
 
     function currencyFormat(string $amount, string $currencyCode = null, $significantDigits = null, $thousandSeparator = null): string

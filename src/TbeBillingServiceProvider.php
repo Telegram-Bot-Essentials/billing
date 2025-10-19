@@ -11,6 +11,8 @@ use TelegramBotEssentials\Billing\Services\Gateways;
 use TelegramBotEssentials\Billing\Telegram\CallbackQueries\Admin\ManageInvoicesQuery;
 use TelegramBotEssentials\Billing\Telegram\StateAnswers\Admin\ManageInvoicesAnswer;
 use TelegramBotEssentials\Essence\Exceptions\LogicException;
+use TelegramBotEssentials\Settings\DTOs\Setting;
+use TelegramBotEssentials\Settings\Enums\SettingType;
 
 class TbeBillingServiceProvider extends ServiceProvider
 {
@@ -20,6 +22,7 @@ class TbeBillingServiceProvider extends ServiceProvider
         $this->registerPublishing();
         $this->app->register(EventServiceProvider::class);
 
+        $this->mergeConfigFrom(__DIR__ . '/../config/tbe-billing.php', 'tbe-billing');
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
         $this->loadTranslationsFrom(__DIR__ . '/../lang', 'tbe-billing');
     }
@@ -56,6 +59,10 @@ class TbeBillingServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
+                __DIR__ . '/../config/tbe-billing.php' => config_path('tbe-billing.php'),
+            ], 'tbe-billing-config');
+
+            $this->publishes([
                 __DIR__ . '/../lang' => resource_path('lang/vendor/tbe-billing'),
             ], 'tbe-billing');
         }
@@ -74,5 +81,30 @@ class TbeBillingServiceProvider extends ServiceProvider
         stateAnswerBus()->addStateAnswers([
             ManageInvoicesAnswer::class
         ]);
+
+        $this->addSettings();
+    }
+
+    private function addSettings(): void
+    {
+        settings()->addSetting(new Setting(
+            key: 'billing',
+            label: 'Billing',
+            type: SettingType::DIRECTORY,
+        ));
+
+        settings()->addSetting(new Setting(
+            key: 'billing.gateways',
+            label: 'Gateways',
+            type: SettingType::DIRECTORY,
+        ));
+
+        settings()->addSetting(new Setting(
+            key: 'billing.currency',
+            label: 'Currency',
+            type: SettingType::ENUM,
+            default: 'USD',
+            options: collect(config('tbe-billing.supported_currencies', []))->pluck('name')->toArray()
+        ));
     }
 }
