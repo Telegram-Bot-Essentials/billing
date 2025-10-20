@@ -104,7 +104,10 @@ class TbeBillingServiceProvider extends ServiceProvider
             label: 'Currency',
             type: SettingType::ENUM,
             default: 'USD',
-            options: collect(config('tbe-billing.supported_currencies', []))->pluck('name')->toArray()
+            options: array_merge(
+                collect(config('tbe-billing.supported_currencies', []))->pluck('name')->toArray(),
+                ['USD']
+            )
         ));
     }
 }
