@@ -28,6 +28,12 @@ class CurrencyFather
         return new self($currency);
     }
 
+    public function to(string $currency)
+    {
+        $this->toCurrency = $currency;
+        return $this->rate();
+    }
+
     public static function USD(): self
     {
         return new self('USD');
