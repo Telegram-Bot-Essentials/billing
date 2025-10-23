@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a407987701d4fd14ae909e7a10daf312",
+    "content-hash": "e15067b9a0f5098c6993cbeeb4dced02",
     "packages": [
         {
             "name": "brick/math",
@@ -1235,16 +1235,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v12.34.0",
+            "version": "v12.35.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "f9ec5a5d88bc8c468f17b59f88e05c8ac3c8d687"
+                "reference": "9583ef9e405a71d5b8c04ff6efd05a7ef9a5baef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/f9ec5a5d88bc8c468f17b59f88e05c8ac3c8d687",
-                "reference": "f9ec5a5d88bc8c468f17b59f88e05c8ac3c8d687",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/9583ef9e405a71d5b8c04ff6efd05a7ef9a5baef",
+                "reference": "9583ef9e405a71d5b8c04ff6efd05a7ef9a5baef",
                 "shasum": ""
             },
             "require": {
@@ -1450,7 +1450,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2025-10-14T13:58:31+00:00"
+            "time": "2025-10-21T15:15:41+00:00"
         },
         {
             "name": "laravel/prompts",
@@ -1891,16 +1891,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "3.30.0",
+            "version": "3.30.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "2203e3151755d874bb2943649dae1eb8533ac93e"
+                "reference": "c139fd65c1f796b926f4aec0df37f6caa959a8da"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/2203e3151755d874bb2943649dae1eb8533ac93e",
-                "reference": "2203e3151755d874bb2943649dae1eb8533ac93e",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/c139fd65c1f796b926f4aec0df37f6caa959a8da",
+                "reference": "c139fd65c1f796b926f4aec0df37f6caa959a8da",
                 "shasum": ""
             },
             "require": {
@@ -1968,9 +1968,9 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem/issues",
-                "source": "https://github.com/thephpleague/flysystem/tree/3.30.0"
+                "source": "https://github.com/thephpleague/flysystem/tree/3.30.1"
             },
-            "time": "2025-06-25T13:29:59+00:00"
+            "time": "2025-10-20T15:35:26+00:00"
         },
         {
             "name": "league/flysystem-local",
@@ -6034,11 +6034,17 @@
         },
         {
             "name": "telegram-bot-essentials/essence",
-            "version": "0.7.11",
+            "version": "0.8.0",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:Elyar0/telegram-bot-essentials.git",
+                "reference": "f73e3da18f3c16064b66c498ad192249c0d4f14b"
+            },
             "dist": {
-                "type": "path",
-                "url": "../telegram-bot-essentials",
-                "reference": "edc06a61d2fc6e91809772093ec06afdf2bae7e8"
+                "type": "zip",
+                "url": "https://api.github.com/repos/Elyar0/telegram-bot-essentials/zipball/f73e3da18f3c16064b66c498ad192249c0d4f14b",
+                "reference": "f73e3da18f3c16064b66c498ad192249c0d4f14b",
+                "shasum": ""
             },
             "require": {
                 "elyar/personal-laravel-helpers": "^0.0.2",
@@ -6078,22 +6084,30 @@
                 }
             ],
             "description": "This is the how i like to develop my bots and handle different incoming requests",
-            "transport-options": {
-                "relative": true
-            }
+            "support": {
+                "source": "https://github.com/Elyar0/telegram-bot-essentials/tree/v0.8.0",
+                "issues": "https://github.com/Elyar0/telegram-bot-essentials/issues"
+            },
+            "time": "2025-10-23T08:20:02+00:00"
         },
         {
             "name": "telegram-bot-essentials/settings",
             "version": "0.0.1",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:Elyar0/tbe-settings.git",
+                "reference": "c1403ccfb1b9c79c744868a456fd00fcdc7a5fa7"
+            },
             "dist": {
-                "type": "path",
-                "url": "../tbe-settings",
-                "reference": "75f25bb18ef9b8122550c249cf4595510f62c269"
+                "type": "zip",
+                "url": "https://api.github.com/repos/Elyar0/tbe-settings/zipball/c1403ccfb1b9c79c744868a456fd00fcdc7a5fa7",
+                "reference": "c1403ccfb1b9c79c744868a456fd00fcdc7a5fa7",
+                "shasum": ""
             },
             "require": {
                 "laravel/framework": "^12",
                 "php": "^8.2",
-                "telegram-bot-essentials/essence": "*"
+                "telegram-bot-essentials/essence": "0.8.0"
             },
             "type": "library",
             "extra": {
@@ -6121,9 +6135,11 @@
                 }
             ],
             "description": "Settings support built for telegram-bot-essentials/essence",
-            "transport-options": {
-                "relative": true
-            }
+            "support": {
+                "source": "https://github.com/Elyar0/tbe-settings/tree/v0.0.1",
+                "issues": "https://github.com/Elyar0/tbe-settings/issues"
+            },
+            "time": "2025-10-23T08:21:38+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
@@ -6340,28 +6356,28 @@
         },
         {
             "name": "webmozart/assert",
-            "version": "1.11.0",
+            "version": "1.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webmozarts/assert.git",
-                "reference": "11cb2199493b2f8a3b53e7f19068fc6aac760991"
+                "reference": "541057574806f942c94662b817a50f63f7345360"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozarts/assert/zipball/11cb2199493b2f8a3b53e7f19068fc6aac760991",
-                "reference": "11cb2199493b2f8a3b53e7f19068fc6aac760991",
+                "url": "https://api.github.com/repos/webmozarts/assert/zipball/541057574806f942c94662b817a50f63f7345360",
+                "reference": "541057574806f942c94662b817a50f63f7345360",
                 "shasum": ""
             },
             "require": {
                 "ext-ctype": "*",
+                "ext-date": "*",
+                "ext-filter": "*",
                 "php": "^7.2 || ^8.0"
             },
-            "conflict": {
-                "phpstan/phpstan": "<0.12.20",
-                "vimeo/psalm": "<4.6.1 || 4.6.2"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^8.5.13"
+            "suggest": {
+                "ext-intl": "",
+                "ext-simplexml": "",
+                "ext-spl": ""
             },
             "type": "library",
             "extra": {
@@ -6392,9 +6408,9 @@
             ],
             "support": {
                 "issues": "https://github.com/webmozarts/assert/issues",
-                "source": "https://github.com/webmozarts/assert/tree/1.11.0"
+                "source": "https://github.com/webmozarts/assert/tree/1.12.0"
             },
-            "time": "2022-06-03T18:03:27+00:00"
+            "time": "2025-10-20T12:43:39+00:00"
         }
     ],
     "packages-dev": [],
