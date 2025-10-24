@@ -1,14 +1,13 @@
 {
     "name": "telegram-bot-essentials/billing",
-    "version": "0.0.2",
     "description": "User management feature built for telegram-bot-essentials/essence",
     "type": "library",
     "require": {
         "php": "^8.2",
         "laravel/framework": "^12",
-        "elyar/personal-laravel-helpers": "^0.0.2",
-        "telegram-bot-essentials/essence": "^0.8.0",
-        "telegram-bot-essentials/settings": "^0.0.1"
+        "elyar/personal-laravel-helpers": "^0.0",
+        "telegram-bot-essentials/essence": "^0.8",
+        "telegram-bot-essentials/settings": "^0.0"
     },
     "license": "MIT",
     "autoload": {
