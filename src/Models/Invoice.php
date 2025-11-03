@@ -112,7 +112,9 @@ class Invoice extends Model
         $this->save();
         $this->refresh();
 
-        event(new InvoicePaid($this, $previousStatus));
+        wHook()->runForUser($this->botUser, function () use ($previousStatus) {
+            event(new InvoicePaid($this, $previousStatus));
+        });
     }
 
     public function markAsFailed(): void
@@ -126,7 +128,9 @@ class Invoice extends Model
         $this->save();
         $this->refresh();
 
-        event(new InvoiceFailed($this, $previousStatus));
+        wHook()->runForUser($this->botUser, function () use ($previousStatus) {
+            event(new InvoiceFailed($this, $previousStatus));
+        });
     }
 
     public function markAsPending(): void
@@ -140,6 +144,8 @@ class Invoice extends Model
         $this->save();
         $this->refresh();
 
-        event(new InvoicePending($this, $previousStatus));
+        wHook()->runForUser($this->botUser, function () use ($previousStatus) {
+            event(new InvoicePending($this, $previousStatus));
+        });
     }
 }
