@@ -17,7 +17,7 @@ abstract class InvoiceStatusEvent
 
     public function __construct(
         Invoice $invoice,
-        public readonly ?string $previousStatus = null,
+        public ?string $previousStatus = null,
     ) {
         $this->context = WebhookContext::capture();
         $this->invoice = $invoice->withoutRelations();
