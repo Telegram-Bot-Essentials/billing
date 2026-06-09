@@ -26,7 +26,6 @@ return [
             'status_failed' => '❌ Mark as Failed',
             'status_pending' => '🕒 Mark as Pending',
             'status_paid' => '✅ Mark as Paid',
-            'status_selected_suffix' => ' ⭐',
             'status_indicator' => [
                 'paid' => '✅ Paid',
                 'pending' => '🕒 Pending',

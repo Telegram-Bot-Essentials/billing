@@ -26,7 +26,6 @@ return [
             'status_failed' => '❌ ثبت به‌عنوان ناموفق',
             'status_pending' => '🕒 ثبت به‌عنوان در انتظار',
             'status_paid' => '✅ ثبت به‌عنوان پرداخت شده',
-            'status_selected_suffix' => ' ⭐',
             'status_indicator' => [
                 'paid' => '✅ پرداخت شده',
                 'pending' => '🕒 در انتظار',

@@ -100,29 +100,26 @@ class ManageInvoicesFeature
         $replyMarkup = Keyboard::make()
             ->inline();
 
-        $selectedSuffix = __('tbe-billing::manage_invoices.main.keys.status_selected_suffix');
-
-
         $replyMarkup->row([
-            Keyboard::inlineButton([
-                'text' => __('tbe-billing::manage_invoices.main.keys.status_paid')
-                    . ($invoice->status == 'paid' ? $selectedSuffix : ''),
+            Keyboard::inlineButton(array_filter([
+                'text' => __('tbe-billing::manage_invoices.main.keys.status_paid'),
+                'style' => ($invoice->status == 'paid') ? 'success' : null,
                 'callback_data' => encodeCallback(self::$type, 'mark_as_paid', [$invoice->id, $lastPage])
-            ])
+            ]))
         ]);
         $replyMarkup->row([
-            Keyboard::inlineButton([
-                'text' => __('tbe-billing::manage_invoices.main.keys.status_pending')
-                    . ($invoice->status == 'pending' ? $selectedSuffix : ''),
+            Keyboard::inlineButton(array_filter([
+                'text' => __('tbe-billing::manage_invoices.main.keys.status_pending'),
+                'style' => ($invoice->status == 'pending') ? 'success' : null,
                 'callback_data' => encodeCallback(self::$type, 'mark_as_pending', [$invoice->id, $lastPage])
-            ])
+            ]))
         ]);
         $replyMarkup->row([
-            Keyboard::inlineButton([
-                'text' => __('tbe-billing::manage_invoices.main.keys.status_failed')
-                    . ($invoice->status == 'failed' ? $selectedSuffix : ''),
+            Keyboard::inlineButton(array_filter([
+                'text' => __('tbe-billing::manage_invoices.main.keys.status_failed'),
+                'style' => ($invoice->status == 'failed') ? 'success' : null,
                 'callback_data' => encodeCallback(self::$type, 'mark_as_failed', [$invoice->id, $lastPage])
-            ])
+            ]))
         ]);
 
         $replyMarkup->row([
