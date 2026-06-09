@@ -36,6 +36,21 @@ class ManageInvoicesFeature
             );
         }
 
+        $replyMarkup->row([
+            Keyboard::inlineButton([
+                'text' => "#ID - User",
+                'callback_data' => encodeCallback('x', 'y')
+            ]),
+            Keyboard::inlineButton([
+                'text' => "Type",
+                'callback_data' => encodeCallback('x', 'y')
+            ]),
+            Keyboard::inlineButton([
+                'text' => "Status",
+                'callback_data' => encodeCallback('x', 'y')
+            ]),
+        ]);
+
         foreach ($invoices as $invoice) {
             $replyMarkup->row([
                 Keyboard::inlineButton([
@@ -46,11 +61,15 @@ class ManageInvoicesFeature
                     'text' => getResourceName($invoice->payable_type),
                     'callback_data' => encodeCallback(self::$type, 'show', [$invoice->id, $page])
                 ]),
-
-                Keyboard::inlineButton([
-                    'text' => currency()->priceFormat($invoice->price, currency: $invoice->currency) . ' ' . self::statusIndicatorEmoji($invoice->status),
+                Keyboard::inlineButton(array_filter([
+                    'text' => currency()->priceFormat($invoice->price, currency: $invoice->currency),
+                    'style' => match ($invoice->status) {
+                        'paid' => 'success',
+                        'failed' => 'danger',
+                        default => null
+                    },
                     'callback_data' => encodeCallback(self::$type, 'show', [$invoice->id, $page])
-                ]),
+                ])),
             ]);
         }
 
