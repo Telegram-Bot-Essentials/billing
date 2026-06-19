@@ -7,7 +7,7 @@ use TelegramBotEssentials\Billing\Models\Invoice;
 
 class MarkOverdueInvoicesAsFailed extends Command
 {
-    protected $signature = 'billing:mark-overdue-invoices-failed';
+    protected $signature = 'tbe:billing:mark-overdue-invoices-failed';
 
     protected $description = 'Mark pending invoices as failed if they have been unpaid for more than 1 day';
 
