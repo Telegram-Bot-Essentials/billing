@@ -2,8 +2,10 @@
 
 namespace TelegramBotEssentials\Billing;
 
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\ServiceProvider;
+use TelegramBotEssentials\Billing\Console\Commands\MarkOverdueInvoicesAsFailed;
 use TelegramBotEssentials\Billing\Providers\EventServiceProvider;
 use TelegramBotEssentials\Billing\Services\Billing;
 use TelegramBotEssentials\Billing\Services\Currency;
@@ -25,6 +27,12 @@ class TbeBillingServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../config/tbe-billing.php', 'tbe-billing');
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
         $this->loadTranslationsFrom(__DIR__ . '/../lang', 'tbe-billing');
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                MarkOverdueInvoicesAsFailed::class,
+            ]);
+        }
     }
 
     private function initializeSingletons(): void
@@ -83,6 +91,10 @@ class TbeBillingServiceProvider extends ServiceProvider
         ]);
 
         $this->addSettings();
+
+        $this->callAfterResolving(Schedule::class, function (Schedule $schedule) {
+            $schedule->command(MarkOverdueInvoicesAsFailed::class)->hourly();
+        });
     }
 
     private function addSettings(): void
