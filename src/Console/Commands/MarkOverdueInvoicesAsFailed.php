@@ -3,7 +3,12 @@
 namespace TelegramBotEssentials\Billing\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
+use Laravel\Telescope\Telescope;
+use Telegram\Bot\Objects\Update;
 use TelegramBotEssentials\Billing\Models\Invoice;
+use TelegramBotEssentials\Essence\Models\Bot;
+use TelegramBotEssentials\Essence\Support\WebhookContext;
 
 class MarkOverdueInvoicesAsFailed extends Command
 {
@@ -17,9 +22,23 @@ class MarkOverdueInvoicesAsFailed extends Command
 
         Invoice::where('status', 'pending')
             ->where('created_at', '<=', now()->subDay())
-            ->chunk(100, function ($invoices) use (&$count) {
+            ->chunkById(100, function ($invoices) use (&$count) {
                 foreach ($invoices as $invoice) {
+                    $botUser = $invoice->botUser;
+                    $bot = $botUser->bot;
+
+                    wHook()->importContext(WebhookContext::fromArray([
+                        "bot_id" => $bot->id,
+                        "bot_user_id" => $botUser->id,
+                        "update" => new Update([]),
+                        "bot_token" => $bot->bot_token,
+                        "bot" => $bot,
+                        "bot_user" => $botUser,
+                    ]));
+
                     $invoice->markAsFailed();
+
+                    wHook()->clear();
                     $count++;
                 }
             });
