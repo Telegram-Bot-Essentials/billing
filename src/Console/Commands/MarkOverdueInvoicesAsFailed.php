@@ -13,14 +13,17 @@ class MarkOverdueInvoicesAsFailed extends Command
 
     public function handle(): void
     {
-        $invoices = Invoice::where('status', 'pending')
+        $count = 0;
+
+        Invoice::where('status', 'pending')
             ->where('created_at', '<=', now()->subDay())
-            ->get();
+            ->chunk(100, function ($invoices) use (&$count) {
+                foreach ($invoices as $invoice) {
+                    $invoice->markAsFailed();
+                    $count++;
+                }
+            });
 
-        foreach ($invoices as $invoice) {
-            $invoice->markAsFailed();
-        }
-
-        $this->info("Marked {$invoices->count()} overdue invoice(s) as failed.");
+        $this->info("Marked {$count} overdue invoice(s) as failed.");
     }
 }
