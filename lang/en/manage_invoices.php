@@ -23,6 +23,9 @@ return [
         ],
         'keys' => [
             'invoice' => ':status #:invoiceId · :resourceName :price | :userFullName',
+            'col_id' => '#ID - User',
+            'col_type' => 'Type',
+            'col_status' => 'Status',
             'status_failed' => '❌ Mark as Failed',
             'status_pending' => '🕒 Mark as Pending',
             'status_paid' => '✅ Mark as Paid',

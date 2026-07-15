@@ -23,6 +23,9 @@ return [
         ],
         'keys' => [
             'invoice' => ':status #:invoiceId · :resourceName :price | :userFullName',
+            'col_id' => '#شناسه - کاربر',
+            'col_type' => 'نوع',
+            'col_status' => 'وضعیت',
             'status_failed' => '❌ ثبت به‌عنوان ناموفق',
             'status_pending' => '🕒 ثبت به‌عنوان در انتظار',
             'status_paid' => '✅ ثبت به‌عنوان پرداخت شده',

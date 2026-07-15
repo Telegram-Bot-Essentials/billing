@@ -17,14 +17,18 @@ class ManageInvoicesFeature
     /**
      * @throws InvalidPageNumber
      */
-    public static function menu(int $page = 1, int $currentPage = 0): TelegramResponse
+    public static function menu(int $page = 1, int $currentPage = 0, string $sortBy = 'id', string $sortDir = 'desc'): TelegramResponse
     {
+        $allowedSortColumns = ['id', 'payable_type', 'status'];
+        $sortBy = in_array($sortBy, $allowedSortColumns) ? $sortBy : 'id';
+        $sortDir = $sortDir === 'asc' ? 'asc' : 'desc';
+
         $text = __('tbe-billing::manage_invoices.main.text.list');
 
         $replyMarkup = Keyboard::make()
             ->inline();
 
-        $invoices = Invoice::query()->orderByDesc('id')->paginate(perPage: 10, page: $page);
+        $invoices = Invoice::query()->orderBy($sortBy, $sortDir)->paginate(perPage: 10, page: $page);
 
         TelegramPaginator::validatePageNumber($page, $currentPage, $invoices);
 
@@ -36,18 +40,21 @@ class ManageInvoicesFeature
             );
         }
 
+        $sortIndicator = fn(string $col) => $sortBy === $col ? ($sortDir === 'desc' ? ' ↓' : ' ↑') : '';
+        $nextDir = fn(string $col) => ($sortBy === $col && $sortDir === 'desc') ? 'asc' : 'desc';
+
         $replyMarkup->row([
             Keyboard::inlineButton([
-                'text' => "#ID - User",
-                'callback_data' => encodeCallback('x', 'y')
+                'text' => __('tbe-billing::manage_invoices.main.keys.col_id') . $sortIndicator('id'),
+                'callback_data' => encodeCallback(self::$type, 'start', ['id', $nextDir('id'), $page, 0])
             ]),
             Keyboard::inlineButton([
-                'text' => "Type",
-                'callback_data' => encodeCallback('x', 'y')
+                'text' => __('tbe-billing::manage_invoices.main.keys.col_type') . $sortIndicator('payable_type'),
+                'callback_data' => encodeCallback(self::$type, 'start', ['payable_type', $nextDir('payable_type'), $page, 0])
             ]),
             Keyboard::inlineButton([
-                'text' => "Status",
-                'callback_data' => encodeCallback('x', 'y')
+                'text' => __('tbe-billing::manage_invoices.main.keys.col_status') . $sortIndicator('status'),
+                'callback_data' => encodeCallback(self::$type, 'start', ['status', $nextDir('status'), $page, 0])
             ]),
         ]);
 
@@ -73,7 +80,7 @@ class ManageInvoicesFeature
             ]);
         }
 
-        $replyMarkup->row(TelegramPaginator::makeNavigationButtonsRow(self::$type, $page, $invoices->lastPage()));
+        $replyMarkup->row(TelegramPaginator::makeNavigationButtonsRow(self::$type, $page, $invoices->lastPage(), extraParams: [$sortBy, $sortDir]));
 
         return new TelegramResponse(
             text: $text,
@@ -144,7 +151,7 @@ class ManageInvoicesFeature
         $replyMarkup->row([
             Keyboard::inlineButton([
                 'text' => __('tbe-billing::manage_invoices.main.keys.back_to_list'),
-                'callback_data' => encodeCallback(self::$type, 'start', [$lastPage, 0])
+                'callback_data' => encodeCallback(self::$type, 'start', ['id', 'desc', $lastPage, 0])
             ])
         ]);
 
