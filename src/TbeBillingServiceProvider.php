@@ -101,25 +101,25 @@ class TbeBillingServiceProvider extends ServiceProvider
     {
         settings()->addSetting(new Setting(
             key: 'billing',
-            label: 'Billing',
+            label: fn () => __('tbe-billing::settings.labels.billing'),
             type: SettingType::DIRECTORY,
         ));
 
         settings()->addSetting(new Setting(
             key: 'billing.gateways',
-            label: 'Gateways',
+            label: fn () => __('tbe-billing::settings.labels.gateways'),
             type: SettingType::DIRECTORY,
         ));
 
         settings()->addSetting(new Setting(
             key: 'billing.currency',
-            label: 'Currency',
+            label: fn () => __('tbe-billing::settings.labels.currency'),
             type: SettingType::ENUM,
             default: 'USD',
-            options: array_merge(
+            options: fn () => array_merge(
                 collect(config('tbe-billing.supported_currencies', []))->pluck('name')->toArray(),
                 ['USD']
-            )
+            ),
         ));
     }
 }
