@@ -65,11 +65,11 @@ class ManageInvoicesFeature
 
             $replyMarkup->row([
                 Keyboard::inlineButton([
-                    'text' => "{$typeAbbrev} {$userLabel}",
+                    'text' => $userLabel,
                     'callback_data' => encodeCallback(self::$type, 'show', [$invoice->id, $page])
                 ]),
                 Keyboard::inlineButton(array_filter([
-                    'text' => currency()->currencyFormat($invoice->price, currencyCode: $invoice->currency, thousandSeparator: ','),
+                    'text' => currency()->priceFormat($invoice->price, currency: $invoice->currency),
                     'style' => match ($invoice->status) {
                         'paid' => 'success',
                         'failed' => 'danger',
@@ -78,7 +78,7 @@ class ManageInvoicesFeature
                     'callback_data' => encodeCallback(self::$type, 'show', [$invoice->id, $page])
                 ])),
                 Keyboard::inlineButton([
-                    'text' => $invoice->created_at->format('m-d H:i'),
+                    'text' => "{$typeAbbrev} " . $invoice->created_at->format('m-d H:i'),
                     'callback_data' => encodeCallback(self::$type, 'show', [$invoice->id, $page])
                 ]),
             ]);
