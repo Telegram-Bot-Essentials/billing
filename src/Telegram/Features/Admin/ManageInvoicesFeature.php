@@ -76,11 +76,11 @@ class ManageInvoicesFeature
             $replyMarkup->row([
                 Keyboard::inlineButton([
                     'text' => $userLabel,
-                    'callback_data' => encodeCallback(self::$type, 'show', [$invoice->id, $page])
+                    'callback_data' => encodeCallback(self::$type, 'show', [$invoice->id, $page, $sortBy, $sortDir])
                 ]),
                 Keyboard::inlineButton([
                     'text' => $invoice->created_at->format('y-m-d') . " {$typeAbbrev}",
-                    'callback_data' => encodeCallback(self::$type, 'show', [$invoice->id, $page])
+                    'callback_data' => encodeCallback(self::$type, 'show', [$invoice->id, $page, $sortBy, $sortDir])
                 ]),
                 Keyboard::inlineButton(array_filter([
                     'text' => currency()->priceFormat($invoice->price, currency: $invoice->currency),
@@ -89,7 +89,7 @@ class ManageInvoicesFeature
                         'failed' => 'danger',
                         default => null
                     },
-                    'callback_data' => encodeCallback(self::$type, 'show', [$invoice->id, $page])
+                    'callback_data' => encodeCallback(self::$type, 'show', [$invoice->id, $page, $sortBy, $sortDir])
                 ])),
             ]);
         }
@@ -121,7 +121,7 @@ class ManageInvoicesFeature
         };
     }
 
-    public static function show(Invoice $invoice, int $lastPage = 1): TelegramResponse
+    public static function show(Invoice $invoice, int $lastPage = 1, string $sortBy = 'id', string $sortDir = 'desc'): TelegramResponse
     {
         $statusIndicator = self::statusIndicator($invoice->status);
         $attemptStatus = self::statusIndicator($invoice->paymentAttempt?->status);
@@ -144,28 +144,28 @@ class ManageInvoicesFeature
             Keyboard::inlineButton(array_filter([
                 'text' => __('tbe-billing::manage_invoices.main.keys.status_paid'),
                 'style' => ($invoice->status == 'paid') ? 'success' : null,
-                'callback_data' => encodeCallback(self::$type, 'mark_as_paid', [$invoice->id, $lastPage])
+                'callback_data' => encodeCallback(self::$type, 'mark_as_paid', [$invoice->id, $lastPage, $sortBy, $sortDir])
             ]))
         ]);
         $replyMarkup->row([
             Keyboard::inlineButton(array_filter([
                 'text' => __('tbe-billing::manage_invoices.main.keys.status_pending'),
                 'style' => ($invoice->status == 'pending') ? 'success' : null,
-                'callback_data' => encodeCallback(self::$type, 'mark_as_pending', [$invoice->id, $lastPage])
+                'callback_data' => encodeCallback(self::$type, 'mark_as_pending', [$invoice->id, $lastPage, $sortBy, $sortDir])
             ]))
         ]);
         $replyMarkup->row([
             Keyboard::inlineButton(array_filter([
                 'text' => __('tbe-billing::manage_invoices.main.keys.status_failed'),
                 'style' => ($invoice->status == 'failed') ? 'success' : null,
-                'callback_data' => encodeCallback(self::$type, 'mark_as_failed', [$invoice->id, $lastPage])
+                'callback_data' => encodeCallback(self::$type, 'mark_as_failed', [$invoice->id, $lastPage, $sortBy, $sortDir])
             ]))
         ]);
 
         $replyMarkup->row([
             Keyboard::inlineButton([
                 'text' => __('tbe-billing::manage_invoices.main.keys.back_to_list'),
-                'callback_data' => encodeCallback(self::$type, 'start', [$lastPage, 0, 'id', 'desc'])
+                'callback_data' => encodeCallback(self::$type, 'start', [$lastPage, 0, $sortBy, $sortDir])
             ])
         ]);
 

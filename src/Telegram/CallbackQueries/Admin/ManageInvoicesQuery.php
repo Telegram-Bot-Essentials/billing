@@ -21,15 +21,15 @@ class ManageInvoicesQuery extends CallbackQuery
     /**
      * @throws TelegramSDKException
      */
-    function show(Invoice $invoice, int $lastPage = 1): void
+    function show(Invoice $invoice, int $lastPage = 1, string $sortBy = 'id', string $sortDir = 'desc'): void
     {
-        ManageInvoicesFeature::show($invoice, $lastPage)->update();
+        ManageInvoicesFeature::show($invoice, $lastPage, $sortBy, $sortDir)->update();
     }
 
     /**
      * @throws TelegramSDKException
      */
-    function markAsPaid(Invoice $invoice, int $lastPage = 1): void
+    function markAsPaid(Invoice $invoice, int $lastPage = 1, string $sortBy = 'id', string $sortDir = 'desc'): void
     {
         if($invoice->status == 'paid') {
             wHook()->api()->answerCallbackQuery([
@@ -40,13 +40,13 @@ class ManageInvoicesQuery extends CallbackQuery
             return;
         }
         $invoice->markAsPaid();
-        ManageInvoicesFeature::show($invoice, $lastPage)->update();
+        ManageInvoicesFeature::show($invoice, $lastPage, $sortBy, $sortDir)->update();
     }
 
     /**
      * @throws TelegramSDKException
      */
-    function markAsPending(Invoice $invoice, int $lastPage = 1): void
+    function markAsPending(Invoice $invoice, int $lastPage = 1, string $sortBy = 'id', string $sortDir = 'desc'): void
     {
         if($invoice->status == 'pending') {
             wHook()->api()->answerCallbackQuery([
@@ -57,13 +57,13 @@ class ManageInvoicesQuery extends CallbackQuery
             return;
         }
         $invoice->markAsPending();
-        ManageInvoicesFeature::show($invoice, $lastPage)->update();
+        ManageInvoicesFeature::show($invoice, $lastPage, $sortBy, $sortDir)->update();
     }
 
     /**
      * @throws TelegramSDKException
      */
-    function markAsFailed(Invoice $invoice, int $lastPage = 1): void
+    function markAsFailed(Invoice $invoice, int $lastPage = 1, string $sortBy = 'id', string $sortDir = 'desc'): void
     {
         if($invoice->status == 'failed') {
             wHook()->api()->answerCallbackQuery([
@@ -74,6 +74,6 @@ class ManageInvoicesQuery extends CallbackQuery
             return;
         }
         $invoice->markAsFailed();
-        ManageInvoicesFeature::show($invoice, $lastPage)->update();
+        ManageInvoicesFeature::show($invoice, $lastPage, $sortBy, $sortDir)->update();
     }
 }
