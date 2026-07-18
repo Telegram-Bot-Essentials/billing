@@ -2,9 +2,12 @@
 
 namespace TelegramBotEssentials\Billing\Telegram\CallbackQueries\Admin;
 
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Telegram\Bot\Exceptions\TelegramSDKException;
 use TelegramBotEssentials\Billing\Telegram\Features\Admin\ManageInvoicesFeature;
 use TelegramBotEssentials\Essence\Enums\Roles;
+use TelegramBotEssentials\Essence\Exceptions\LogicException;
+use TelegramBotEssentials\Essence\Models\MessageMeta;
 use TelegramBotEssentials\Billing\Models\Invoice;
 use TelegramBotEssentials\Essence\Telegram\CallbackQueries\CallbackQuery;
 
@@ -75,5 +78,26 @@ class ManageInvoicesQuery extends CallbackQuery
         }
         $invoice->markAsFailed();
         ManageInvoicesFeature::show($invoice, $lastPage, $sortBy, $sortDir)->update();
+    }
+
+    /**
+     * @throws LogicException
+     * @throws BindingResolutionException
+     * @throws TelegramSDKException
+     */
+    public function setStartPage(string $sortBy = 'id', string $sortDir = 'desc'): void
+    {
+        $messageMeta = MessageMeta::makeWithCurrentMessage();
+        $messageMeta->lockAction(__('tbe-billing::manage_invoices.main.text.waiting_page'));
+        wHook()->user()->changeState(encodeAnswerState($this->type, 'setStartPage', [
+            'message_meta_id' => $messageMeta->id,
+            'sortBy' => $sortBy,
+            'sortDir' => $sortDir,
+        ]));
+        wHook()->api()->sendMessage([
+            'chat_id' => wHook()->user()->telegramUser->peer_id,
+            'text' => __('tbe-billing::manage_invoices.main.text.enter_page'),
+            'reply_markup' => wHook()->user()->getKeyboard(),
+        ]);
     }
 }

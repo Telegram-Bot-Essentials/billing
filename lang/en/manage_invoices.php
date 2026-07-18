@@ -5,6 +5,9 @@ return [
         'text' => [
             'list' => '📋 Invoice dashboard — pick an invoice to review.',
             'empty' => '😕 No invoices found yet. Check back soon!',
+            'waiting_page' => '⌛ Waiting for page number.',
+            'enter_page' => '🔢 Enter page number:',
+            'page_loaded' => '📄 Page :page loaded.',
             'show' => "🧾 Invoice #:invoiceId"
                 . "\r\n"
                 . "\r\n👤 Owner: :invoiceOwner"
