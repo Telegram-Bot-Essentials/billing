@@ -69,7 +69,7 @@ class ManageInvoicesFeature
                     'callback_data' => encodeCallback(self::$type, 'show', [$invoice->id, $page])
                 ]),
                 Keyboard::inlineButton([
-                    'text' => "{$typeAbbrev} " . $invoice->created_at->format('Y-m-d'),
+                    'text' => $invoice->created_at->format('y-m-d') . " {$typeAbbrev}",
                     'callback_data' => encodeCallback(self::$type, 'show', [$invoice->id, $page])
                 ]),
                 Keyboard::inlineButton(array_filter([
