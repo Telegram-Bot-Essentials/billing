@@ -19,7 +19,7 @@ class ManageInvoicesFeature
      */
     public static function menu(int $page = 1, int $currentPage = 0, string $sortBy = 'id', string $sortDir = 'desc'): TelegramResponse
     {
-        $allowedSortColumns = ['id', 'payable_type', 'status'];
+        $allowedSortColumns = ['id', 'payable_type', 'status', 'created_at'];
         $sortBy = in_array($sortBy, $allowedSortColumns) ? $sortBy : 'id';
         $sortDir = $sortDir === 'asc' ? 'asc' : 'desc';
 
@@ -56,16 +56,23 @@ class ManageInvoicesFeature
                 'text' => __('tbe-billing::manage_invoices.main.keys.col_status') . $sortIndicator('status'),
                 'callback_data' => encodeCallback(self::$type, 'start', [$page, 0, 'status', $nextDir('status')])
             ]),
+            Keyboard::inlineButton([
+                'text' => __('tbe-billing::manage_invoices.main.keys.col_time') . $sortIndicator('created_at'),
+                'callback_data' => encodeCallback(self::$type, 'start', [$page, 0, 'created_at', $nextDir('created_at')])
+            ]),
         ]);
 
         foreach ($invoices as $invoice) {
+            $telegramUser = $invoice->botUser->telegramUser;
+            $userLabel = $telegramUser->username ? "@{$telegramUser->username}" : $telegramUser->full_name;
+
             $replyMarkup->row([
                 Keyboard::inlineButton([
-                    'text' => "#{$invoice->id} - ". $invoice->botUser->telegramUser->full_name,
+                    'text' => $userLabel,
                     'callback_data' => encodeCallback(self::$type, 'show', [$invoice->id, $page])
                 ]),
                 Keyboard::inlineButton([
-                    'text' => getResourceName($invoice->payable_type),
+                    'text' => str_replace('Order', '', getResourceName($invoice->payable_type)),
                     'callback_data' => encodeCallback(self::$type, 'show', [$invoice->id, $page])
                 ]),
                 Keyboard::inlineButton(array_filter([
@@ -77,6 +84,10 @@ class ManageInvoicesFeature
                     },
                     'callback_data' => encodeCallback(self::$type, 'show', [$invoice->id, $page])
                 ])),
+                Keyboard::inlineButton([
+                    'text' => $invoice->created_at->format('Y-m-d H:i'),
+                    'callback_data' => encodeCallback(self::$type, 'show', [$invoice->id, $page])
+                ]),
             ]);
         }
 
