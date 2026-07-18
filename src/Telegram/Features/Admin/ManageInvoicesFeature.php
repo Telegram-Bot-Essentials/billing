@@ -53,10 +53,6 @@ class ManageInvoicesFeature
                 'callback_data' => encodeCallback(self::$type, 'start', [$page, 0, 'payable_type', $nextDir('payable_type')])
             ]),
             Keyboard::inlineButton([
-                'text' => __('tbe-billing::manage_invoices.main.keys.col_status') . $sortIndicator('status'),
-                'callback_data' => encodeCallback(self::$type, 'start', [$page, 0, 'status', $nextDir('status')])
-            ]),
-            Keyboard::inlineButton([
                 'text' => __('tbe-billing::manage_invoices.main.keys.col_time') . $sortIndicator('created_at'),
                 'callback_data' => encodeCallback(self::$type, 'start', [$page, 0, 'created_at', $nextDir('created_at')])
             ]),
@@ -64,19 +60,16 @@ class ManageInvoicesFeature
 
         foreach ($invoices as $invoice) {
             $telegramUser = $invoice->botUser->telegramUser;
-            $userLabel = $telegramUser->username ? "@{$telegramUser->username}" : $telegramUser->full_name;
+            $userLabel = $telegramUser->username ? "@{$telegramUser->username}" : ($telegramUser->first_name ?: $telegramUser->full_name);
+            $typeAbbrev = substr(str_replace('Order', '', getResourceName($invoice->payable_type)), 0, 3);
 
             $replyMarkup->row([
                 Keyboard::inlineButton([
-                    'text' => $userLabel,
-                    'callback_data' => encodeCallback(self::$type, 'show', [$invoice->id, $page])
-                ]),
-                Keyboard::inlineButton([
-                    'text' => str_replace('Order', '', getResourceName($invoice->payable_type)),
+                    'text' => "{$typeAbbrev} {$userLabel}",
                     'callback_data' => encodeCallback(self::$type, 'show', [$invoice->id, $page])
                 ]),
                 Keyboard::inlineButton(array_filter([
-                    'text' => currency()->priceFormat($invoice->price, currency: $invoice->currency),
+                    'text' => currency()->currencyFormat($invoice->price, currencyCode: $invoice->currency, thousandSeparator: ','),
                     'style' => match ($invoice->status) {
                         'paid' => 'success',
                         'failed' => 'danger',
@@ -85,7 +78,7 @@ class ManageInvoicesFeature
                     'callback_data' => encodeCallback(self::$type, 'show', [$invoice->id, $page])
                 ])),
                 Keyboard::inlineButton([
-                    'text' => $invoice->created_at->format('Y-m-d H:i'),
+                    'text' => $invoice->created_at->format('m-d H:i'),
                     'callback_data' => encodeCallback(self::$type, 'show', [$invoice->id, $page])
                 ]),
             ]);
