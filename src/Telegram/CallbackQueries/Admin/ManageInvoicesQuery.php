@@ -13,7 +13,7 @@ class ManageInvoicesQuery extends CallbackQuery
     protected string $type = 'MANAGEINVOICES';
     protected int $perm = Roles::ADMIN->value;
 
-    public function start(string $sortBy = 'id', string $sortDir = 'desc', int $page = 1, int $currentPage = 0): void
+    public function start(int $page = 1, int $currentPage = 0, string $sortBy = 'id', string $sortDir = 'desc'): void
     {
         ManageInvoicesFeature::menu($page, $currentPage, $sortBy, $sortDir)->update();
     }

@@ -46,15 +46,15 @@ class ManageInvoicesFeature
         $replyMarkup->row([
             Keyboard::inlineButton([
                 'text' => __('tbe-billing::manage_invoices.main.keys.col_id') . $sortIndicator('id'),
-                'callback_data' => encodeCallback(self::$type, 'start', ['id', $nextDir('id'), $page, 0])
+                'callback_data' => encodeCallback(self::$type, 'start', [$page, 0, 'id', $nextDir('id')])
             ]),
             Keyboard::inlineButton([
                 'text' => __('tbe-billing::manage_invoices.main.keys.col_type') . $sortIndicator('payable_type'),
-                'callback_data' => encodeCallback(self::$type, 'start', ['payable_type', $nextDir('payable_type'), $page, 0])
+                'callback_data' => encodeCallback(self::$type, 'start', [$page, 0, 'payable_type', $nextDir('payable_type')])
             ]),
             Keyboard::inlineButton([
                 'text' => __('tbe-billing::manage_invoices.main.keys.col_status') . $sortIndicator('status'),
-                'callback_data' => encodeCallback(self::$type, 'start', ['status', $nextDir('status'), $page, 0])
+                'callback_data' => encodeCallback(self::$type, 'start', [$page, 0, 'status', $nextDir('status')])
             ]),
         ]);
 
@@ -151,7 +151,7 @@ class ManageInvoicesFeature
         $replyMarkup->row([
             Keyboard::inlineButton([
                 'text' => __('tbe-billing::manage_invoices.main.keys.back_to_list'),
-                'callback_data' => encodeCallback(self::$type, 'start', ['id', 'desc', $lastPage, 0])
+                'callback_data' => encodeCallback(self::$type, 'start', [$lastPage, 0, 'id', 'desc'])
             ])
         ]);
 
