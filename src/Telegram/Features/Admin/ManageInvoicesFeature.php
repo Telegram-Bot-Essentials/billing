@@ -19,7 +19,7 @@ class ManageInvoicesFeature
      */
     public static function menu(int $page = 1, int $currentPage = 0, string $sortBy = 'id', string $sortDir = 'desc'): TelegramResponse
     {
-        $allowedSortColumns = ['id', 'payable_type', 'status', 'created_at', 'price'];
+        $allowedSortColumns = ['id', 'user', 'payable_type', 'status', 'created_at', 'price'];
         $sortBy = in_array($sortBy, $allowedSortColumns) ? $sortBy : 'id';
         $sortDir = $sortDir === 'asc' ? 'asc' : 'desc';
 
@@ -28,7 +28,16 @@ class ManageInvoicesFeature
         $replyMarkup = Keyboard::make()
             ->inline();
 
-        $invoices = Invoice::query()->orderBy($sortBy, $sortDir)->paginate(perPage: 10, page: $page);
+        $invoicesQuery = Invoice::query();
+        if ($sortBy === 'user') {
+            $invoicesQuery->select('invoices.*')
+                ->join('bot_users', 'invoices.bot_user_id', '=', 'bot_users.id')
+                ->join('telegram_users', 'bot_users.telegram_user_peer_id', '=', 'telegram_users.peer_id')
+                ->orderByRaw("COALESCE(telegram_users.username, telegram_users.first_name) {$sortDir}");
+        } else {
+            $invoicesQuery->orderBy($sortBy, $sortDir);
+        }
+        $invoices = $invoicesQuery->paginate(perPage: 10, page: $page);
 
         TelegramPaginator::validatePageNumber($page, $currentPage, $invoices);
 
@@ -45,8 +54,8 @@ class ManageInvoicesFeature
 
         $replyMarkup->row([
             Keyboard::inlineButton([
-                'text' => __('tbe-billing::manage_invoices.main.keys.col_id') . $sortIndicator('id'),
-                'callback_data' => encodeCallback(self::$type, 'start', [$page, 0, 'id', $nextDir('id')])
+                'text' => __('tbe-billing::manage_invoices.main.keys.col_id') . $sortIndicator('user'),
+                'callback_data' => encodeCallback(self::$type, 'start', [$page, 0, 'user', $nextDir('user')])
             ]),
             Keyboard::inlineButton([
                 'text' => __('tbe-billing::manage_invoices.main.keys.col_type') . $sortIndicator('payable_type'),
