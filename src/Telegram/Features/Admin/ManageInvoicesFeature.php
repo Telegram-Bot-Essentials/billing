@@ -19,7 +19,7 @@ class ManageInvoicesFeature
      */
     public static function menu(int $page = 1, int $currentPage = 0, string $sortBy = 'id', string $sortDir = 'desc'): TelegramResponse
     {
-        $allowedSortColumns = ['id', 'user', 'payable_type', 'status', 'created_at', 'price'];
+        $allowedSortColumns = ['id', 'bot_user_id', 'payable_type', 'status', 'created_at', 'price'];
         $sortBy = in_array($sortBy, $allowedSortColumns) ? $sortBy : 'id';
         $sortDir = $sortDir === 'asc' ? 'asc' : 'desc';
 
@@ -28,16 +28,7 @@ class ManageInvoicesFeature
         $replyMarkup = Keyboard::make()
             ->inline();
 
-        $invoicesQuery = Invoice::query();
-        if ($sortBy === 'user') {
-            $invoicesQuery->select('invoices.*')
-                ->join('bot_users', 'invoices.bot_user_id', '=', 'bot_users.id')
-                ->join('telegram_users', 'bot_users.telegram_user_peer_id', '=', 'telegram_users.peer_id')
-                ->orderByRaw("COALESCE(telegram_users.username, telegram_users.first_name) {$sortDir}");
-        } else {
-            $invoicesQuery->orderBy($sortBy, $sortDir);
-        }
-        $invoices = $invoicesQuery->paginate(perPage: 10, page: $page);
+        $invoices = Invoice::query()->orderBy($sortBy, $sortDir)->paginate(perPage: 10, page: $page);
 
         TelegramPaginator::validatePageNumber($page, $currentPage, $invoices);
 
@@ -52,14 +43,24 @@ class ManageInvoicesFeature
         $sortIndicator = fn(string $col) => $sortBy === $col ? ($sortDir === 'desc' ? ' ↓' : ' ↑') : '';
         $nextDir = fn(string $col) => ($sortBy === $col && $sortDir === 'desc') ? 'asc' : 'desc';
 
+        $typeDateCycle = [
+            ['payable_type', 'desc'],
+            ['payable_type', 'asc'],
+            ['created_at', 'desc'],
+            ['created_at', 'asc'],
+        ];
+        $typeDateIndex = collect($typeDateCycle)->search(fn($step) => $step[0] === $sortBy && $step[1] === $sortDir);
+        [$nextTypeDateSortBy, $nextTypeDateSortDir] = $typeDateCycle[$typeDateIndex === false ? 0 : ($typeDateIndex + 1) % 4];
+        $typeDateIndicator = in_array($sortBy, ['payable_type', 'created_at']) ? ($sortDir === 'desc' ? ' ↓' : ' ↑') : '';
+
         $replyMarkup->row([
             Keyboard::inlineButton([
-                'text' => __('tbe-billing::manage_invoices.main.keys.col_id') . $sortIndicator('user'),
-                'callback_data' => encodeCallback(self::$type, 'start', [$page, 0, 'user', $nextDir('user')])
+                'text' => __('tbe-billing::manage_invoices.main.keys.col_id') . $sortIndicator('bot_user_id'),
+                'callback_data' => encodeCallback(self::$type, 'start', [$page, 0, 'bot_user_id', $nextDir('bot_user_id')])
             ]),
             Keyboard::inlineButton([
-                'text' => __('tbe-billing::manage_invoices.main.keys.col_type') . $sortIndicator('payable_type'),
-                'callback_data' => encodeCallback(self::$type, 'start', [$page, 0, 'payable_type', $nextDir('payable_type')])
+                'text' => __('tbe-billing::manage_invoices.main.keys.col_type') . $typeDateIndicator,
+                'callback_data' => encodeCallback(self::$type, 'start', [$page, 0, $nextTypeDateSortBy, $nextTypeDateSortDir])
             ]),
             Keyboard::inlineButton([
                 'text' => __('tbe-billing::manage_invoices.main.keys.col_status') . $sortIndicator('price'),
