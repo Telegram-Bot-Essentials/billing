@@ -19,7 +19,7 @@ class ManageInvoicesFeature
      */
     public static function menu(int $page = 1, int $currentPage = 0, string $sortBy = 'id', string $sortDir = 'desc'): TelegramResponse
     {
-        $allowedSortColumns = ['id', 'payable_type', 'status', 'created_at'];
+        $allowedSortColumns = ['id', 'payable_type', 'status', 'created_at', 'price'];
         $sortBy = in_array($sortBy, $allowedSortColumns) ? $sortBy : 'id';
         $sortDir = $sortDir === 'asc' ? 'asc' : 'desc';
 
@@ -53,8 +53,8 @@ class ManageInvoicesFeature
                 'callback_data' => encodeCallback(self::$type, 'start', [$page, 0, 'payable_type', $nextDir('payable_type')])
             ]),
             Keyboard::inlineButton([
-                'text' => __('tbe-billing::manage_invoices.main.keys.col_status') . $sortIndicator('status'),
-                'callback_data' => encodeCallback(self::$type, 'start', [$page, 0, 'status', $nextDir('status')])
+                'text' => __('tbe-billing::manage_invoices.main.keys.col_status') . $sortIndicator('price'),
+                'callback_data' => encodeCallback(self::$type, 'start', [$page, 0, 'price', $nextDir('price')])
             ]),
         ]);
 
