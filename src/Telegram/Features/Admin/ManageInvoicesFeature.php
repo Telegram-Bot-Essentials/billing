@@ -53,8 +53,8 @@ class ManageInvoicesFeature
                 'callback_data' => encodeCallback(self::$type, 'start', [$page, 0, 'payable_type', $nextDir('payable_type')])
             ]),
             Keyboard::inlineButton([
-                'text' => __('tbe-billing::manage_invoices.main.keys.col_time') . $sortIndicator('created_at'),
-                'callback_data' => encodeCallback(self::$type, 'start', [$page, 0, 'created_at', $nextDir('created_at')])
+                'text' => __('tbe-billing::manage_invoices.main.keys.col_status') . $sortIndicator('status'),
+                'callback_data' => encodeCallback(self::$type, 'start', [$page, 0, 'status', $nextDir('status')])
             ]),
         ]);
 
@@ -68,6 +68,10 @@ class ManageInvoicesFeature
                     'text' => $userLabel,
                     'callback_data' => encodeCallback(self::$type, 'show', [$invoice->id, $page])
                 ]),
+                Keyboard::inlineButton([
+                    'text' => "{$typeAbbrev} " . $invoice->created_at->format('Y-m-d'),
+                    'callback_data' => encodeCallback(self::$type, 'show', [$invoice->id, $page])
+                ]),
                 Keyboard::inlineButton(array_filter([
                     'text' => currency()->priceFormat($invoice->price, currency: $invoice->currency),
                     'style' => match ($invoice->status) {
@@ -77,10 +81,6 @@ class ManageInvoicesFeature
                     },
                     'callback_data' => encodeCallback(self::$type, 'show', [$invoice->id, $page])
                 ])),
-                Keyboard::inlineButton([
-                    'text' => "{$typeAbbrev} " . $invoice->created_at->format('m-d H:i'),
-                    'callback_data' => encodeCallback(self::$type, 'show', [$invoice->id, $page])
-                ]),
             ]);
         }
 
