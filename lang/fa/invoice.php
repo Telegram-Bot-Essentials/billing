@@ -22,6 +22,9 @@ return [
         'keys' => [
             'to_card' => 'کارت به کارت 💳 - :price تومان',
             'by_wallet' => 'پرداخت با کیف پول 💰 - :price',
+            'to_zirgozar' => 'پرداخت با زیرگذر 💰 - :price تومان',
+            'to_zarinpal' => 'پرداخت با زرین‌پال 💰 - :price تومان',
+            'to_zibal' => 'پرداخت با زیبال 💰 - :price تومان',
             'back_to_previous' => '🔙 بازگشت به مرحله قبلی',
         ],
     ],
