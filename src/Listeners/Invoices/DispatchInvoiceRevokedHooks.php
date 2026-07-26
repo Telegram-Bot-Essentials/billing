@@ -2,7 +2,6 @@
 
 namespace TelegramBotEssentials\Billing\Listeners\Invoices;
 
-use Illuminate\Support\Facades\Log;
 use TelegramBotEssentials\Billing\Events\InvoiceRevoked;
 use TelegramBotEssentials\Billing\Models\Invoice;
 
@@ -13,7 +12,7 @@ class DispatchInvoiceRevokedHooks
         $invoice = Invoice::find($event->invoice->getKey());
 
         if (!$invoice) {
-            Log::warning('InvoiceRevoked event skipped because invoice no longer exists.', [
+            tbeLog('billing')->warning('InvoiceRevoked event skipped because invoice no longer exists.', [
                 'invoice_id' => $event->invoice->getKey(),
             ]);
             return;
@@ -30,7 +29,7 @@ class DispatchInvoiceRevokedHooks
                 $messageMeta->lockAction(__('tbe-billing::invoice.locks.user_payment.cancelled'), customEmoji: '❌');
             });
         } catch (\Exception $e) {
-            Log::error($e->getMessage());
+            tbeLog('billing')->error('Failed to send InvoiceRevoked notification: ' . $e->getMessage(), ['exception' => $e, 'invoice_id' => $invoice->getKey()]);
         }
     }
 }

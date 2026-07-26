@@ -90,6 +90,11 @@ class Invoice extends Model
         }
 
         if ($previousStatus === 'paid' && $value !== 'paid') {
+            tbeLog('billing')->info('Invoice revoked', [
+                'invoice_id' => $this->getKey(),
+                'price' => $this->price,
+                'new_status' => $value,
+            ]);
             event(new InvoiceRevoked($this, $previousStatus));
         }
 
@@ -112,6 +117,14 @@ class Invoice extends Model
         $this->save();
         $this->refresh();
 
+        tbeLog('billing')->info('Invoice paid', [
+            'invoice_id' => $this->getKey(),
+            'price' => $this->price,
+            'previous_status' => $previousStatus,
+            'payable_type' => $this->payable_type,
+            'payable_id' => $this->payable_id,
+        ]);
+
         wHook()->runForUser($this->botUser, function () use ($previousStatus) {
             event(new InvoicePaid($this, $previousStatus));
         });
@@ -128,6 +141,14 @@ class Invoice extends Model
         $this->save();
         $this->refresh();
 
+        tbeLog('billing')->info('Invoice failed', [
+            'invoice_id' => $this->getKey(),
+            'price' => $this->price,
+            'previous_status' => $previousStatus,
+            'payable_type' => $this->payable_type,
+            'payable_id' => $this->payable_id,
+        ]);
+
         wHook()->runForUser($this->botUser, function () use ($previousStatus) {
             event(new InvoiceFailed($this, $previousStatus));
         });
@@ -143,6 +164,14 @@ class Invoice extends Model
         $this->setAttribute('status', 'pending');
         $this->save();
         $this->refresh();
+
+        tbeLog('billing')->info('Invoice pending', [
+            'invoice_id' => $this->getKey(),
+            'price' => $this->price,
+            'previous_status' => $previousStatus,
+            'payable_type' => $this->payable_type,
+            'payable_id' => $this->payable_id,
+        ]);
 
         wHook()->runForUser($this->botUser, function () use ($previousStatus) {
             event(new InvoicePending($this, $previousStatus));

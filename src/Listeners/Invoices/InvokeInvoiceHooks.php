@@ -2,7 +2,6 @@
 
 namespace TelegramBotEssentials\Billing\Listeners\Invoices;
 
-use Illuminate\Support\Facades\Log;
 use TelegramBotEssentials\Billing\Events\InvoiceFailed;
 use TelegramBotEssentials\Billing\Events\InvoicePaid;
 use TelegramBotEssentials\Billing\Events\InvoicePending;
@@ -20,7 +19,7 @@ class InvokeInvoiceHooks
         $invoice = Invoice::find($event->invoice->getKey());
 
         if (!$invoice) {
-            Log::warning('Invoice hook skipped because invoice no longer exists.', [
+            tbeLog('billing')->warning('Invoice hook skipped because invoice no longer exists.', [
                 'invoice_id' => $event->invoice->getKey(),
             ]);
             return;

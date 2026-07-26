@@ -43,6 +43,10 @@ class MarkOverdueInvoicesAsFailed extends Command
                 }
             });
 
+        if ($count > 0) {
+            tbeLog('billing')->info('Marked overdue invoices as failed', ['count' => $count]);
+        }
+
         $this->info("Marked {$count} overdue invoice(s) as failed.");
     }
 }
