@@ -39,7 +39,13 @@ class TbeBillingServiceProvider extends ServiceProvider
     {
         $this->app->singleton(Billing::class, fn() => new Billing());
         $this->app->singleton(Gateways::class, fn() => new Gateways());
-        $this->app->singleton(Currency::class, fn() => new Currency());
+
+        // Scoped, not singleton: Currency caches the current bot's currency
+        // setting in its constructor. Fine under classic PHP-FPM (container
+        // rebuilt every request), but under Octane a singleton would keep
+        // formatting every subsequent bot's prices using whichever bot's
+        // currency happened to be resolved first.
+        $this->app->scoped(Currency::class, fn() => new Currency());
 
         $this->initializeGatewaySingletons();
     }
