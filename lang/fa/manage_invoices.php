@@ -13,12 +13,13 @@ return [
                 . "\r\n👤 مالک: :invoiceOwner"
                 . "\r\n💲 مبلغ: :invoiceAmount"
                 . "\r\n📌 وضعیت: :invoiceStatus"
+                . "\r\n🏷️ نوع سفارش: :orderType"
                 . "\r\n"
                 . "\r\n🕑 آخرین تلاش پرداخت: :paymentAttempt"
                 . "\r\n📋 وضعیت تلاش: :paymentAttemptStatus"
                 . "\r\n🗓️ تاریخ تلاش: :paymentAttemptDate"
                 . "\r\n"
-                . "\r\n📝 توضیحات:\r\n:orderDescription"
+                . "\r\n📦 جزئیات سفارش:\r\n:orderDescription"
                 . "\r\n"
                 . "\r\n⚙️ یک اقدام را از لیست زیر انتخاب کنید 👇",
         ],
@@ -37,6 +38,7 @@ return [
                 'pending' => '🕒 در انتظار',
                 'failed' => '❌ ناموفق',
             ],
+            'no_attempt' => '— هنوز تلاشی برای پرداخت ثبت نشده',
             'back_to_list' => '🔙 بازگشت به فهرست فاکتورها',
         ],
     ],

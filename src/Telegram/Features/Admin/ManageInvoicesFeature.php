@@ -124,17 +124,26 @@ class ManageInvoicesFeature
     public static function show(Invoice $invoice, int $lastPage = 1, string $sortBy = 'id', string $sortDir = 'desc'): TelegramResponse
     {
         $statusIndicator = self::statusIndicator($invoice->status);
-        $attemptStatus = self::statusIndicator($invoice->paymentAttempt?->status);
+        $attemptStatus = $invoice->paymentAttempt
+            ? self::statusIndicator($invoice->paymentAttempt->status)
+            : __('tbe-billing::manage_invoices.main.keys.no_attempt');
+
+        try {
+            $orderDescription = $invoice->payable?->description ?? '—';
+        } catch (\Throwable) {
+            $orderDescription = '—';
+        }
 
         $text = __('tbe-billing::manage_invoices.main.text.show', [
             'invoiceId' => $invoice->id,
             'invoiceOwner' => "<a href=\"tg://user?id={$invoice->botUser->telegramUser->peer_id}\">{$invoice->botUser->telegramUser->full_name}</a>",
             'invoiceAmount' => currency()->priceFormat($invoice->price),
             'invoiceStatus' => $statusIndicator,
-            'paymentAttempt' => $invoice->paymentAttempt?->id,
+            'orderType' => getResourceName($invoice->payable_type),
+            'paymentAttempt' => $invoice->paymentAttempt?->id ?? '—',
             'paymentAttemptStatus' => $attemptStatus,
-            'paymentAttemptDate' => $invoice->paymentAttempt?->created_at,
-            'orderDescription' => $invoice->paymentAttempt?->description,
+            'paymentAttemptDate' => $invoice->paymentAttempt?->created_at ?? '—',
+            'orderDescription' => $orderDescription,
         ]);
 
         $replyMarkup = Keyboard::make()

@@ -13,12 +13,13 @@ return [
                 . "\r\n👤 Owner: :invoiceOwner"
                 . "\r\n💲 Amount: :invoiceAmount"
                 . "\r\n📌 Status: :invoiceStatus"
+                . "\r\n🏷️ Order type: :orderType"
                 . "\r\n"
                 . "\r\n🕑 Last payment attempt: :paymentAttempt"
                 . "\r\n📋 Attempt status: :paymentAttemptStatus"
                 . "\r\n🗓️ Attempt date: :paymentAttemptDate"
                 . "\r\n"
-                . "\r\n📝 Notes:\r\n:orderDescription"
+                . "\r\n📦 Order details:\r\n:orderDescription"
                 . "\r\n"
                 . "\r\n⚙️ Choose an action below 👇",
         ],
@@ -37,6 +38,7 @@ return [
                 'pending' => '🕒 Pending',
                 'failed' => '❌ Failed',
             ],
+            'no_attempt' => '— No payment attempt yet',
             'back_to_list' => '🔙 Back to invoice list',
         ],
     ],
