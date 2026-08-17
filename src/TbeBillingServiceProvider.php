@@ -10,11 +10,14 @@ use TelegramBotEssentials\Billing\Providers\EventServiceProvider;
 use TelegramBotEssentials\Billing\Services\Billing;
 use TelegramBotEssentials\Billing\Services\Currency;
 use TelegramBotEssentials\Billing\Services\Gateways;
+use TelegramBotEssentials\Billing\Services\InvoiceStats;
 use TelegramBotEssentials\Billing\Telegram\CallbackQueries\Admin\ManageInvoicesQuery;
 use TelegramBotEssentials\Billing\Telegram\StateAnswers\Admin\ManageInvoicesAnswer;
 use TelegramBotEssentials\Essence\Exceptions\LogicException;
 use TelegramBotEssentials\Settings\DTOs\Setting;
 use TelegramBotEssentials\Settings\Enums\SettingType;
+use TelegramBotEssentials\UserManagement\DTOs\UserStat;
+use TelegramBotEssentials\UserManagement\Services\UserManagementStats;
 
 class TbeBillingServiceProvider extends ServiceProvider
 {
@@ -97,10 +100,28 @@ class TbeBillingServiceProvider extends ServiceProvider
         ]);
 
         $this->addSettings();
+        $this->registerUserStat();
 
         $this->callAfterResolving(Schedule::class, function (Schedule $schedule) {
             $schedule->command(MarkOverdueInvoicesAsFailed::class)->hourly();
         });
+    }
+
+    /**
+     * user-management is not a dependency of this package, so the header of its
+     * user list is only fed when the app happens to have it installed.
+     */
+    private function registerUserStat(): void
+    {
+        if (! class_exists(UserManagementStats::class)) {
+            return;
+        }
+
+        app(UserManagementStats::class)->addStat(new UserStat(
+            key: 'billing',
+            order: 20,
+            content: fn () => app(InvoiceStats::class)->render(),
+        ));
     }
 
     private function addSettings(): void
