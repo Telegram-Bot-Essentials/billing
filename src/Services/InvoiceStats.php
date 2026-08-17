@@ -60,15 +60,23 @@ class InvoiceStats
         return $rows
             ->map(fn (object $row) => __('tbe-billing::stats.payable', [
                 'label' => self::labelFor($row->payable_type),
-                'day' => currency()->priceFormat($row->day_sum),
-                'week' => currency()->priceFormat($row->week_sum),
-                'month' => currency()->priceFormat($row->month_sum),
+                // Named once per block: six amounts each carrying their own
+                // "تومان" drowned out the figures they were labelling.
+                'currency' => currency()->getCurrentCurrencySymbol(),
+                'day' => self::amount($row->day_sum),
+                'week' => self::amount($row->week_sum),
+                'month' => self::amount($row->month_sum),
                 'monthCount' => number_format($row->month_count),
-                'total' => currency()->priceFormat($row->total_sum),
+                'total' => self::amount($row->total_sum),
                 'totalCount' => number_format($row->total_count),
                 'buyers' => number_format($row->month_buyers),
             ]))
             ->implode("\r\n\r\n");
+    }
+
+    private static function amount(string $amount): string
+    {
+        return currency()->currencyFormat($amount, thousandSeparator: ',');
     }
 
     /**
