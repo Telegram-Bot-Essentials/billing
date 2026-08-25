@@ -40,6 +40,9 @@
             "providers": [
                 "TelegramBotEssentials\\Billing\\TbeBillingServiceProvider"
             ]
+        },
+        "branch-alias": {
+            "dev-chore/locale-lazy-handlers": "0.0.32.x-dev"
         }
     }
 }
