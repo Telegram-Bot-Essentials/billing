@@ -8,20 +8,20 @@ return [
             'waiting_page' => '⌛ در انتظار شماره صفحه.',
             'enter_page' => '🔢 شماره صفحه را وارد کنید:',
             'page_loaded' => '📄 صفحه :page بارگذاری شد.',
-            'show' => "🧾 فاکتور #:invoiceId"
-                . "\r\n"
-                . "\r\n👤 مالک: :invoiceOwner"
-                . "\r\n💲 مبلغ: :invoiceAmount"
-                . "\r\n📌 وضعیت: :invoiceStatus"
-                . "\r\n🏷️ نوع سفارش: :orderType"
-                . "\r\n"
-                . "\r\n🕑 آخرین تلاش پرداخت: :paymentAttempt"
-                . "\r\n📋 وضعیت تلاش: :paymentAttemptStatus"
-                . "\r\n🗓️ تاریخ تلاش: :paymentAttemptDate"
-                . "\r\n"
-                . "\r\n📦 جزئیات سفارش:\r\n:orderDescription"
-                . "\r\n"
-                . "\r\n⚙️ یک اقدام را از لیست زیر انتخاب کنید 👇",
+            'show' => '🧾 فاکتور #:invoiceId'
+                ."\r\n"
+                ."\r\n👤 مالک: :invoiceOwner"
+                ."\r\n💲 مبلغ: :invoiceAmount"
+                ."\r\n📌 وضعیت: :invoiceStatus"
+                ."\r\n🏷️ نوع سفارش: :orderType"
+                ."\r\n"
+                ."\r\n🕑 آخرین تلاش پرداخت: :paymentAttempt"
+                ."\r\n📋 وضعیت تلاش: :paymentAttemptStatus"
+                ."\r\n🗓️ تاریخ تلاش: :paymentAttemptDate"
+                ."\r\n"
+                ."\r\n📦 جزئیات سفارش:\r\n:orderDescription"
+                ."\r\n"
+                ."\r\n⚙️ یک اقدام را از لیست زیر انتخاب کنید 👇",
         ],
         'answers' => [
         ],

@@ -3,16 +3,16 @@
 return [
     'summary' => [
         'text' => [
-            'information' => "🧾 Invoice #:invoiceId"
-                . "\r\n"
-                . "\r\n📝 Description:\r\n:orderDescription"
-                . "\r\n"
-                . "\r\n💳 Choose your preferred payment option 👇",
-            'noPaymentMethods' => "🧾 Invoice #:invoiceId"
-                . "\r\n"
-                . "\r\n📝 Description:\r\n:orderDescription"
-                . "\r\n"
-                . "\r\n🚧 No payment methods are available right now. Please try again soon ✨",
+            'information' => '🧾 Invoice #:invoiceId'
+                ."\r\n"
+                ."\r\n📝 Description:\r\n:orderDescription"
+                ."\r\n"
+                ."\r\n💳 Choose your preferred payment option 👇",
+            'noPaymentMethods' => '🧾 Invoice #:invoiceId'
+                ."\r\n"
+                ."\r\n📝 Description:\r\n:orderDescription"
+                ."\r\n"
+                ."\r\n🚧 No payment methods are available right now. Please try again soon ✨",
         ],
         'answers' => [
             'main' => '🧾 Invoice loaded successfully',
@@ -31,11 +31,11 @@ return [
 
     'by_wallet' => [
         'text' => [
-            ],
+        ],
         'answers' => [
-            ],
+        ],
         'keys' => [
-            ],
+        ],
     ],
 
     'hooks' => [

@@ -12,10 +12,11 @@ class DispatchInvoicePendingHooks
     {
         $invoice = Invoice::find($event->invoice->getKey());
 
-        if (!$invoice) {
+        if (! $invoice) {
             tbeLog('billing')->warning('InvoicePending event skipped because invoice no longer exists.', [
                 'invoice_id' => $event->invoice->getKey(),
             ]);
+
             return;
         }
 
@@ -31,7 +32,7 @@ class DispatchInvoicePendingHooks
                 $messageMeta->updateAndContinueAction($telegramResponse);
             });
         } catch (\Exception $e) {
-            tbeLog('billing')->error('Failed to send InvoicePending notification: ' . $e->getMessage(), ['exception' => $e, 'invoice_id' => $invoice->getKey()]);
+            tbeLog('billing')->error('Failed to send InvoicePending notification: '.$e->getMessage(), ['exception' => $e, 'invoice_id' => $invoice->getKey()]);
         }
     }
 }

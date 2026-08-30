@@ -2,18 +2,17 @@
 
 namespace TelegramBotEssentials\Billing\Services;
 
-
+use TelegramBotEssentials\Billing\Models\Abstract\Order;
 use TelegramBotEssentials\Billing\Models\Abstract\PaymentAttempt;
 use TelegramBotEssentials\Billing\Models\Invoice;
-use TelegramBotEssentials\Billing\Models\Abstract\Order;
 
-class  Billing
+class Billing
 {
     public function createInvoice(Order $order): Invoice
     {
         $invoice = $order->invoice()->create([
             'bot_user_id' => $order->botUser->id,
-            'price' => $order->amount
+            'price' => $order->amount,
         ]);
 
         tbeLog('billing')->info('Invoice created', [

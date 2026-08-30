@@ -5,5 +5,5 @@ return [
         ['name' => 'USD', 'symbol' => '$'],
         ['name' => 'IRR', 'symbol' => '﷼'],
         ['name' => 'IRT', 'symbol' => 'تومان'],
-    ]
+    ],
 ];

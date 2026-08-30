@@ -11,23 +11,21 @@ use TelegramBotEssentials\Billing\Models\Invoice;
 
 class InvokeInvoiceHooks
 {
-    /**
-     * @param  InvoiceStatusEvent  $event
-     */
     public function handle(InvoiceStatusEvent $event): void
     {
         $invoice = Invoice::find($event->invoice->getKey());
 
-        if (!$invoice) {
+        if (! $invoice) {
             tbeLog('billing')->warning('Invoice hook skipped because invoice no longer exists.', [
                 'invoice_id' => $event->invoice->getKey(),
             ]);
+
             return;
         }
 
         $method = $this->resolveHookMethod($event);
 
-        if (!$method) {
+        if (! $method) {
             return;
         }
 
@@ -49,4 +47,3 @@ class InvokeInvoiceHooks
         };
     }
 }
-

@@ -4,16 +4,17 @@ namespace TelegramBotEssentials\Billing\Telegram\CallbackQueries\Admin;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Telegram\Bot\Exceptions\TelegramSDKException;
+use TelegramBotEssentials\Billing\Models\Invoice;
 use TelegramBotEssentials\Billing\Telegram\Features\Admin\ManageInvoicesFeature;
 use TelegramBotEssentials\Essence\Enums\Roles;
 use TelegramBotEssentials\Essence\Exceptions\LogicException;
 use TelegramBotEssentials\Essence\Models\MessageMeta;
-use TelegramBotEssentials\Billing\Models\Invoice;
 use TelegramBotEssentials\Essence\Telegram\CallbackQueries\CallbackQuery;
 
 class ManageInvoicesQuery extends CallbackQuery
 {
     protected string $type = 'MANAGEINVOICES';
+
     protected int $perm = Roles::ADMIN->value;
 
     public function start(int $page = 1, int $currentPage = 0, string $sortBy = 'id', string $sortDir = 'desc'): void
@@ -24,7 +25,7 @@ class ManageInvoicesQuery extends CallbackQuery
     /**
      * @throws TelegramSDKException
      */
-    function show(Invoice $invoice, int $lastPage = 1, string $sortBy = 'id', string $sortDir = 'desc'): void
+    public function show(Invoice $invoice, int $lastPage = 1, string $sortBy = 'id', string $sortDir = 'desc'): void
     {
         ManageInvoicesFeature::show($invoice, $lastPage, $sortBy, $sortDir)->update();
     }
@@ -32,14 +33,15 @@ class ManageInvoicesQuery extends CallbackQuery
     /**
      * @throws TelegramSDKException
      */
-    function markAsPaid(Invoice $invoice, int $lastPage = 1, string $sortBy = 'id', string $sortDir = 'desc'): void
+    public function markAsPaid(Invoice $invoice, int $lastPage = 1, string $sortBy = 'id', string $sortDir = 'desc'): void
     {
-        if($invoice->status == 'paid') {
+        if ($invoice->status == 'paid') {
             wHook()->api()->answerCallbackQuery([
                 'callback_query_id' => wHook()->update()->callbackQuery->id,
                 'text' => __('tbe-billing::manage_invoices.alerts.already_paid'),
                 'show_alert' => true,
             ]);
+
             return;
         }
         $invoice->markAsPaid();
@@ -49,14 +51,15 @@ class ManageInvoicesQuery extends CallbackQuery
     /**
      * @throws TelegramSDKException
      */
-    function markAsPending(Invoice $invoice, int $lastPage = 1, string $sortBy = 'id', string $sortDir = 'desc'): void
+    public function markAsPending(Invoice $invoice, int $lastPage = 1, string $sortBy = 'id', string $sortDir = 'desc'): void
     {
-        if($invoice->status == 'pending') {
+        if ($invoice->status == 'pending') {
             wHook()->api()->answerCallbackQuery([
                 'callback_query_id' => wHook()->update()->callbackQuery->id,
                 'text' => __('tbe-billing::manage_invoices.alerts.already_pending'),
                 'show_alert' => true,
             ]);
+
             return;
         }
         $invoice->markAsPending();
@@ -66,14 +69,15 @@ class ManageInvoicesQuery extends CallbackQuery
     /**
      * @throws TelegramSDKException
      */
-    function markAsFailed(Invoice $invoice, int $lastPage = 1, string $sortBy = 'id', string $sortDir = 'desc'): void
+    public function markAsFailed(Invoice $invoice, int $lastPage = 1, string $sortBy = 'id', string $sortDir = 'desc'): void
     {
-        if($invoice->status == 'failed') {
+        if ($invoice->status == 'failed') {
             wHook()->api()->answerCallbackQuery([
                 'callback_query_id' => wHook()->update()->callbackQuery->id,
                 'text' => __('tbe-billing::manage_invoices.alerts.already_failed'),
                 'show_alert' => true,
             ]);
+
             return;
         }
         $invoice->markAsFailed();

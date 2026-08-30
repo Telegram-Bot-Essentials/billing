@@ -2,7 +2,6 @@
 
 namespace TelegramBotEssentials\Billing\Events;
 
-use TelegramBotEssentials\Essence\Support\WebhookContext;
 use TelegramBotEssentials\Billing\Models\Invoice;
 
 class InvoiceFailed extends InvoiceStatusEvent

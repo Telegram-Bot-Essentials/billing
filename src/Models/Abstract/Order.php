@@ -6,17 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
-use TelegramBotEssentials\Essence\Models\BotUser;
 use TelegramBotEssentials\Billing\Traits\HasInvoice;
+use TelegramBotEssentials\Essence\Models\BotUser;
 use TelegramBotEssentials\Essence\Traits\HasMessageMeta;
 
 abstract class Order extends Model
 {
     use BelongsToTenant;
-    use HasMessageMeta;
     use HasInvoice;
+    use HasMessageMeta;
 
     protected $appends = ['amount', 'description', 'paid_at'];
+
     protected $guarded = [
         'id',
         'created_at',

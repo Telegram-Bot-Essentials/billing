@@ -13,17 +13,16 @@ use TelegramBotEssentials\Billing\Events\InvoicePaid;
 use TelegramBotEssentials\Billing\Events\InvoicePending;
 use TelegramBotEssentials\Billing\Events\InvoiceRevoked;
 use TelegramBotEssentials\Essence\Database\factories\InvoiceFactory;
-use TelegramBotEssentials\Essence\Support\WebhookContext;
 use TelegramBotEssentials\Essence\Models\Bot;
 use TelegramBotEssentials\Essence\Models\BotUser;
 use TelegramBotEssentials\Essence\Traits\HasMessageMeta;
 
 class Invoice extends Model
 {
-    use SoftDeletes;
     use BelongsToTenant;
     use HasFactory;
     use HasMessageMeta;
+    use SoftDeletes;
 
     protected $guarded = [
         'id',
@@ -57,6 +56,7 @@ class Invoice extends Model
             $this->attributes['public_token'] = $publicToken;
             $this->save();
         }
+
         return $this->attributes['public_token'];
     }
 
@@ -86,6 +86,7 @@ class Invoice extends Model
 
         if ($previousStatus === $value) {
             $this->attributes['status'] = $value;
+
             return;
         }
 

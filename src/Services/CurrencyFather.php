@@ -10,6 +10,7 @@ class CurrencyFather
     private string $currency;
 
     private string $toCurrency;
+
     private string $amount;
 
     public function __construct(string $currency)
@@ -20,6 +21,7 @@ class CurrencyFather
     public function amount(string $amount = '1'): self
     {
         $this->amount = $amount;
+
         return $this;
     }
 
@@ -31,6 +33,7 @@ class CurrencyFather
     public function to(string $currency)
     {
         $this->toCurrency = $currency;
+
         return $this->rate();
     }
 
@@ -42,6 +45,7 @@ class CurrencyFather
     public function toUSD(): string
     {
         $this->toCurrency = 'USD';
+
         return $this->rate();
     }
 
@@ -53,6 +57,7 @@ class CurrencyFather
     public function toIRR(): string
     {
         $this->toCurrency = 'IRR';
+
         return $this->rate();
     }
 
@@ -64,18 +69,21 @@ class CurrencyFather
     public function toIRT(): string
     {
         $this->toCurrency = 'IRT';
+
         return $this->rate();
     }
 
     public function rate(): string
     {
-        if($this->currency == $this->toCurrency){
+        if ($this->currency == $this->toCurrency) {
             return $this->amount;
         }
-        $key = 'currencyfather-' . $this->currency . '-' . $this->toCurrency . '-' . $this->amount;
+        $key = 'currencyfather-'.$this->currency.'-'.$this->toCurrency.'-'.$this->amount;
+
         return Cache::remember($key, now()->addHours(6), function () {
-            $url = 'https://currency.servicefather.ir/api/currencies/' . $this->toCurrency . '/' . $this->currency . '/' . $this->amount;
+            $url = 'https://currency.servicefather.ir/api/currencies/'.$this->toCurrency.'/'.$this->currency.'/'.$this->amount;
             $response = Http::get($url);
+
             return $response->json()['data']['rate'];
         });
     }

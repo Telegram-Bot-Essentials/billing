@@ -4,11 +4,11 @@ namespace TelegramBotEssentials\Billing\Services;
 
 use Brick\Math\BigDecimal;
 use Brick\Math\BigNumber;
-use Throwable;
 
 class Currency
 {
     private string $currency;
+
     private string $amount;
 
     public function __construct()
@@ -16,7 +16,7 @@ class Currency
         $this->currency = settings()->get('billing.currency') ?? 'USD';
     }
 
-    function getCurrentCurrencySymbol(): string
+    public function getCurrentCurrencySymbol(): string
     {
         return currency()->getCurrencySymbol($this->currency);
     }
@@ -30,6 +30,7 @@ class Currency
     public function amount(string $amount): self
     {
         $this->amount = $amount;
+
         return $this;
     }
 
@@ -38,12 +39,13 @@ class Currency
         return $this->amount;
     }
 
-    function priceFormat(string $amount, bool $raw = false, ?string $currency = null): string
+    public function priceFormat(string $amount, bool $raw = false, ?string $currency = null): string
     {
         $symbol = $this->getCurrencySymbol($currency ?? $this->getCurrency());
         $persianCharacterPattern = '/[\x{0600}-\x{06FF}\x{0750}-\x{077F}\x{08A0}-\x{08FF}\x{FB50}-\x{FDFF}\x{FE70}-\x{FEFF}\x{FDFC}]/u';
         $separator = preg_match($persianCharacterPattern, $symbol) ? ' ' : '';
-        return ($raw ? $amount : $this->currencyFormat($amount, thousandSeparator: ',')) . $separator . $symbol;
+
+        return ($raw ? $amount : $this->currencyFormat($amount, thousandSeparator: ',')).$separator.$symbol;
     }
 
     public function getCurrency(): string
@@ -51,7 +53,7 @@ class Currency
         return settings()->get('billing.currency') ?? 'USD';
     }
 
-    function currencyFormat(string $amount, string $currencyCode = null, $significantDigits = null, $thousandSeparator = null): string
+    public function currencyFormat(string $amount, ?string $currencyCode = null, $significantDigits = null, $thousandSeparator = null): string
     {
         if ($currencyCode === null) {
             $currencyCode = $this->getCurrency();
@@ -80,6 +82,7 @@ class Currency
         $currencies = $currencies->map(function ($currency) {
             return strtoupper($currency);
         });
+
         return array_unique(array_merge($currencies->toArray(), ['USD']));
     }
 
@@ -87,6 +90,7 @@ class Currency
     {
         $amount = BigDecimal::of($amount);
         $multiplier = BigDecimal::of($multiplier);
+
         return $amount->multipliedBy($multiplier);
     }
 }

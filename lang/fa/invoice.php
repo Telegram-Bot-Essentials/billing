@@ -3,16 +3,16 @@
 return [
     'summary' => [
         'text' => [
-            'information' => "🧾 فاکتور #:invoiceId"
-                . "\r\n"
-                . "\r\n📝 توضیحات سفارش:\r\n:orderDescription"
-                . "\r\n"
-                . "\r\n💳 یکی از روش‌های پرداخت زیر را انتخاب کنید 👇",
-            'noPaymentMethods' => "🧾 فاکتور #:invoiceId"
-                . "\r\n"
-                . "\r\n📝 توضیحات سفارش:\r\n:orderDescription"
-                . "\r\n"
-                . "\r\n🚧 در حال حاضر هیچ روش پرداختی فعال نیست. لطفاً کمی بعد دوباره سر بزنید ✨",
+            'information' => '🧾 فاکتور #:invoiceId'
+                ."\r\n"
+                ."\r\n📝 توضیحات سفارش:\r\n:orderDescription"
+                ."\r\n"
+                ."\r\n💳 یکی از روش‌های پرداخت زیر را انتخاب کنید 👇",
+            'noPaymentMethods' => '🧾 فاکتور #:invoiceId'
+                ."\r\n"
+                ."\r\n📝 توضیحات سفارش:\r\n:orderDescription"
+                ."\r\n"
+                ."\r\n🚧 در حال حاضر هیچ روش پرداختی فعال نیست. لطفاً کمی بعد دوباره سر بزنید ✨",
         ],
         'answers' => [
             'main' => '🧾 فاکتور با موفقیت بارگذاری شد',

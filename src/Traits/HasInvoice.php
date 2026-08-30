@@ -2,8 +2,8 @@
 
 namespace TelegramBotEssentials\Billing\Traits;
 
-use TelegramBotEssentials\Billing\Models\Invoice;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use TelegramBotEssentials\Billing\Models\Invoice;
 
 trait HasInvoice
 {

@@ -14,6 +14,7 @@ abstract class PaymentAttempt extends Model
         'updated_at',
         'deleted_at',
     ];
+
     public function invoice(): MorphOne
     {
         return $this->morphOne(Invoice::class, 'payment_attempt');
@@ -34,6 +35,8 @@ abstract class PaymentAttempt extends Model
         $this->save();
         $this->invoice->markAsFailed();
     }
+
     abstract protected function attemptSucceedHook(): void;
+
     abstract protected function attemptFailedHook(): void;
 }

@@ -8,20 +8,20 @@ return [
             'waiting_page' => '⌛ Waiting for page number.',
             'enter_page' => '🔢 Enter page number:',
             'page_loaded' => '📄 Page :page loaded.',
-            'show' => "🧾 Invoice #:invoiceId"
-                . "\r\n"
-                . "\r\n👤 Owner: :invoiceOwner"
-                . "\r\n💲 Amount: :invoiceAmount"
-                . "\r\n📌 Status: :invoiceStatus"
-                . "\r\n🏷️ Order type: :orderType"
-                . "\r\n"
-                . "\r\n🕑 Last payment attempt: :paymentAttempt"
-                . "\r\n📋 Attempt status: :paymentAttemptStatus"
-                . "\r\n🗓️ Attempt date: :paymentAttemptDate"
-                . "\r\n"
-                . "\r\n📦 Order details:\r\n:orderDescription"
-                . "\r\n"
-                . "\r\n⚙️ Choose an action below 👇",
+            'show' => '🧾 Invoice #:invoiceId'
+                ."\r\n"
+                ."\r\n👤 Owner: :invoiceOwner"
+                ."\r\n💲 Amount: :invoiceAmount"
+                ."\r\n📌 Status: :invoiceStatus"
+                ."\r\n🏷️ Order type: :orderType"
+                ."\r\n"
+                ."\r\n🕑 Last payment attempt: :paymentAttempt"
+                ."\r\n📋 Attempt status: :paymentAttemptStatus"
+                ."\r\n🗓️ Attempt date: :paymentAttemptDate"
+                ."\r\n"
+                ."\r\n📦 Order details:\r\n:orderDescription"
+                ."\r\n"
+                ."\r\n⚙️ Choose an action below 👇",
         ],
         'answers' => [
         ],

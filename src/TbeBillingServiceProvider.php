@@ -27,9 +27,9 @@ class TbeBillingServiceProvider extends ServiceProvider
         $this->registerPublishing();
         $this->app->register(EventServiceProvider::class);
 
-        $this->mergeConfigFrom(__DIR__ . '/../config/tbe-billing.php', 'tbe-billing');
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
-        $this->loadTranslationsFrom(__DIR__ . '/../lang', 'tbe-billing');
+        $this->mergeConfigFrom(__DIR__.'/../config/tbe-billing.php', 'tbe-billing');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        $this->loadTranslationsFrom(__DIR__.'/../lang', 'tbe-billing');
 
         if ($this->app->runningInConsole()) {
             $this->commands([
@@ -40,47 +40,47 @@ class TbeBillingServiceProvider extends ServiceProvider
 
     private function initializeSingletons(): void
     {
-        $this->app->singleton(Billing::class, fn() => new Billing());
-        $this->app->singleton(Gateways::class, fn() => new Gateways());
+        $this->app->singleton(Billing::class, fn () => new Billing);
+        $this->app->singleton(Gateways::class, fn () => new Gateways);
 
         // Scoped, not singleton: Currency caches the current bot's currency
         // setting in its constructor. Fine under classic PHP-FPM (container
         // rebuilt every request), but under Octane a singleton would keep
         // formatting every subsequent bot's prices using whichever bot's
         // currency happened to be resolved first.
-        $this->app->scoped(Currency::class, fn() => new Currency());
+        $this->app->scoped(Currency::class, fn () => new Currency);
 
         $this->initializeGatewaySingletons();
     }
 
     private function initializeGatewaySingletons(): void
     {
-//        $this->app->singleton(Gateways::class, function ($app) {
-//            return new Gateways();
-//        });
-//
-//        $this->app->singleton(Zibal::class, function ($app) {
-//            return new Zibal();
-//        });
-//
-//        $this->app->singleton(ZarinPal::class, function ($app) {
-//            return new ZarinPal();
-//        });
-//
-//        $this->app->singleton(Wallet::class, function () {
-//            return new Wallet();
-//        });
+        //        $this->app->singleton(Gateways::class, function ($app) {
+        //            return new Gateways();
+        //        });
+        //
+        //        $this->app->singleton(Zibal::class, function ($app) {
+        //            return new Zibal();
+        //        });
+        //
+        //        $this->app->singleton(ZarinPal::class, function ($app) {
+        //            return new ZarinPal();
+        //        });
+        //
+        //        $this->app->singleton(Wallet::class, function () {
+        //            return new Wallet();
+        //        });
     }
 
     protected function registerPublishing(): void
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/../config/tbe-billing.php' => config_path('tbe-billing.php'),
+                __DIR__.'/../config/tbe-billing.php' => config_path('tbe-billing.php'),
             ], 'tbe-billing-config');
 
             $this->publishes([
-                __DIR__ . '/../lang' => resource_path('lang/vendor/tbe-billing'),
+                __DIR__.'/../lang' => resource_path('lang/vendor/tbe-billing'),
             ], 'tbe-billing');
         }
     }
@@ -89,14 +89,14 @@ class TbeBillingServiceProvider extends ServiceProvider
      * @throws LogicException
      * @throws BindingResolutionException
      */
-    function boot(): void
+    public function boot(): void
     {
         callbackQueryBus()->addCallbackQueries([
-            ManageInvoicesQuery::class
+            ManageInvoicesQuery::class,
         ]);
 
         stateAnswerBus()->addStateAnswers([
-            ManageInvoicesAnswer::class
+            ManageInvoicesAnswer::class,
         ]);
 
         $this->addSettings();

@@ -16,9 +16,11 @@ use TelegramBotEssentials\Essence\Telegram\StateAnswers\StateAnswer;
 class ManageInvoicesAnswer extends StateAnswer
 {
     protected string $type = 'MANAGEINVOICES';
+
     protected int $perm = Roles::ADMIN->value;
+
     protected array $allowedFields = [
-        AllowableFields::TEXT->value
+        AllowableFields::TEXT->value,
     ];
 
     /**

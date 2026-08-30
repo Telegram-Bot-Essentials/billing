@@ -3,11 +3,8 @@
 namespace TelegramBotEssentials\Billing\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
-use Laravel\Telescope\Telescope;
 use Telegram\Bot\Objects\Update;
 use TelegramBotEssentials\Billing\Models\Invoice;
-use TelegramBotEssentials\Essence\Models\Bot;
 use TelegramBotEssentials\Essence\Support\WebhookContext;
 
 class MarkOverdueInvoicesAsFailed extends Command
@@ -28,12 +25,12 @@ class MarkOverdueInvoicesAsFailed extends Command
                     $bot = $botUser->bot;
 
                     wHook()->importContext(WebhookContext::fromArray([
-                        "bot_id" => $bot->id,
-                        "bot_user_id" => $botUser->id,
-                        "update" => new Update([]),
-                        "bot_token" => $bot->bot_token,
-                        "bot" => $bot,
-                        "bot_user" => $botUser,
+                        'bot_id' => $bot->id,
+                        'bot_user_id' => $botUser->id,
+                        'update' => new Update([]),
+                        'bot_token' => $bot->bot_token,
+                        'bot' => $bot,
+                        'bot_user' => $botUser,
                     ]));
 
                     $invoice->markAsFailed();
