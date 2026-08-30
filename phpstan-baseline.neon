@@ -847,12 +847,6 @@ parameters:
 			path: src/Telegram/StateAnswers/Admin/ManageInvoicesAnswer.php
 
 		-
-			message: '#^Cannot call method updateAndContinueAction\(\) on TelegramBotEssentials\\Essence\\Models\\MessageMeta\|null\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/Telegram/StateAnswers/Admin/ManageInvoicesAnswer.php
-
-		-
 			message: '#^Parameter \#1 \$page of static method TelegramBotEssentials\\Essence\\Services\\TelegramPaginator\:\:validatePageInput\(\) expects int\|string, string\|null given\.$#'
 			identifier: argument.type
 			count: 1
