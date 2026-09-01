@@ -86,8 +86,10 @@ class Currency
         return array_unique(array_merge($currencies->toArray(), ['USD']));
     }
 
-    public function multiply(BigNumber|int|float|string $amount, BigNumber|int|float|string $multiplier): BigDecimal
+    public function multiply(BigNumber|int|string $amount, BigNumber|int|string $multiplier): BigDecimal
     {
+        // No float: brick/math 0.18 rejects it outright, since a float can't
+        // represent most decimal money values exactly. Pass a string.
         $amount = BigDecimal::of($amount);
         $multiplier = BigDecimal::of($multiplier);
 
