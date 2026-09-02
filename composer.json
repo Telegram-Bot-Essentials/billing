@@ -24,16 +24,6 @@
         }
     ],
     "minimum-stability": "stable",
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/Telegram-Bot-Essentials/essence"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/Telegram-Bot-Essentials/settings"
-        }
-    ],
     "extra": {
         "laravel": {
             "providers": [
