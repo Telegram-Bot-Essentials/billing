@@ -763,7 +763,7 @@ parameters:
 			path: src/Telegram/Features/Admin/ManageInvoicesFeature.php
 
 		-
-			message: '#^Parameter \#2 \$replace of function __ expects array\<string, bool\|float\|int\|string\|null\>, array\<string, mixed\> given\.$#'
+			message: '#^Parameter \#2 \$replace of function __ expects array\<string, .+\>, array.+ given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Telegram/Features/Admin/ManageInvoicesFeature.php
@@ -829,7 +829,7 @@ parameters:
 			path: src/Telegram/Features/Member/InvoiceFeature.php
 
 		-
-			message: '#^Parameter \#2 \$replace of function __ expects array\<string, bool\|float\|int\|string\|null\>, array\<string, mixed\> given\.$#'
+			message: '#^Parameter \#2 \$replace of function __ expects array\<string, .+\>, array.+ given\.$#'
 			identifier: argument.type
 			count: 2
 			path: src/Telegram/Features/Member/InvoiceFeature.php
