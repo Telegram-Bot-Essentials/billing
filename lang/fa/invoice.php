@@ -38,6 +38,18 @@ return [
         ],
     ],
 
+    'offer' => [
+        'summary' => '🏷️ کد تخفیف <b>:code</b> اعمال شد — <s>:originalPrice</s> :price',
+        'prompt' => '🏷️ کد تخفیف مورد نظر خود را ارسال کنید:',
+        'applied' => '✅ کد تخفیف اعمال شد.',
+        'removed' => '🚫 کد تخفیف حذف شد.',
+        'lockLabel' => 'در حال اعمال کد تخفیف…',
+        'keys' => [
+            'use' => '🏷️ استفاده از کد تخفیف',
+            'remove' => '🚫 حذف کد (:code)',
+        ],
+    ],
+
     'hooks' => [
         'order_reverted' => '🛑 سفارش شما بازگردانده شد.',
         'status_changed' => [
