@@ -18,6 +18,14 @@ class InvoiceFeature
             'orderDescription' => $invoice->payable->description ?? null,
         ]);
 
+        if ($invoice->offer) {
+            $text .= "\r\n\r\n".__('tbe-billing::invoice.offer.summary', [
+                'code' => $invoice->offer->code,
+                'originalPrice' => currency()->priceFormat($invoice->original_price ?? $invoice->price),
+                'price' => currency()->priceFormat($invoice->price),
+            ]);
+        }
+
         $replyMarkup = Keyboard::make()->inline();
 
         gateways()->getGateways()->each(function (Gateway $gateway) use ($invoice, $replyMarkup) {
@@ -73,6 +81,15 @@ class InvoiceFeature
         //        }
 
         $noPaymentMethods = empty($replyMarkup->all());
+
+        if (! $noPaymentMethods && $invoice->status === 'pending') {
+            $replyMarkup->row([Keyboard::inlineButton([
+                'text' => $invoice->offer
+                    ? __('tbe-billing::invoice.offer.keys.remove', ['code' => $invoice->offer->code])
+                    : __('tbe-billing::invoice.offer.keys.use'),
+                'callback_data' => encodeCallback(self::$type, $invoice->offer ? 'removeOfferCode' : 'useOfferCode', [$invoice->id]),
+            ])]);
+        }
 
         if ($encodedCallback) {
             $replyMarkup->row([Keyboard::inlineButton([
