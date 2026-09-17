@@ -13,7 +13,14 @@ class Billing
         $invoice = $order->invoice()->create([
             'bot_user_id' => $order->botUser->id,
             'price' => $order->amount,
+            'original_price' => $order->amount,
         ]);
+
+        // create() doesn't reload columns left to their DB default (status
+        // defaults to 'pending') - refresh so the in-memory model matches
+        // the row instead of leaving ->status null until something else
+        // reloads it.
+        $invoice->refresh();
 
         tbeLog('billing')->info('Invoice created', [
             'invoice_id' => $invoice->getKey(),
