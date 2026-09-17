@@ -5,6 +5,7 @@ namespace TelegramBotEssentials\Billing\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
@@ -78,6 +79,16 @@ class Invoice extends Model
     public function payable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    public function offer(): BelongsTo
+    {
+        return $this->belongsTo(Offer::class);
+    }
+
+    public function offerRedemption(): HasOne
+    {
+        return $this->hasOne(OfferRedemption::class);
     }
 
     public function setStatusAttribute($value): void
