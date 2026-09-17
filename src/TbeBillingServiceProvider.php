@@ -6,13 +6,20 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\ServiceProvider;
 use TelegramBotEssentials\Billing\Console\Commands\MarkOverdueInvoicesAsFailed;
+use TelegramBotEssentials\Billing\Console\Commands\PruneAbandonedOfferDrafts;
 use TelegramBotEssentials\Billing\Providers\EventServiceProvider;
 use TelegramBotEssentials\Billing\Services\Billing;
 use TelegramBotEssentials\Billing\Services\Currency;
 use TelegramBotEssentials\Billing\Services\Gateways;
 use TelegramBotEssentials\Billing\Services\InvoiceStats;
+use TelegramBotEssentials\Billing\Services\OfferService;
 use TelegramBotEssentials\Billing\Telegram\CallbackQueries\Admin\ManageInvoicesQuery;
+use TelegramBotEssentials\Billing\Telegram\CallbackQueries\Admin\OffersQuery;
+use TelegramBotEssentials\Billing\Telegram\CallbackQueries\Member\InvoiceQuery;
+use TelegramBotEssentials\Billing\Telegram\ReplyKeys\Admin\OffersKey;
 use TelegramBotEssentials\Billing\Telegram\StateAnswers\Admin\ManageInvoicesAnswer;
+use TelegramBotEssentials\Billing\Telegram\StateAnswers\Admin\OffersAnswer;
+use TelegramBotEssentials\Billing\Telegram\StateAnswers\Member\InvoiceAnswer;
 use TelegramBotEssentials\Essence\Exceptions\LogicException;
 use TelegramBotEssentials\Settings\DTOs\Setting;
 use TelegramBotEssentials\Settings\Enums\SettingType;
@@ -34,6 +41,7 @@ class TbeBillingServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 MarkOverdueInvoicesAsFailed::class,
+                PruneAbandonedOfferDrafts::class,
             ]);
         }
     }
@@ -42,6 +50,7 @@ class TbeBillingServiceProvider extends ServiceProvider
     {
         $this->app->singleton(Billing::class, fn () => new Billing);
         $this->app->singleton(Gateways::class, fn () => new Gateways);
+        $this->app->singleton(OfferService::class, fn () => new OfferService);
 
         // Scoped, not singleton: Currency caches the current bot's currency
         // setting in its constructor. Fine under classic PHP-FPM (container
@@ -93,10 +102,18 @@ class TbeBillingServiceProvider extends ServiceProvider
     {
         callbackQueryBus()->addCallbackQueries([
             ManageInvoicesQuery::class,
+            OffersQuery::class,
+            InvoiceQuery::class,
         ]);
 
         stateAnswerBus()->addStateAnswers([
             ManageInvoicesAnswer::class,
+            OffersAnswer::class,
+            InvoiceAnswer::class,
+        ]);
+
+        replyKeyBus()->addReplyKeys([
+            OffersKey::class,
         ]);
 
         $this->addSettings();
@@ -104,6 +121,7 @@ class TbeBillingServiceProvider extends ServiceProvider
 
         $this->callAfterResolving(Schedule::class, function (Schedule $schedule) {
             $schedule->command(MarkOverdueInvoicesAsFailed::class)->hourly();
+            $schedule->command(PruneAbandonedOfferDrafts::class)->hourly();
         });
     }
 
