@@ -7,16 +7,19 @@ use TelegramBotEssentials\Billing\Events\InvoiceFailed;
 use TelegramBotEssentials\Billing\Events\InvoicePaid;
 use TelegramBotEssentials\Billing\Events\InvoicePending;
 use TelegramBotEssentials\Billing\Events\InvoiceRevoked;
+use TelegramBotEssentials\Billing\Listeners\Invoices\ConfirmOfferRedemptionOnInvoicePaid;
 use TelegramBotEssentials\Billing\Listeners\Invoices\DispatchInvoiceFailedHooks;
 use TelegramBotEssentials\Billing\Listeners\Invoices\DispatchInvoicePaidHooks;
 use TelegramBotEssentials\Billing\Listeners\Invoices\DispatchInvoicePendingHooks;
 use TelegramBotEssentials\Billing\Listeners\Invoices\DispatchInvoiceRevokedHooks;
 use TelegramBotEssentials\Billing\Listeners\Invoices\InvokeInvoiceHooks;
+use TelegramBotEssentials\Billing\Listeners\Invoices\ReleaseOfferRedemptionOnInvoiceRevoked;
 
 class EventServiceProvider extends ServiceProvider
 {
     protected $listen = [
         InvoicePaid::class => [
+            ConfirmOfferRedemptionOnInvoicePaid::class,
             DispatchInvoicePaidHooks::class,
             InvokeInvoiceHooks::class,
         ],
@@ -29,6 +32,7 @@ class EventServiceProvider extends ServiceProvider
             InvokeInvoiceHooks::class,
         ],
         InvoiceRevoked::class => [
+            ReleaseOfferRedemptionOnInvoiceRevoked::class,
             DispatchInvoiceRevokedHooks::class,
             InvokeInvoiceHooks::class,
         ],
