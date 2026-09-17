@@ -38,6 +38,18 @@ return [
         ],
     ],
 
+    'offer' => [
+        'summary' => '🏷️ Offer code <b>:code</b> applied — <s>:originalPrice</s> :price',
+        'prompt' => '🏷️ Send the offer code you want to use:',
+        'applied' => '✅ Offer code applied.',
+        'removed' => '🚫 Offer code removed.',
+        'lockLabel' => 'Applying offer code…',
+        'keys' => [
+            'use' => '🏷️ Use offer code',
+            'remove' => '🚫 Remove code (:code)',
+        ],
+    ],
+
     'hooks' => [
         'order_reverted' => '🛑 Your order has been reverted.',
         'status_changed' => [
