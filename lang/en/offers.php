@@ -62,20 +62,23 @@ return [
         'waitingPage' => '⌛ Waiting for page number.',
         'enterPage' => '🔢 Enter page number:',
         'pageLoaded' => '📄 Page :page loaded.',
-        'skip' => '⏭️ Skip / Unlimited',
-        'finished' => '🎉 Offer code :code created and enabled!',
+        'finished' => '🎉 Offer code created and enabled!',
+        'summary' => '🏷️ Review the new offer code',
         'chooseType' => [
-            'text' => '🏷️ Is this a percentage or a fixed-amount discount?',
             'percentage' => '% Percentage',
             'fixed' => '💵 Fixed amount',
-            'chosen' => 'Type: :type',
         ],
         'fields' => [
             'code' => [
+                'label' => 'Code',
                 'prompt' => '🏷️ Send the offer code text (e.g. SAVE20):',
             ],
+            'type' => [
+                'label' => 'Type',
+                'prompt' => '🏷️ Is this a percentage or a fixed-amount discount?',
+            ],
             'amount' => [
-                'label' => 'discount amount',
+                'label' => 'Discount amount',
                 'editLabel' => '✏️ Edit discount',
                 'prompt' => [
                     'percentage' => '💲 Enter the discount percentage (1-100):',
@@ -83,38 +86,37 @@ return [
                 ],
             ],
             'max_discount' => [
-                'label' => 'max discount cap',
+                'label' => 'Max discount cap',
                 'editLabel' => '✏️ Edit max discount cap',
                 'prompt' => '📛 Enter the max discount amount this code can ever give, or tap Skip for no cap:',
             ],
             'min_price' => [
-                'label' => 'minimum order price',
+                'label' => 'Minimum order price',
                 'editLabel' => '✏️ Edit min order price',
                 'prompt' => '📉 Enter the minimum order price required to use this code, or tap Skip for no minimum:',
             ],
             'max_price' => [
-                'label' => 'maximum order price',
+                'label' => 'Maximum order price',
                 'editLabel' => '✏️ Edit max order price',
                 'prompt' => '📈 Enter the maximum order price this code can apply to, or tap Skip for no maximum:',
             ],
             'usage_limit' => [
-                'label' => 'global usage limit',
+                'label' => 'Global usage limit',
                 'editLabel' => '✏️ Edit global usage limit',
                 'prompt' => '🔢 Enter how many times this code can be used in total, or tap Skip for unlimited:',
             ],
             'usage_limit_per_user' => [
-                'label' => 'per-user usage limit',
+                'label' => 'Per-user usage limit',
                 'editLabel' => '✏️ Edit per-user usage limit',
                 'prompt' => '👤 Enter how many times a single user can use this code, or tap Skip for unlimited:',
             ],
             'expires_at' => [
-                'label' => 'expiry',
+                'label' => 'Expiry',
                 'editLabel' => '✏️ Edit expiry',
                 'prompt' => '📅 Enter how many days from now this code should expire, or tap Skip for never:',
             ],
         ],
         'errors' => [
-            'codeRequired' => '⚠️ Send the code as text.',
             'codeTaken' => '⚠️ That code is already in use — pick another.',
             'percentageOutOfRange' => '⚠️ A percentage discount must be between 1 and 100.',
             'mustBePositive' => '⚠️ Enter a number greater than 0.',
