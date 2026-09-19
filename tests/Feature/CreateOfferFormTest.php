@@ -56,7 +56,8 @@ beforeEach(function () {
 });
 
 afterEach(function () {
-    expect($this->editViolations)->toBe([], 'the form tried to edit a message that carries a reply keyboard');
+    expect($this->editViolations)->toBe([], 'the form tried to edit a message that carries a reply keyboard')
+        ->and(offerTgCalls('deleteMessage')->all())->toBe([], 'the form deleted a message');
 });
 
 /** Recorded Telegram calls of one API method, oldest first. */
@@ -159,8 +160,8 @@ it('creates the enabled offer with typed values on Confirm and clears the form',
         ->and($offer->expires_at->isBetween(now()->addDays(29), now()->addDays(31)))->toBeTrue()
         ->and($this->bot->botUsers()->where('telegram_user_peer_id', ADMIN_PEER)->sole()->state)->toBeNull();
 
-    // The confirm prompt became the offer's detail screen, the list was refreshed.
-    expect(offerTgCalls('editMessageText')->pluck('text')->join('|'))->toContain('SAVE20');
+    // The offer's detail screen is sent as a new message, and the list is refreshed in place.
+    expect(offerSentTexts(4))->toContain('SAVE20');
 });
 
 it('leaves optional fields empty when they are skipped', function () {
