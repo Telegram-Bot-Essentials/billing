@@ -24,20 +24,22 @@ class OffersFeature
 
         TelegramPaginator::validatePageNumber($page, $currentPage, $offers);
 
+        $replyMarkup = Keyboard::make()->inline();
+
+        $replyMarkup->row([
+            Keyboard::inlineButton([
+                'text' => __('tbe-billing::offers.main.keys.create'),
+                'callback_data' => encodeCallback(self::$type, 'create', [$page]),
+            ]),
+        ]);
+
         if (count($offers) == 0) {
             return new TelegramResponse(
                 text: __('tbe-billing::offers.main.text.empty'),
-                replyMarkup: Keyboard::make()->inline()->row([
-                    Keyboard::inlineButton([
-                        'text' => __('tbe-billing::offers.main.keys.create'),
-                        'callback_data' => encodeCallback(self::$type, 'create', [$page]),
-                    ]),
-                ]),
+                replyMarkup: $replyMarkup,
                 parseMode: 'HTML'
             );
         }
-
-        $replyMarkup = Keyboard::make()->inline();
 
         foreach ($offers as $offer) {
             $replyMarkup->row([
@@ -47,13 +49,6 @@ class OffersFeature
                 ]),
             ]);
         }
-
-        $replyMarkup->row([
-            Keyboard::inlineButton([
-                'text' => __('tbe-billing::offers.main.keys.create'),
-                'callback_data' => encodeCallback(self::$type, 'create', [$page]),
-            ]),
-        ]);
 
         $replyMarkup->row(TelegramPaginator::makeNavigationButtonsRow(self::$type, $page, $offers->lastPage()));
 
