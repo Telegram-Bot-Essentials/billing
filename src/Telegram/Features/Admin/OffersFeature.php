@@ -20,7 +20,7 @@ class OffersFeature
      */
     public static function menu(int $page = 1, int $currentPage = 0): TelegramResponse
     {
-        $offers = Offer::query()->where('bot_id', wHook()->bot()->id)->whereNotNull('type')->orderByDesc('id')->paginate(perPage: 10, page: $page);
+        $offers = Offer::query()->where('bot_id', wHook()->bot()->id)->orderByDesc('id')->paginate(perPage: 10, page: $page);
 
         TelegramPaginator::validatePageNumber($page, $currentPage, $offers);
 
@@ -166,44 +166,6 @@ class OffersFeature
 
         return new TelegramResponse(
             text: $text,
-            replyMarkup: $replyMarkup,
-            parseMode: 'HTML'
-        );
-    }
-
-    public static function choosingType(Offer $offer, int $lastPage, int $messageMetaId): TelegramResponse
-    {
-        $replyMarkup = Keyboard::make()->inline()
-            ->row([
-                Keyboard::inlineButton([
-                    'text' => __('tbe-billing::offers.wizard.chooseType.percentage'),
-                    'callback_data' => encodeCallback(self::$type, 'setType', [$offer->id, 'percentage', $lastPage, $messageMetaId]),
-                ]),
-                Keyboard::inlineButton([
-                    'text' => __('tbe-billing::offers.wizard.chooseType.fixed'),
-                    'callback_data' => encodeCallback(self::$type, 'setType', [$offer->id, 'fixed', $lastPage, $messageMetaId]),
-                ]),
-            ]);
-
-        return new TelegramResponse(
-            text: __('tbe-billing::offers.wizard.chooseType.text'),
-            replyMarkup: $replyMarkup,
-            parseMode: 'HTML'
-        );
-    }
-
-    /** The prompt + optional Skip button for a wizard step, reused for every optional field. */
-    public static function optionalFieldPrompt(Offer $offer, string $field, int $lastPage, int $messageMetaId): TelegramResponse
-    {
-        $replyMarkup = Keyboard::make()->inline()->row([
-            Keyboard::inlineButton([
-                'text' => __('tbe-billing::offers.wizard.skip'),
-                'callback_data' => encodeCallback(self::$type, 'skipOptionalField', [$offer->id, $field, $lastPage, $messageMetaId]),
-            ]),
-        ]);
-
-        return new TelegramResponse(
-            text: __('tbe-billing::offers.wizard.fields.'.$field.'.prompt'),
             replyMarkup: $replyMarkup,
             parseMode: 'HTML'
         );
