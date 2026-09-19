@@ -38,6 +38,10 @@ return [
         ],
     ],
 
+    'payment' => [
+        'amount' => '💰 مبلغ قابل پرداخت: :price',
+    ],
+
     'offer' => [
         'summary' => '🏷️ کد تخفیف <b>:code</b> اعمال شد — <s>:originalPrice</s> :price',
         'prompt' => '🏷️ کد تخفیف مورد نظر خود را ارسال کنید:',
