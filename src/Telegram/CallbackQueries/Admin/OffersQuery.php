@@ -6,7 +6,7 @@ use Illuminate\Validation\ValidationException;
 use TelegramBotEssentials\Billing\Models\Offer;
 use TelegramBotEssentials\Billing\Services\OfferService;
 use TelegramBotEssentials\Billing\Telegram\Features\Admin\OffersFeature;
-use TelegramBotEssentials\Billing\Telegram\Support\OffersWizard;
+use TelegramBotEssentials\Billing\Telegram\Forms\CreateOfferForm;
 use TelegramBotEssentials\Essence\Enums\Roles;
 use TelegramBotEssentials\Essence\Exceptions\InvalidPageNumber;
 use TelegramBotEssentials\Essence\Models\MessageMeta;
@@ -83,68 +83,10 @@ class OffersQuery extends CallbackQuery
             ->update();
     }
 
-    /** Starts the creation wizard: the current screen freezes until the last step. */
+    /** Starts the creation form: the current screen freezes until it ends. */
     public function create(int $lastPage = 1): void
     {
-        $messageMeta = MessageMeta::makeWithCurrentMessage();
-        $messageMeta->cancelableLockAction(__('tbe-billing::offers.wizard.lockLabel'));
-
-        wHook()->user()->changeState(encodeAnswerState($this->type, 'captureCode', [
-            'lastPage' => $lastPage,
-            'message_meta' => $messageMeta->id,
-        ]));
-
-        wHook()->api()->sendMessage([
-            'chat_id' => wHook()->peerId(),
-            'text' => __('tbe-billing::offers.wizard.fields.code.prompt'),
-            'reply_markup' => wHook()->user()->getKeyboard(),
-            'parse_mode' => 'HTML',
-        ]);
-
-        $this->answer();
-    }
-
-    public function setType(Offer $offer, string $type, int $lastPage = 1, int $messageMeta = 0): void
-    {
-        if (! in_array($type, ['percentage', 'fixed'], true)) {
-            $this->answer();
-
-            return;
-        }
-
-        $offer->update(['type' => $type]);
-
-        wHook()->user()->changeState(encodeAnswerState($this->type, 'captureAmount', [
-            'offer' => $offer->id,
-            'lastPage' => $lastPage,
-            'message_meta' => $messageMeta,
-        ]));
-
-        wHook()->api()->editMessageText([
-            'chat_id' => wHook()->update()->callbackQuery->message->chat->id,
-            'message_id' => wHook()->update()->callbackQuery->message->messageId,
-            'text' => __('tbe-billing::offers.wizard.chooseType.chosen', [
-                'type' => __('tbe-billing::offers.main.type.'.$type),
-            ]),
-            'parse_mode' => 'HTML',
-        ]);
-
-        wHook()->api()->sendMessage([
-            'chat_id' => wHook()->peerId(),
-            'text' => __('tbe-billing::offers.wizard.fields.amount.prompt.'.$type),
-            'reply_markup' => wHook()->user()->getKeyboard(),
-            'parse_mode' => 'HTML',
-        ]);
-
-        $this->answer();
-    }
-
-    public function skipOptionalField(Offer $offer, string $field, int $lastPage = 1, int $messageMeta = 0): void
-    {
-        app(OfferService::class)->clearField($offer, $field);
-        $offer->save();
-
-        OffersWizard::advance($offer, $field, $lastPage, MessageMeta::findOrFail($messageMeta));
+        CreateOfferForm::start(['lastPage' => $lastPage]);
 
         $this->answer();
     }
