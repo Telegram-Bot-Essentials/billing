@@ -16,22 +16,47 @@ beforeEach(function () {
     $this->bot = $this->makeBot();
     $this->makeBotUser($this->bot, ADMIN_PEER, ['power' => Roles::ADMIN->value]);
 
-    // Every sendMessage answers with a fresh message id, like Telegram.
+    // Every sendMessage answers with a fresh message id, like Telegram. And
+    // like Telegram, editing a message that carries a reply keyboard is
+    // refused ("message can't be edited"): such an edit is recorded as a
+    // violation, which every test asserts is empty.
+    $this->keyboardMessages = [];
+    $this->editViolations = [];
+    $test = $this;
     $counter = 5000;
     $factory = new Factory;
-    $factory->fake(function ($request) use (&$counter) {
-        if (str_ends_with((string) $request->url(), '/sendMessage')) {
+    $factory->fake(function ($request) use (&$counter, $test) {
+        $url = (string) $request->url();
+
+        if (str_ends_with($url, '/sendMessage')) {
+            $id = ++$counter;
+            $markup = is_string($request['reply_markup'] ?? null) ? $request['reply_markup'] : json_encode($request['reply_markup'] ?? '');
+
+            if (str_contains((string) $markup, '"keyboard"') && ! str_contains((string) $markup, 'inline_keyboard')) {
+                $test->keyboardMessages[$id] = true;
+            }
+
             return Http::response(['ok' => true, 'result' => [
-                'message_id' => ++$counter,
+                'message_id' => $id,
                 'date' => time(),
                 'chat' => ['id' => $request['chat_id'], 'type' => 'private'],
                 'text' => $request['text'] ?? '',
             ]]);
         }
 
+        if (str_ends_with($url, '/editMessageText') && isset($test->keyboardMessages[$request['message_id']])) {
+            $test->editViolations[] = $request['message_id'];
+
+            return Http::response(['ok' => false, 'error_code' => 400, 'description' => "Bad Request: message can't be edited"], 400);
+        }
+
         return Http::response(['ok' => true, 'result' => true]);
     });
     Http::swap($factory);
+});
+
+afterEach(function () {
+    expect($this->editViolations)->toBe([], 'the form tried to edit a message that carries a reply keyboard');
 });
 
 /** Recorded Telegram calls of one API method, oldest first. */
@@ -40,6 +65,12 @@ function offerTgCalls(string $method): Collection
     return Http::recorded(fn ($request) => str_ends_with((string) $request->url(), '/'.$method))
         ->map(fn ($pair) => $pair[0]->data())
         ->values();
+}
+
+/** The texts of the last few messages sent: a step is a prompt plus a keyboard message. */
+function offerSentTexts(int $last = 4): string
+{
+    return offerTgCalls('sendMessage')->slice(-$last)->pluck('text')->join("\n---\n");
 }
 
 function offerFormState(): ?FormState
@@ -202,7 +233,7 @@ it('asks for the amount again when the type changes underneath it', function () 
 
     expect(offerFormState()->step)->toBe('amount')
         ->and(offerFormState()->answers)->not->toHaveKey('amount')
-        ->and(offerTgCalls('sendMessage')->last()['text'])->toContain(__('tbe-billing::offers.wizard.fields.amount.prompt.fixed'));
+        ->and(offerSentTexts())->toContain(__('tbe-billing::offers.wizard.fields.amount.prompt.fixed'));
 });
 
 it('does not create an offer when the code was taken while the form was open', function () {
