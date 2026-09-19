@@ -33,12 +33,6 @@ class Offer extends Model
         'expires_at' => 'datetime',
     ];
 
-    /** Still mid-creation wizard: the required fields past the code aren't set yet. */
-    public function isDraft(): bool
-    {
-        return $this->type === null;
-    }
-
     public function setCodeAttribute(string $value): void
     {
         $this->attributes['code'] = mb_strtoupper(trim($value));
