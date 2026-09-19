@@ -6,16 +6,22 @@ stabilizes at 1.0 a `0.0.x` bump may carry breaking changes.
 
 ## [Unreleased]
 
+## [0.0.33] - 2026-09-20
+
 ### Added
 
 - Offer codes: an admin manager (list, detail, stats, enable/disable, per-field
   edit) and a creation form built on essence's forms engine. `CreateOfferForm`
   asks the code, type, amount and the optional limits with Back / Next / Skip
-  on the reply keyboard, drops the max-discount cap step for fixed offers,
+  / Finish on the reply keyboard, drops the max-discount cap step for fixed offers,
   and writes nothing until the admin confirms the summary, so an abandoned
   form leaves no half-built offer behind (there is no draft row, no
   `PruneAbandonedOfferDrafts` command, and `offers.type` / `amount` are
   `NOT NULL`).
+- `InvoiceFeature::paymentSummary()` and `offerSummary()`: what paying an
+  invoice costs, including the offer code applied and the price it replaced,
+  for a gateway to show next to its own instructions (the card gateway now
+  does).
 
 ### Changed
 
