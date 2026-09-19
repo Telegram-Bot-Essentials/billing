@@ -31,11 +31,6 @@ class OfferFactory extends Factory
         return $this->state(['is_enabled' => false]);
     }
 
-    public function draft(): self
-    {
-        return $this->state(['type' => null, 'amount' => null, 'is_enabled' => false]);
-    }
-
     public function expired(): self
     {
         return $this->state(['expires_at' => now()->subDay()]);
