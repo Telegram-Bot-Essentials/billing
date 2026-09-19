@@ -12,6 +12,9 @@ use TelegramBotEssentials\Billing\Models\OfferRedemption;
 
 class OfferService
 {
+    /** The optional fields of an offer, in the order they are assigned (max_price checks min_price). */
+    public const OPTIONAL_FIELDS = ['max_discount', 'min_price', 'max_price', 'usage_limit', 'usage_limit_per_user', 'expires_at'];
+
     /**
      * @throws ValidationException
      */
@@ -140,29 +143,58 @@ class OfferService
         return Offer::query()->where('bot_id', $botId)->where('code', mb_strtoupper(trim($code)))->exists();
     }
 
-    /** The optional fields a new offer walks through, in wizard order. */
-    public function optionalFieldsFor(Offer $offer): array
+    /**
+     * Creates an offer from a finished form's answers (raw strings, as typed),
+     * enabled. Optional answers that are null were skipped.
+     *
+     * @param  array<string, mixed>  $answers
+     *
+     * @throws ValidationException
+     */
+    public function createFromAnswers(int $botId, array $answers): Offer
     {
-        $fields = ['min_price', 'max_price', 'usage_limit', 'usage_limit_per_user', 'expires_at'];
+        $offer = new Offer([
+            'bot_id' => $botId,
+            'code' => (string) $answers['code'],
+            'type' => (string) $answers['type'],
+            'is_enabled' => true,
+        ]);
 
-        if ($offer->type === 'percentage') {
-            array_unshift($fields, 'max_discount');
+        $this->assignAmount($offer, (string) $answers['amount']);
+
+        foreach (self::OPTIONAL_FIELDS as $field) {
+            $input = $answers[$field] ?? null;
+
+            if ($input !== null) {
+                $this->assignField($offer, $field, (string) $input);
+            }
         }
 
-        return $fields;
+        $offer->save();
+
+        return $offer;
     }
 
-    public function nextOptionalField(Offer $offer, ?string $after): ?string
+    /**
+     * @throws ValidationException
+     */
+    public function parseAmount(string $input, ?string $type): BigDecimal
     {
-        $fields = $this->optionalFieldsFor($offer);
+        $value = $this->parseDecimal($input, 'amount');
 
-        if ($after === null) {
-            return $fields[0] ?? null;
+        if ($type === 'percentage' && ($value->isLessThanOrEqualTo(0) || $value->isGreaterThan(100))) {
+            throw ValidationException::withMessages([
+                'amount' => __('tbe-billing::offers.wizard.errors.percentageOutOfRange'),
+            ]);
         }
 
-        $index = array_search($after, $fields, true);
+        if ($type === 'fixed' && $value->isLessThanOrEqualTo(0)) {
+            throw ValidationException::withMessages([
+                'amount' => __('tbe-billing::offers.wizard.errors.mustBePositive'),
+            ]);
+        }
 
-        return $index === false ? null : ($fields[$index + 1] ?? null);
+        return $value;
     }
 
     /**
@@ -170,21 +202,26 @@ class OfferService
      */
     public function assignAmount(Offer $offer, string $input): void
     {
-        $value = $this->parseDecimal($input, 'amount');
+        $offer->amount = (string) $this->parseAmount($input, $offer->type);
+    }
 
-        if ($offer->type === 'percentage' && ($value->isLessThanOrEqualTo(0) || $value->isGreaterThan(100))) {
-            throw ValidationException::withMessages([
-                'amount' => __('tbe-billing::offers.wizard.errors.percentageOutOfRange'),
-            ]);
-        }
-
-        if ($offer->type === 'fixed' && $value->isLessThanOrEqualTo(0)) {
-            throw ValidationException::withMessages([
-                'amount' => __('tbe-billing::offers.wizard.errors.mustBePositive'),
-            ]);
-        }
-
-        $offer->amount = (string) $value;
+    /**
+     * The typed value of an optional field's input: a decimal for the money
+     * fields, a whole number for the limits and the expiry in days.
+     *
+     * @param  ?string  $minPrice  the min order price already chosen, which a max order price may not undercut
+     *
+     * @throws ValidationException
+     */
+    public function parseField(string $field, string $input, ?string $minPrice = null): BigDecimal|int
+    {
+        return match ($field) {
+            'max_discount' => $this->parsePositiveDecimal($input, 'max_discount'),
+            'min_price' => $this->parseNonNegativeDecimal($input, 'min_price'),
+            'max_price' => $this->parseMaxPrice($input, $minPrice),
+            'usage_limit', 'usage_limit_per_user', 'expires_at' => $this->parsePositiveInt($input, $field),
+            default => throw new \InvalidArgumentException("Unknown offer field: {$field}"),
+        };
     }
 
     /**
@@ -192,14 +229,12 @@ class OfferService
      */
     public function assignField(Offer $offer, string $field, string $input): void
     {
+        $value = $this->parseField($field, $input, $offer->min_price);
+
         match ($field) {
-            'max_discount' => $offer->max_discount = (string) $this->parsePositiveDecimal($input, 'max_discount'),
-            'min_price' => $offer->min_price = (string) $this->parseNonNegativeDecimal($input, 'min_price'),
-            'max_price' => $this->assignMaxPrice($offer, $input),
-            'usage_limit' => $offer->usage_limit = $this->parsePositiveInt($input, 'usage_limit'),
-            'usage_limit_per_user' => $offer->usage_limit_per_user = $this->parsePositiveInt($input, 'usage_limit_per_user'),
-            'expires_at' => $offer->expires_at = now()->addDays($this->parsePositiveInt($input, 'expires_at')),
-            default => throw new \InvalidArgumentException("Unknown offer field: {$field}"),
+            'expires_at' => $offer->expires_at = now()->addDays((int) $value),
+            'usage_limit', 'usage_limit_per_user' => $offer->{$field} = (int) $value,
+            default => $offer->{$field} = (string) $value,
         };
     }
 
@@ -211,17 +246,17 @@ class OfferService
     /**
      * @throws ValidationException
      */
-    private function assignMaxPrice(Offer $offer, string $input): void
+    private function parseMaxPrice(string $input, ?string $minPrice): BigDecimal
     {
         $value = $this->parseNonNegativeDecimal($input, 'max_price');
 
-        if ($offer->min_price !== null && $value->isLessThan($offer->min_price)) {
+        if ($minPrice !== null && $value->isLessThan($minPrice)) {
             throw ValidationException::withMessages([
                 'max_price' => __('tbe-billing::offers.wizard.errors.maxBelowMin'),
             ]);
         }
 
-        $offer->max_price = (string) $value;
+        return $value;
     }
 
     /**
