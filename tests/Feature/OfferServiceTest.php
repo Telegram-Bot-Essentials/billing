@@ -177,3 +177,45 @@ it('only confirms a redemption once payment succeeds, freeing it back up if reve
     $invoice->markAsFailed();
     expect(OfferRedemption::query()->where('invoice_id', $invoice->id)->exists())->toBeFalse();
 });
+
+it('creates an enabled offer from a finished form, leaving skipped fields empty', function () {
+    $offer = app(OfferService::class)->createFromAnswers($this->bot->id, [
+        'code' => ' save20 ',
+        'type' => 'percentage',
+        'amount' => '20',
+        'max_discount' => '500',
+        'min_price' => null,
+        'usage_limit' => '10',
+        'expires_at' => '7',
+    ]);
+
+    expect($offer->exists)->toBeTrue()
+        ->and($offer->code)->toBe('SAVE20')
+        ->and($offer->is_enabled)->toBeTrue()
+        ->and(BigDecimal::of($offer->fresh()->amount)->isEqualTo('20'))->toBeTrue()
+        ->and(BigDecimal::of($offer->fresh()->max_discount)->isEqualTo('500'))->toBeTrue()
+        ->and($offer->fresh()->min_price)->toBeNull()
+        ->and($offer->fresh()->usage_limit)->toBe(10)
+        ->and($offer->fresh()->expires_at->isFuture())->toBeTrue();
+});
+
+it('parses an optional field to its typed value and rejects a bad one', function () {
+    $service = app(OfferService::class);
+
+    expect($service->parseField('min_price', '1500.5'))->toBeInstanceOf(BigDecimal::class)
+        ->and($service->parseField('usage_limit', '3'))->toBe(3)
+        ->and(fn () => $service->parseField('usage_limit', '0'))->toThrow(ValidationException::class)
+        ->and(fn () => $service->parseField('min_price', '-1'))->toThrow(ValidationException::class)
+        ->and(fn () => $service->parseField('max_price', '400', '500'))->toThrow(ValidationException::class);
+
+    $service->parseField('max_price', '500', '500');
+});
+
+it('holds the amount to the range of its type', function () {
+    $service = app(OfferService::class);
+
+    expect($service->parseAmount('100', 'percentage'))->toBeInstanceOf(BigDecimal::class)
+        ->and(fn () => $service->parseAmount('100.5', 'percentage'))->toThrow(ValidationException::class)
+        ->and(fn () => $service->parseAmount('0', 'fixed'))->toThrow(ValidationException::class)
+        ->and(fn () => $service->parseAmount('abc', 'fixed'))->toThrow(ValidationException::class);
+});
