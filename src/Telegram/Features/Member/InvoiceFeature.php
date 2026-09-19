@@ -11,6 +11,39 @@ class InvoiceFeature
 {
     public static string $type = 'INVOICE';
 
+    /**
+     * The offer code applied to the invoice and what it did to the price, or
+     * null when no code is applied.
+     */
+    public static function offerSummary(Invoice $invoice): ?string
+    {
+        if (! $invoice->offer) {
+            return null;
+        }
+
+        return __('tbe-billing::invoice.offer.summary', [
+            'code' => $invoice->offer->code,
+            'originalPrice' => currency()->priceFormat($invoice->original_price ?? $invoice->price),
+            'price' => currency()->priceFormat($invoice->price),
+        ]);
+    }
+
+    /**
+     * What paying this invoice costs, for a gateway to show next to its own
+     * instructions: the amount due, and the offer code with the price it
+     * replaced when one is applied.
+     */
+    public static function paymentSummary(Invoice $invoice): string
+    {
+        $lines = [__('tbe-billing::invoice.payment.amount', ['price' => currency()->priceFormat($invoice->price)])];
+
+        if ($offerSummary = self::offerSummary($invoice)) {
+            $lines[] = $offerSummary;
+        }
+
+        return implode("\r\n", $lines);
+    }
+
     public static function invoice(Invoice $invoice, ?string $encodedCallback = null): TelegramResponse
     {
         $text = __('tbe-billing::invoice.summary.text.information', [
@@ -18,12 +51,8 @@ class InvoiceFeature
             'orderDescription' => $invoice->payable->description ?? null,
         ]);
 
-        if ($invoice->offer) {
-            $text .= "\r\n\r\n".__('tbe-billing::invoice.offer.summary', [
-                'code' => $invoice->offer->code,
-                'originalPrice' => currency()->priceFormat($invoice->original_price ?? $invoice->price),
-                'price' => currency()->priceFormat($invoice->price),
-            ]);
+        if ($offerSummary = self::offerSummary($invoice)) {
+            $text .= "\r\n\r\n".$offerSummary;
         }
 
         $replyMarkup = Keyboard::make()->inline();
