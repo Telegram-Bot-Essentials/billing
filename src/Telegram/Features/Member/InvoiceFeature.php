@@ -114,7 +114,8 @@ class InvoiceFeature
             replyMarkup: $replyMarkup,
             answer: $invoice->wasRecentlyCreated ?
                 __('tbe-billing::invoice.summary.answers.created') :
-                __('tbe-billing::invoice.summary.answers.main')
+                __('tbe-billing::invoice.summary.answers.main'),
+            parseMode: 'HTML'
         ))->messageMetaModel($invoice, 'invoice_view');
     }
 }
