@@ -13,15 +13,15 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Bot::class)->constrained();
             $table->string('code');
-            $table->enum('type', ['percentage', 'fixed'])->nullable();
-            $table->decimal('amount', 65, 30)->nullable();
+            $table->enum('type', ['percentage', 'fixed']);
+            $table->decimal('amount', 65, 30);
             $table->decimal('max_discount', 65, 30)->nullable();
             $table->decimal('min_price', 65, 30)->nullable();
             $table->decimal('max_price', 65, 30)->nullable();
             $table->unsignedInteger('usage_limit')->nullable();
             $table->unsignedInteger('usage_limit_per_user')->nullable();
             $table->timestamp('expires_at')->nullable();
-            $table->boolean('is_enabled')->default(false);
+            $table->boolean('is_enabled')->default(true);
             $table->timestamps();
             $table->softDeletes();
 
