@@ -74,6 +74,16 @@ function offerSentTexts(int $last = 4): string
     return offerTgCalls('sendMessage')->slice(-$last)->pluck('text')->join("\n---\n");
 }
 
+/** The buttons of the reply keyboard currently showing: the last message that carried one. */
+function offerKeyLabels(): array
+{
+    $markup = offerTgCalls('sendMessage')
+        ->map(fn ($call) => is_string($call['reply_markup'] ?? null) ? json_decode($call['reply_markup'], true) : ($call['reply_markup'] ?? []))
+        ->last(fn ($markup) => isset($markup['keyboard']));
+
+    return collect($markup['keyboard'] ?? [])->flatten()->all();
+}
+
 function offerFormState(): ?FormState
 {
     return FormState::fromStateString(test()->bot->botUsers()->where('telegram_user_peer_id', ADMIN_PEER)->sole()->state);
@@ -176,6 +186,36 @@ it('leaves optional fields empty when they are skipped', function () {
 
     $offer = Offer::sole();
     expect($offer->type)->toBe('fixed')
+        ->and($offer->max_discount)->toBeNull()
+        ->and($offer->min_price)->toBeNull()
+        ->and($offer->max_price)->toBeNull()
+        ->and($offer->usage_limit)->toBeNull()
+        ->and($offer->usage_limit_per_user)->toBeNull()
+        ->and($offer->expires_at)->toBeNull();
+});
+
+it('lets the admin finish as soon as the required fields are in, skipping the optional ones', function () {
+    startOfferForm();
+    tell('QUICK');
+    tell(percentage());
+
+    // Nothing to finish with while the amount is still missing.
+    expect(offerKeyLabels())->not->toContain(__('tbe::forms.buttons.finish'));
+
+    tell('15');
+
+    expect(offerKeyLabels())->toContain(__('tbe::forms.buttons.finish'));
+
+    tell(__('tbe::forms.buttons.finish'));
+
+    expect(offerFormState()->step)->toBe(FormState::CONFIRM)
+        ->and(Offer::count())->toBe(0);
+
+    tell(__('tbe::forms.buttons.confirm'));
+
+    $offer = Offer::sole();
+    expect($offer->code)->toBe('QUICK')
+        ->and($offer->is_enabled)->toBeTrue()
         ->and($offer->max_discount)->toBeNull()
         ->and($offer->min_price)->toBeNull()
         ->and($offer->max_price)->toBeNull()
