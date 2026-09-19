@@ -38,6 +38,10 @@ return [
         ],
     ],
 
+    'payment' => [
+        'amount' => '💰 Amount to pay: :price',
+    ],
+
     'offer' => [
         'summary' => '🏷️ Offer code <b>:code</b> applied — <s>:originalPrice</s> :price',
         'prompt' => '🏷️ Send the offer code you want to use:',
