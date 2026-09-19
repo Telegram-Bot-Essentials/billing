@@ -62,11 +62,26 @@ class OffersFeature
     private static function listLabel(Offer $offer): string
     {
         $badge = $offer->is_enabled ? '✅' : '🚫';
-        $value = $offer->type === 'percentage'
-            ? "{$offer->amount}%"
-            : currency()->priceFormat($offer->amount);
+        $value = self::amountLabel($offer);
 
         return "{$badge} {$offer->code} · {$value}";
+    }
+
+    /**
+     * The discount as an admin reads it. The amount column is a 30-digit
+     * decimal, so a percentage comes back as `100.000000000000000000000000000000`
+     * and its trailing zeros have to go; a fixed amount is formatted as money,
+     * which already drops empty decimals.
+     */
+    private static function amountLabel(Offer $offer): string
+    {
+        if ($offer->type !== 'percentage') {
+            return currency()->priceFormat($offer->amount);
+        }
+
+        $amount = str_contains($offer->amount, '.') ? rtrim(rtrim($offer->amount, '0'), '.') : $offer->amount;
+
+        return $amount.'%';
     }
 
     public static function show(Offer $offer, int $lastPage = 1): TelegramResponse
@@ -74,7 +89,7 @@ class OffersFeature
         $text = __('tbe-billing::offers.main.text.show', [
             'code' => $offer->code,
             'type' => __('tbe-billing::offers.main.type.'.$offer->type),
-            'amount' => $offer->type === 'percentage' ? "{$offer->amount}%" : currency()->priceFormat($offer->amount),
+            'amount' => self::amountLabel($offer),
             'maxDiscount' => $offer->max_discount !== null ? currency()->priceFormat($offer->max_discount) : __('tbe-billing::offers.main.unlimited'),
             'minPrice' => $offer->min_price !== null ? currency()->priceFormat($offer->min_price) : __('tbe-billing::offers.main.unlimited'),
             'maxPrice' => $offer->max_price !== null ? currency()->priceFormat($offer->max_price) : __('tbe-billing::offers.main.unlimited'),
