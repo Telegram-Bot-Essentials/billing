@@ -6,7 +6,6 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\ServiceProvider;
 use TelegramBotEssentials\Billing\Console\Commands\MarkOverdueInvoicesAsFailed;
-use TelegramBotEssentials\Billing\Console\Commands\PruneAbandonedOfferDrafts;
 use TelegramBotEssentials\Billing\Providers\EventServiceProvider;
 use TelegramBotEssentials\Billing\Services\Billing;
 use TelegramBotEssentials\Billing\Services\Currency;
@@ -16,6 +15,7 @@ use TelegramBotEssentials\Billing\Services\OfferService;
 use TelegramBotEssentials\Billing\Telegram\CallbackQueries\Admin\ManageInvoicesQuery;
 use TelegramBotEssentials\Billing\Telegram\CallbackQueries\Admin\OffersQuery;
 use TelegramBotEssentials\Billing\Telegram\CallbackQueries\Member\InvoiceQuery;
+use TelegramBotEssentials\Billing\Telegram\Forms\CreateOfferForm;
 use TelegramBotEssentials\Billing\Telegram\ReplyKeys\Admin\OffersKey;
 use TelegramBotEssentials\Billing\Telegram\StateAnswers\Admin\ManageInvoicesAnswer;
 use TelegramBotEssentials\Billing\Telegram\StateAnswers\Admin\OffersAnswer;
@@ -41,7 +41,6 @@ class TbeBillingServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 MarkOverdueInvoicesAsFailed::class,
-                PruneAbandonedOfferDrafts::class,
             ]);
         }
     }
@@ -112,6 +111,10 @@ class TbeBillingServiceProvider extends ServiceProvider
             InvoiceAnswer::class,
         ]);
 
+        formRegistry()->addForms([
+            CreateOfferForm::class,
+        ]);
+
         replyKeyBus()->addReplyKeys([
             OffersKey::class,
         ]);
@@ -121,7 +124,6 @@ class TbeBillingServiceProvider extends ServiceProvider
 
         $this->callAfterResolving(Schedule::class, function (Schedule $schedule) {
             $schedule->command(MarkOverdueInvoicesAsFailed::class)->hourly();
-            $schedule->command(PruneAbandonedOfferDrafts::class)->hourly();
         });
     }
 
