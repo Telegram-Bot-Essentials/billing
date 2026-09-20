@@ -3,8 +3,10 @@
 declare(strict_types=1);
 
 use Brick\Math\BigDecimal;
+use Illuminate\Support\Carbon;
 use Illuminate\Validation\ValidationException;
 use Telegram\Bot\Objects\Update;
+use TelegramBotEssentials\Billing\Models\Abstract\Order;
 use TelegramBotEssentials\Billing\Models\Invoice;
 use TelegramBotEssentials\Billing\Models\Offer;
 use TelegramBotEssentials\Billing\Models\OfferRedemption;
@@ -53,9 +55,9 @@ it('rejects an unknown code', function () {
 it('rejects any code when the order type does not allow offers', function () {
     $offer = Offer::factory()->create(['bot_id' => $this->bot->id]);
     $invoice = makeTestInvoice();
-    $invoice->setRelation('payable', new class extends \TelegramBotEssentials\Billing\Models\Abstract\Order
+    $invoice->setRelation('payable', new class extends Order
     {
-        public function getPaidAtAttribute(): ?\Illuminate\Support\Carbon
+        public function getPaidAtAttribute(): ?Carbon
         {
             return null;
         }
