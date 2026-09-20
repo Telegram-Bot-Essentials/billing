@@ -6,6 +6,18 @@ stabilizes at 1.0 a `0.0.x` bump may carry breaking changes.
 
 ## [Unreleased]
 
+## [0.0.34] - 2026-09-20
+
+### Added
+
+- `Order::offersAllowed()`: an order type can opt its invoices out of offer
+  codes entirely (defaults `true`). `OfferService::redeem()` enforces it,
+  `InvoiceFeature` hides the use-code button on such an invoice, and
+  `InvoiceQuery::useOfferCode()` guards the callback too, in case a stale
+  `callback_data` reaches it directly.
+- `ManageInvoicesFeature::show()` now displays the offer code applied to an
+  invoice and the price it replaced.
+
 ## [0.0.33] - 2026-09-20
 
 ### Added
