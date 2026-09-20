@@ -6,6 +6,8 @@ stabilizes at 1.0 a `0.0.x` bump may carry breaking changes.
 
 ## [Unreleased]
 
+## [0.0.35] - 2026-09-20
+
 ### Fixed
 
 - Declares `brick/math` `>=0.14.2`: the rounding code uses the `HalfUp` / `Down`
