@@ -6,6 +6,13 @@ stabilizes at 1.0 a `0.0.x` bump may carry breaking changes.
 
 ## [Unreleased]
 
+### Fixed
+
+- Declares `brick/math` `>=0.14.2`: the rounding code uses the `HalfUp` / `Down`
+  enum cases introduced there, but the package only inherited brick/math through
+  laravel/framework, so a resolution pinned to an older release failed with an
+  undefined constant.
+
 ## [0.0.34] - 2026-09-20
 
 ### Added
