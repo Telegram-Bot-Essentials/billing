@@ -44,4 +44,15 @@ abstract class Order extends Model
     abstract public function getAmountAttribute(): string;
 
     abstract public function getDescriptionAttribute(): string;
+
+    /**
+     * Whether an offer code can be redeemed against an invoice for this kind
+     * of order. Overridden by orders where a discount code makes no sense
+     * (e.g. a wallet top-up, where discounting the credit you buy is a bug,
+     * not a feature).
+     */
+    public function offersAllowed(): bool
+    {
+        return true;
+    }
 }
