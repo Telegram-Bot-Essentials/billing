@@ -135,6 +135,7 @@ return [
             'aboveMax' => '❌ This code only applies to orders up to :max.',
             'exhausted' => '❌ This offer code has already reached its usage limit.',
             'userExhausted' => '❌ You have already used this offer code the maximum number of times.',
+            'notAllowed' => '❌ Offer codes cannot be used on this order.',
         ],
     ],
 
