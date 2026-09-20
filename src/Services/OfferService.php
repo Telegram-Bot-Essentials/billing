@@ -20,6 +20,12 @@ class OfferService
      */
     public function redeem(Invoice $invoice, string $code): Offer
     {
+        if (! ($invoice->payable?->offersAllowed() ?? true)) {
+            throw ValidationException::withMessages([
+                'code' => __('tbe-billing::offers.redeem.errors.notAllowed'),
+            ]);
+        }
+
         $offer = Offer::query()
             ->where('bot_id', $invoice->bot_id)
             ->where('code', mb_strtoupper(trim($code)))
