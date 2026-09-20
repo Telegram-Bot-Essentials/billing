@@ -111,7 +111,7 @@ class InvoiceFeature
 
         $noPaymentMethods = empty($replyMarkup->all());
 
-        if (! $noPaymentMethods && $invoice->status === 'pending') {
+        if (! $noPaymentMethods && $invoice->status === 'pending' && ($invoice->payable?->offersAllowed() ?? true)) {
             $replyMarkup->row([Keyboard::inlineButton([
                 'text' => $invoice->offer
                     ? __('tbe-billing::invoice.offer.keys.remove', ['code' => $invoice->offer->code])
