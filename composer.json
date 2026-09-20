@@ -4,6 +4,7 @@
     "type": "library",
     "require": {
         "php": "^8.3",
+        "brick/math": ">=0.14.2 <1.0",
         "laravel/framework": "^12 || ^13",
         "telegram-bot-essentials/essence": "^0.13",
         "telegram-bot-essentials/settings": "~0.0.17"
