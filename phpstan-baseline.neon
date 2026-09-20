@@ -103,25 +103,25 @@ parameters:
 			path: src/Events/InvoiceStatusEvent.php
 
 		-
-			message: '#^Parameter \#1 \$invoice of method TelegramBotEssentials\\Billing\\Services\\OfferService\:\:confirmRedemption\(\) expects TelegramBotEssentials\\Billing\\Models\\Invoice, Illuminate\\Database\\Eloquent\\Collection\<int, TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice given\.$#'
+			message: '#^Parameter \#1 \$invoice of method TelegramBotEssentials\\Billing\\Services\\OfferService\:\:confirmRedemption\(\) expects TelegramBotEssentials\\Billing\\Models\\Invoice, Illuminate\\Database\\Eloquent\\Collection\<\(int\|string\), TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Listeners/Invoices/ConfirmOfferRedemptionOnInvoicePaid.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:\$botUser\.$#'
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<\(int\|string\), TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:\$botUser\.$#'
 			identifier: property.notFound
 			count: 1
 			path: src/Listeners/Invoices/DispatchInvoiceFailedHooks.php
 
 		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<int, TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:getKey\(\)\.$#'
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<\(int\|string\), TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:getKey\(\)\.$#'
 			identifier: method.notFound
 			count: 1
 			path: src/Listeners/Invoices/DispatchInvoiceFailedHooks.php
 
 		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<int, TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:messageMeta\(\)\.$#'
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<\(int\|string\), TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:messageMeta\(\)\.$#'
 			identifier: method.notFound
 			count: 1
 			path: src/Listeners/Invoices/DispatchInvoiceFailedHooks.php
@@ -145,19 +145,19 @@ parameters:
 			path: src/Listeners/Invoices/DispatchInvoiceFailedHooks.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:\$botUser\.$#'
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<\(int\|string\), TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:\$botUser\.$#'
 			identifier: property.notFound
 			count: 1
 			path: src/Listeners/Invoices/DispatchInvoicePaidHooks.php
 
 		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<int, TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:getKey\(\)\.$#'
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<\(int\|string\), TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:getKey\(\)\.$#'
 			identifier: method.notFound
 			count: 1
 			path: src/Listeners/Invoices/DispatchInvoicePaidHooks.php
 
 		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<int, TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:messageMeta\(\)\.$#'
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<\(int\|string\), TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:messageMeta\(\)\.$#'
 			identifier: method.notFound
 			count: 1
 			path: src/Listeners/Invoices/DispatchInvoicePaidHooks.php
@@ -181,19 +181,19 @@ parameters:
 			path: src/Listeners/Invoices/DispatchInvoicePaidHooks.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:\$botUser\.$#'
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<\(int\|string\), TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:\$botUser\.$#'
 			identifier: property.notFound
 			count: 1
 			path: src/Listeners/Invoices/DispatchInvoicePendingHooks.php
 
 		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<int, TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:getKey\(\)\.$#'
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<\(int\|string\), TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:getKey\(\)\.$#'
 			identifier: method.notFound
 			count: 1
 			path: src/Listeners/Invoices/DispatchInvoicePendingHooks.php
 
 		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<int, TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:messageMeta\(\)\.$#'
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<\(int\|string\), TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:messageMeta\(\)\.$#'
 			identifier: method.notFound
 			count: 1
 			path: src/Listeners/Invoices/DispatchInvoicePendingHooks.php
@@ -217,25 +217,25 @@ parameters:
 			path: src/Listeners/Invoices/DispatchInvoicePendingHooks.php
 
 		-
-			message: '#^Parameter \#1 \$invoice of static method TelegramBotEssentials\\Billing\\Telegram\\Features\\Member\\InvoiceFeature\:\:invoice\(\) expects TelegramBotEssentials\\Billing\\Models\\Invoice, Illuminate\\Database\\Eloquent\\Collection\<int, TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice given\.$#'
+			message: '#^Parameter \#1 \$invoice of static method TelegramBotEssentials\\Billing\\Telegram\\Features\\Member\\InvoiceFeature\:\:invoice\(\) expects TelegramBotEssentials\\Billing\\Models\\Invoice, Illuminate\\Database\\Eloquent\\Collection\<\(int\|string\), TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Listeners/Invoices/DispatchInvoicePendingHooks.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:\$botUser\.$#'
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<\(int\|string\), TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:\$botUser\.$#'
 			identifier: property.notFound
 			count: 1
 			path: src/Listeners/Invoices/DispatchInvoiceRevokedHooks.php
 
 		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<int, TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:getKey\(\)\.$#'
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<\(int\|string\), TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:getKey\(\)\.$#'
 			identifier: method.notFound
 			count: 1
 			path: src/Listeners/Invoices/DispatchInvoiceRevokedHooks.php
 
 		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<int, TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:messageMeta\(\)\.$#'
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<\(int\|string\), TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:messageMeta\(\)\.$#'
 			identifier: method.notFound
 			count: 1
 			path: src/Listeners/Invoices/DispatchInvoiceRevokedHooks.php
@@ -259,13 +259,13 @@ parameters:
 			path: src/Listeners/Invoices/DispatchInvoiceRevokedHooks.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:\$payable\.$#'
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<\(int\|string\), TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:\$payable\.$#'
 			identifier: property.notFound
 			count: 1
 			path: src/Listeners/Invoices/InvokeInvoiceHooks.php
 
 		-
-			message: '#^Parameter \#1 \$invoice of method TelegramBotEssentials\\Billing\\Services\\OfferService\:\:releaseRedemption\(\) expects TelegramBotEssentials\\Billing\\Models\\Invoice, Illuminate\\Database\\Eloquent\\Collection\<int, TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice given\.$#'
+			message: '#^Parameter \#1 \$invoice of method TelegramBotEssentials\\Billing\\Services\\OfferService\:\:releaseRedemption\(\) expects TelegramBotEssentials\\Billing\\Models\\Invoice, Illuminate\\Database\\Eloquent\\Collection\<\(int\|string\), TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Listeners/Invoices/ReleaseOfferRedemptionOnInvoiceRevoked.php
@@ -428,12 +428,6 @@ parameters:
 
 		-
 			message: '#^Access to an undefined property TelegramBotEssentials\\Billing\\Models\\Offer\:\:\$expires_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: src/Models/Offer.php
-
-		-
-			message: '#^Access to an undefined property TelegramBotEssentials\\Billing\\Models\\Offer\:\:\$type\.$#'
 			identifier: property.notFound
 			count: 1
 			path: src/Models/Offer.php
@@ -759,25 +753,25 @@ parameters:
 		-
 			message: '#^Access to an undefined property TelegramBotEssentials\\Billing\\Models\\Offer\:\:\$max_discount\.$#'
 			identifier: property.notFound
-			count: 2
+			count: 1
 			path: src/Services/OfferService.php
 
 		-
 			message: '#^Access to an undefined property TelegramBotEssentials\\Billing\\Models\\Offer\:\:\$max_price\.$#'
 			identifier: property.notFound
-			count: 2
+			count: 1
 			path: src/Services/OfferService.php
 
 		-
 			message: '#^Access to an undefined property TelegramBotEssentials\\Billing\\Models\\Offer\:\:\$min_price\.$#'
 			identifier: property.notFound
-			count: 3
+			count: 2
 			path: src/Services/OfferService.php
 
 		-
 			message: '#^Access to an undefined property TelegramBotEssentials\\Billing\\Models\\Offer\:\:\$type\.$#'
 			identifier: property.notFound
-			count: 4
+			count: 2
 			path: src/Services/OfferService.php
 
 		-
@@ -790,6 +784,24 @@ parameters:
 			message: '#^Access to an undefined property TelegramBotEssentials\\Billing\\Models\\Offer\:\:\$usage_limit_per_user\.$#'
 			identifier: property.notFound
 			count: 2
+			path: src/Services/OfferService.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:offersAllowed\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Services/OfferService.php
+
+		-
+			message: '#^Cannot cast Brick\\Math\\BigDecimal\|int to int\.$#'
+			identifier: cast.int
+			count: 2
+			path: src/Services/OfferService.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 4
 			path: src/Services/OfferService.php
 
 		-
@@ -819,7 +831,13 @@ parameters:
 		-
 			message: '#^Parameter \#1 \$that of method Brick\\Math\\BigNumber\:\:isLessThan\(\) expects Brick\\Math\\BigNumber\|int\|string, mixed given\.$#'
 			identifier: argument.type
-			count: 2
+			count: 1
+			path: src/Services/OfferService.php
+
+		-
+			message: '#^Parameter \#1 \$value of method Carbon\\Carbon\:\:addDays\(\) expects float\|int, mixed given\.$#'
+			identifier: argument.type
+			count: 1
 			path: src/Services/OfferService.php
 
 		-
@@ -829,7 +847,19 @@ parameters:
 			path: src/Services/OfferService.php
 
 		-
+			message: '#^Parameter \#2 \$type of method TelegramBotEssentials\\Billing\\Services\\OfferService\:\:parseAmount\(\) expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Services/OfferService.php
+
+		-
 			message: '#^Parameter \#2 \.\.\.\$n of static method Brick\\Math\\BigNumber\:\:min\(\) expects Brick\\Math\\BigNumber\|int\|string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Services/OfferService.php
+
+		-
+			message: '#^Parameter \#3 \$minPrice of method TelegramBotEssentials\\Billing\\Services\\OfferService\:\:parseField\(\) expects string\|null, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Services/OfferService.php
@@ -895,22 +925,16 @@ parameters:
 			path: src/Telegram/CallbackQueries/Admin/OffersQuery.php
 
 		-
-			message: '#^Cannot access property \$chat on Telegram\\Bot\\Objects\\Message\|null\.$#'
-			identifier: property.nonObject
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:offersAllowed\(\)\.$#'
+			identifier: method.notFound
 			count: 1
-			path: src/Telegram/CallbackQueries/Admin/OffersQuery.php
+			path: src/Telegram/CallbackQueries/Member/InvoiceQuery.php
 
 		-
-			message: '#^Cannot access property \$message on Telegram\\Bot\\Objects\\CallbackQuery\|null\.$#'
-			identifier: property.nonObject
-			count: 2
-			path: src/Telegram/CallbackQueries/Admin/OffersQuery.php
-
-		-
-			message: '#^Cannot access property \$messageId on Telegram\\Bot\\Objects\\Message\|null\.$#'
-			identifier: property.nonObject
+			message: '#^Parameter \#1 \$condition of function dependsOn expects bool\|null, mixed given\.$#'
+			identifier: argument.type
 			count: 1
-			path: src/Telegram/CallbackQueries/Admin/OffersQuery.php
+			path: src/Telegram/CallbackQueries/Member/InvoiceQuery.php
 
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$created_at\.$#'
@@ -1143,13 +1167,19 @@ parameters:
 		-
 			message: '#^Access to an undefined property TelegramBotEssentials\\Billing\\Models\\Offer\:\:\$type\.$#'
 			identifier: property.notFound
-			count: 4
+			count: 3
 			path: src/Telegram/Features/Admin/OffersFeature.php
 
 		-
 			message: '#^Binary operation "\." between ''tbe\-billing\:\:offers…'' and mixed results in an error\.$#'
 			identifier: binaryOp.invalid
 			count: 2
+			path: src/Telegram/Features/Admin/OffersFeature.php
+
+		-
+			message: '#^Binary operation "\." between mixed and ''%%'' results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
 			path: src/Telegram/Features/Admin/OffersFeature.php
 
 		-
@@ -1191,7 +1221,19 @@ parameters:
 		-
 			message: '#^Parameter \#1 \$amount of method TelegramBotEssentials\\Billing\\Services\\Currency\:\:priceFormat\(\) expects string, mixed given\.$#'
 			identifier: argument.type
-			count: 6
+			count: 5
+			path: src/Telegram/Features/Admin/OffersFeature.php
+
+		-
+			message: '#^Parameter \#1 \$haystack of function str_contains expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Telegram/Features/Admin/OffersFeature.php
+
+		-
+			message: '#^Parameter \#1 \$string of function rtrim expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
 			path: src/Telegram/Features/Admin/OffersFeature.php
 
 		-
@@ -1210,12 +1252,6 @@ parameters:
 			message: '#^Part \$label \(mixed\) of encapsed string cannot be cast to string\.$#'
 			identifier: encapsedStringPart.nonString
 			count: 1
-			path: src/Telegram/Features/Admin/OffersFeature.php
-
-		-
-			message: '#^Part \$offer\-\>amount \(mixed\) of encapsed string cannot be cast to string\.$#'
-			identifier: encapsedStringPart.nonString
-			count: 2
 			path: src/Telegram/Features/Admin/OffersFeature.php
 
 		-
@@ -1251,12 +1287,18 @@ parameters:
 		-
 			message: '#^Access to an undefined property TelegramBotEssentials\\Billing\\Models\\Invoice\:\:\$price\.$#'
 			identifier: property.notFound
-			count: 2
+			count: 3
 			path: src/Telegram/Features/Member/InvoiceFeature.php
 
 		-
 			message: '#^Access to an undefined property TelegramBotEssentials\\Billing\\Models\\Invoice\:\:\$status\.$#'
 			identifier: property.notFound
+			count: 1
+			path: src/Telegram/Features/Member/InvoiceFeature.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:offersAllowed\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/Telegram/Features/Member/InvoiceFeature.php
 
@@ -1269,7 +1311,7 @@ parameters:
 		-
 			message: '#^Parameter \#1 \$amount of method TelegramBotEssentials\\Billing\\Services\\Currency\:\:priceFormat\(\) expects string, mixed given\.$#'
 			identifier: argument.type
-			count: 2
+			count: 3
 			path: src/Telegram/Features/Member/InvoiceFeature.php
 
 		-
@@ -1297,6 +1339,36 @@ parameters:
 			path: src/Telegram/Features/Member/InvoiceFeature.php
 
 		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 1
+			path: src/Telegram/Forms/CreateOfferForm.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 3
+			path: src/Telegram/Forms/CreateOfferForm.php
+
+		-
+			message: '#^Parameter \#1 \$botId of method TelegramBotEssentials\\Billing\\Services\\OfferService\:\:createFromAnswers\(\) expects int, int\|string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Telegram/Forms/CreateOfferForm.php
+
+		-
+			message: '#^Parameter \#1 \$botId of method TelegramBotEssentials\\Billing\\Services\\OfferService\:\:isCodeTaken\(\) expects int, int\|string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Telegram/Forms/CreateOfferForm.php
+
+		-
+			message: '#^Parameter \#3 \$minPrice of method TelegramBotEssentials\\Billing\\Services\\OfferService\:\:parseField\(\) expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Telegram/Forms/CreateOfferForm.php
+
+		-
 			message: '#^Cannot access property \$peer_id on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
 			identifier: property.nonObject
 			count: 1
@@ -1321,27 +1393,9 @@ parameters:
 			path: src/Telegram/StateAnswers/Admin/ManageInvoicesAnswer.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, TelegramBotEssentials\\Billing\\Models\\Offer\>\|TelegramBotEssentials\\Billing\\Models\\Offer\:\:\$is_enabled\.$#'
-			identifier: property.notFound
-			count: 1
-			path: src/Telegram/StateAnswers/Admin/OffersAnswer.php
-
-		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<int, TelegramBotEssentials\\Billing\\Models\\Offer\>\|TelegramBotEssentials\\Billing\\Models\\Offer\:\:forceDelete\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/Telegram/StateAnswers/Admin/OffersAnswer.php
-
-		-
 			message: '#^Cannot access property \$text on Telegram\\Bot\\Objects\\Message\|null\.$#'
 			identifier: property.nonObject
-			count: 5
-			path: src/Telegram/StateAnswers/Admin/OffersAnswer.php
-
-		-
-			message: '#^Parameter \#1 \$botId of method TelegramBotEssentials\\Billing\\Services\\OfferService\:\:isCodeTaken\(\) expects int, int\|string given\.$#'
-			identifier: argument.type
-			count: 1
+			count: 2
 			path: src/Telegram/StateAnswers/Admin/OffersAnswer.php
 
 		-
@@ -1353,7 +1407,7 @@ parameters:
 		-
 			message: '#^Parameter \#1 \$string of function trim expects string, string\|null given\.$#'
 			identifier: argument.type
-			count: 4
+			count: 1
 			path: src/Telegram/StateAnswers/Admin/OffersAnswer.php
 
 		-
