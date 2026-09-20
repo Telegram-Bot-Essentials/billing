@@ -50,6 +50,40 @@ it('rejects an unknown code', function () {
         ->toThrow(ValidationException::class);
 });
 
+it('rejects any code when the order type does not allow offers', function () {
+    $offer = Offer::factory()->create(['bot_id' => $this->bot->id]);
+    $invoice = makeTestInvoice();
+    $invoice->setRelation('payable', new class extends \TelegramBotEssentials\Billing\Models\Abstract\Order
+    {
+        public function getPaidAtAttribute(): ?\Illuminate\Support\Carbon
+        {
+            return null;
+        }
+
+        public function getAmountAttribute(): string
+        {
+            return '0';
+        }
+
+        public function getDescriptionAttribute(): string
+        {
+            return '';
+        }
+
+        public function offersAllowed(): bool
+        {
+            return false;
+        }
+
+        public function invoicePaidHook(): void {}
+
+        public function cancelOrderHook(): void {}
+    });
+
+    expect(fn () => app(OfferService::class)->redeem($invoice, $offer->code))
+        ->toThrow(ValidationException::class);
+});
+
 it('rejects a disabled code', function () {
     $offer = Offer::factory()->disabled()->create(['bot_id' => $this->bot->id]);
     $invoice = makeTestInvoice();
