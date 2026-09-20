@@ -17,6 +17,8 @@ class InvoiceQuery extends CallbackQuery
 
     public function useOfferCode(Invoice $invoice): void
     {
+        dependsOn($invoice->payable?->offersAllowed() ?? true);
+
         $messageMeta = MessageMeta::makeWithCurrentMessage();
         $messageMeta->cancelableLockAction(__('tbe-billing::invoice.offer.lockLabel'));
 
