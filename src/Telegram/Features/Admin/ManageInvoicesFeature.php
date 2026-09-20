@@ -4,6 +4,7 @@ namespace TelegramBotEssentials\Billing\Telegram\Features\Admin;
 
 use Telegram\Bot\Keyboard\Keyboard;
 use TelegramBotEssentials\Billing\Models\Invoice;
+use TelegramBotEssentials\Billing\Telegram\Features\Member\InvoiceFeature;
 use TelegramBotEssentials\Essence\Exceptions\InvalidPageNumber;
 use TelegramBotEssentials\Essence\Services\TelegramPaginator;
 use TelegramBotEssentials\Essence\Telegram\TelegramResponse;
@@ -146,6 +147,10 @@ class ManageInvoicesFeature
             'paymentAttemptDate' => $invoice->paymentAttempt?->created_at ?? '—',
             'orderDescription' => $orderDescription,
         ]);
+
+        if ($offerSummary = InvoiceFeature::offerSummary($invoice)) {
+            $text .= "\r\n".$offerSummary;
+        }
 
         $replyMarkup = Keyboard::make()
             ->inline();
