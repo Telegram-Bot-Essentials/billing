@@ -6,6 +6,14 @@ stabilizes at 1.0 a `0.0.x` bump may carry breaking changes.
 
 ## [Unreleased]
 
+## [0.0.37] - 2026-09-22
+
+### Changed
+
+- Pagination now uses `TelegramPaginator::addNavigationRow()` instead of
+  `makeNavigationButtonsRow()`, so the nav row is skipped entirely on a
+  single-page list.
+
 ## [0.0.36] - 2026-09-22
 
 ### Changed

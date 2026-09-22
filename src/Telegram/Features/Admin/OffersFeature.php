@@ -50,7 +50,7 @@ class OffersFeature
             ]);
         }
 
-        $replyMarkup->row(TelegramPaginator::makeNavigationButtonsRow(self::$type, $page, $offers->lastPage()));
+        TelegramPaginator::addNavigationRow($replyMarkup, self::$type, $page, $offers->lastPage());
 
         return new TelegramResponse(
             text: __('tbe-billing::offers.main.text.list'),

@@ -96,7 +96,7 @@ class ManageInvoicesFeature
             ]);
         }
 
-        $replyMarkup->row(TelegramPaginator::makeNavigationButtonsRow(self::$type, $page, $invoices->lastPage(), extraParams: [$sortBy, $sortDir]));
+        TelegramPaginator::addNavigationRow($replyMarkup, self::$type, $page, $invoices->lastPage(), extraParams: [$sortBy, $sortDir]);
 
         return new TelegramResponse(
             text: $text,
