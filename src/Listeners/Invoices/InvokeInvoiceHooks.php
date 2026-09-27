@@ -16,7 +16,7 @@ class InvokeInvoiceHooks
         $invoice = Invoice::find($event->invoice->getKey());
 
         if (! $invoice) {
-            tbeLog('billing')->warning('Invoice hook skipped because invoice no longer exists.', [
+            tbeLog('billing')->warning('Invoice hook skipped: invoice #{invoice_id} no longer exists', [
                 'invoice_id' => $event->invoice->getKey(),
             ]);
 

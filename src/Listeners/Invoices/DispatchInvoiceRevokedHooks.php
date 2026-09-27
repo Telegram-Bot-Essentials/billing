@@ -12,7 +12,7 @@ class DispatchInvoiceRevokedHooks
         $invoice = Invoice::find($event->invoice->getKey());
 
         if (! $invoice) {
-            tbeLog('billing')->warning('InvoiceRevoked event skipped because invoice no longer exists.', [
+            tbeLog('billing')->warning('InvoiceRevoked skipped: invoice #{invoice_id} no longer exists', [
                 'invoice_id' => $event->invoice->getKey(),
             ]);
 
@@ -30,7 +30,7 @@ class DispatchInvoiceRevokedHooks
                 $messageMeta->lockAction(__('tbe-billing::invoice.locks.user_payment.cancelled'), customEmoji: '❌');
             });
         } catch (\Exception $e) {
-            tbeLog('billing')->error('Failed to send InvoiceRevoked notification: '.$e->getMessage(), ['exception' => $e, 'invoice_id' => $invoice->getKey()]);
+            tbeLog('billing')->error('Could not tell the user invoice #{invoice_id} is revoked: '.$e->getMessage(), ['exception' => $e, 'invoice_id' => $invoice->getKey()]);
         }
     }
 }

@@ -12,7 +12,7 @@ class DispatchInvoicePaidHooks
         $invoice = Invoice::find($event->invoice->getKey());
 
         if (! $invoice) {
-            tbeLog('billing')->warning('InvoicePaid event skipped because invoice no longer exists.', [
+            tbeLog('billing')->warning('InvoicePaid skipped: invoice #{invoice_id} no longer exists', [
                 'invoice_id' => $event->invoice->getKey(),
             ]);
 
@@ -30,7 +30,7 @@ class DispatchInvoicePaidHooks
                 $messageMeta->lockAction(__('tbe-billing::invoice.locks.user_payment.accepted'), customEmoji: '✅');
             });
         } catch (\Exception $e) {
-            tbeLog('billing')->error('Failed to send InvoicePaid notification: '.$e->getMessage(), ['exception' => $e, 'invoice_id' => $invoice->getKey()]);
+            tbeLog('billing')->error('Could not tell the user invoice #{invoice_id} is paid: '.$e->getMessage(), ['exception' => $e, 'invoice_id' => $invoice->getKey()]);
         }
     }
 }
