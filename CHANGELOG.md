@@ -6,6 +6,14 @@ stabilizes at 1.0 a `0.0.x` bump may carry breaking changes.
 
 ## [Unreleased]
 
+### Changed
+
+- Requires essence `^0.15` for `tbeLog()->for()` and placeholder messages.
+- Log messages name what they are about (`Invoice #12 paid: 250000`,
+  `Invoice #12 created for ServiceOrder #40: 250000`) and are bound to the
+  invoice's user, so a line from a gateway callback or the overdue sweep
+  says whose invoice it is without expanding its context.
+
 ## [0.0.37] - 2026-09-22
 
 ### Changed
