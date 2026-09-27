@@ -102,7 +102,7 @@ class Invoice extends Model
         }
 
         if ($previousStatus === 'paid' && $value !== 'paid') {
-            tbeLog('billing')->info('Invoice revoked', [
+            tbeLog('billing')->for($this->botUser)->info('Invoice #{invoice_id} revoked: paid -> {new_status}', [
                 'invoice_id' => $this->getKey(),
                 'price' => $this->price,
                 'new_status' => $value,
@@ -129,7 +129,7 @@ class Invoice extends Model
         $this->save();
         $this->refresh();
 
-        tbeLog('billing')->info('Invoice paid', [
+        tbeLog('billing')->for($this->botUser)->info('Invoice #{invoice_id} paid: {price}', [
             'invoice_id' => $this->getKey(),
             'price' => $this->price,
             'previous_status' => $previousStatus,
@@ -153,7 +153,7 @@ class Invoice extends Model
         $this->save();
         $this->refresh();
 
-        tbeLog('billing')->info('Invoice failed', [
+        tbeLog('billing')->for($this->botUser)->info('Invoice #{invoice_id} failed (was {previous_status})', [
             'invoice_id' => $this->getKey(),
             'price' => $this->price,
             'previous_status' => $previousStatus,
@@ -177,7 +177,7 @@ class Invoice extends Model
         $this->save();
         $this->refresh();
 
-        tbeLog('billing')->info('Invoice pending', [
+        tbeLog('billing')->for($this->botUser)->info('Invoice #{invoice_id} pending (was {previous_status})', [
             'invoice_id' => $this->getKey(),
             'price' => $this->price,
             'previous_status' => $previousStatus,
