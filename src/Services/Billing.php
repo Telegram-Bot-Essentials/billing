@@ -22,9 +22,10 @@ class Billing
         // reloads it.
         $invoice->refresh();
 
-        tbeLog('billing')->info('Invoice created', [
+        tbeLog('billing')->for($order->botUser)->info('Invoice #{invoice_id} created for {order} #{order_id}: {price}', [
             'invoice_id' => $invoice->getKey(),
             'price' => $invoice->price,
+            'order' => class_basename($order),
             'order_type' => get_class($order),
             'order_id' => $order->getKey(),
         ]);
@@ -37,8 +38,9 @@ class Billing
         $invoice->paymentAttempt()->associate($paymentAttempt);
         $invoice->save();
 
-        tbeLog('billing')->info('Payment attempt associated', [
+        tbeLog('billing')->for($invoice->botUser)->info('Invoice #{invoice_id} is being paid by {attempt} #{attempt_id}', [
             'invoice_id' => $invoice->getKey(),
+            'attempt' => class_basename($paymentAttempt),
             'attempt_type' => get_class($paymentAttempt),
             'attempt_id' => $paymentAttempt->getKey(),
         ]);
