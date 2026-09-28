@@ -6,6 +6,11 @@ stabilizes at 1.0 a `0.0.x` bump may carry breaking changes.
 
 ## [Unreleased]
 
+### Removed
+
+- The `invoice.summary.keys.to_zirgozar` string: the Zirgozar gateway has shut
+  down and essence no longer ships it.
+
 ## [0.0.38] - 2026-09-27
 
 ### Changed
