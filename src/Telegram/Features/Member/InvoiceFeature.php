@@ -73,15 +73,6 @@ class InvoiceFeature
         //            ])]);
         //        }
         //
-        //        if(wHook()->bot()->settings->zirgozar){
-        //            $replyMarkup->row([Keyboard::inlineButton([
-        //                'text' => __('tbe-billing::invoice.summary.keys.to_zirgozar', [
-        //                    'price' => number_format(priceIn($invoice->price)->toIRT())
-        //                ]),
-        //                'url' => route('invoice.zirgozar.pay', ['token' => $invoice->public_token])
-        //            ])]);
-        //        }
-        //
         //        if(wHook()->bot()->settings->zibal){
         //            $replyMarkup->row([Keyboard::inlineButton([
         //                'text' => __('tbe-billing::invoice.summary.keys.to_zibal', [
