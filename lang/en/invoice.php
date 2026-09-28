@@ -22,7 +22,6 @@ return [
         'keys' => [
             'to_card' => 'Pay To Card 💳 - :price تومان',
             'by_wallet' => 'Pay Using wallet 💰 - :price',
-            'to_zirgozar' => 'Pay with zirgozar 💰 - :price تومان',
             'to_zarinpal' => 'Pay with zarinpal 💰 - :price تومان',
             'to_zibal' => 'Pay with zibal 💰 - :price تومان',
             'back_to_previous' => '🔙 Back to previous action',
