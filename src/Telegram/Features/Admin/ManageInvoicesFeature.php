@@ -2,7 +2,6 @@
 
 namespace TelegramBotEssentials\Billing\Telegram\Features\Admin;
 
-use Telegram\Bot\Keyboard\Button;
 use Telegram\Bot\Keyboard\Keyboard;
 use TelegramBotEssentials\Billing\Models\Invoice;
 use TelegramBotEssentials\Billing\Services\InvoiceStats;
@@ -47,7 +46,7 @@ class ManageInvoicesFeature
 
             return new TelegramResponse(
                 text: $text,
-                replyMarkup: $userId ? Keyboard::make()->inline()->row([self::backToProfile($userId)]) : null,
+                replyMarkup: $userId ? Keyboard::make()->inline()->row(self::backToProfile($userId)) : null,
                 parseMode: 'HTML'
             );
         }
@@ -109,7 +108,7 @@ class ManageInvoicesFeature
         TelegramPaginator::addNavigationRow($replyMarkup, self::$type, $page, $invoices->lastPage(), extraParams: [$sortBy, $sortDir, $userId]);
 
         if ($userId) {
-            $replyMarkup->row([self::backToProfile($userId)]);
+            $replyMarkup->row(self::backToProfile($userId));
         }
 
         return new TelegramResponse(
@@ -205,12 +204,16 @@ class ManageInvoicesFeature
         );
     }
 
-    /** The way back to the member's profile in user management. */
-    private static function backToProfile(int $userId): Button
+    /**
+     * The row with the way back to the member's profile in user management.
+     *
+     * @return list<mixed>
+     */
+    private static function backToProfile(int $userId): array
     {
-        return Keyboard::inlineButton([
+        return [Keyboard::inlineButton([
             'text' => __('tbe-billing::manage_invoices.main.keys.back_to_profile'),
             'callback_data' => encodeCallback('BOTUSERS', 'show', [$userId]),
-        ]);
+        ])];
     }
 }
