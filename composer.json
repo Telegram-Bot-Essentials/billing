@@ -9,6 +9,9 @@
         "telegram-bot-essentials/essence": "^0.15 || ^0.16",
         "telegram-bot-essentials/settings": "~0.0.17"
     },
+    "suggest": {
+        "telegram-bot-essentials/user-management": "Adds an invoices section to a member's profile in the admin user list."
+    },
     "license": "MIT",
     "autoload": {
         "psr-4": {

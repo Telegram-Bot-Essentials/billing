@@ -6,6 +6,14 @@ stabilizes at 1.0 a `0.0.x` bump may carry breaking changes.
 
 ## [Unreleased]
 
+### Added
+
+- With user-management installed, a member's profile gets an "Invoices" button into the invoice list narrowed to that member.
+
+### Changed
+
+- The paid-invoice figures moved from the user-management list header to the top of the invoice list; billing no longer registers a user-management stat.
+
 ## [0.0.40] - 2026-10-01
 
 ### Changed
