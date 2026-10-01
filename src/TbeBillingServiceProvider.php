@@ -6,25 +6,28 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\ServiceProvider;
 use TelegramBotEssentials\Billing\Console\Commands\MarkOverdueInvoicesAsFailed;
+use TelegramBotEssentials\Billing\Models\Invoice;
 use TelegramBotEssentials\Billing\Providers\EventServiceProvider;
 use TelegramBotEssentials\Billing\Services\Billing;
 use TelegramBotEssentials\Billing\Services\Currency;
 use TelegramBotEssentials\Billing\Services\Gateways;
-use TelegramBotEssentials\Billing\Services\InvoiceStats;
 use TelegramBotEssentials\Billing\Services\OfferService;
 use TelegramBotEssentials\Billing\Telegram\CallbackQueries\Admin\ManageInvoicesQuery;
 use TelegramBotEssentials\Billing\Telegram\CallbackQueries\Admin\OffersQuery;
 use TelegramBotEssentials\Billing\Telegram\CallbackQueries\Member\InvoiceQuery;
+use TelegramBotEssentials\Billing\Telegram\Features\Admin\ManageInvoicesFeature;
 use TelegramBotEssentials\Billing\Telegram\Forms\CreateOfferForm;
 use TelegramBotEssentials\Billing\Telegram\ReplyKeys\Admin\OffersKey;
 use TelegramBotEssentials\Billing\Telegram\StateAnswers\Admin\ManageInvoicesAnswer;
 use TelegramBotEssentials\Billing\Telegram\StateAnswers\Admin\OffersAnswer;
 use TelegramBotEssentials\Billing\Telegram\StateAnswers\Member\InvoiceAnswer;
 use TelegramBotEssentials\Essence\Exceptions\LogicException;
+use TelegramBotEssentials\Essence\Models\BotUser;
 use TelegramBotEssentials\Settings\DTOs\Setting;
 use TelegramBotEssentials\Settings\Enums\SettingType;
-use TelegramBotEssentials\UserManagement\DTOs\UserStat;
-use TelegramBotEssentials\UserManagement\Services\UserManagementStats;
+use TelegramBotEssentials\UserManagement\DTOs\UserSection;
+use TelegramBotEssentials\UserManagement\Enums\SectionMode;
+use TelegramBotEssentials\UserManagement\Services\UserManagementSections;
 
 class TbeBillingServiceProvider extends ServiceProvider
 {
@@ -120,7 +123,7 @@ class TbeBillingServiceProvider extends ServiceProvider
         ]);
 
         $this->addSettings();
-        $this->registerUserStat();
+        $this->registerUserSection();
 
         $this->callAfterResolving(Schedule::class, function (Schedule $schedule) {
             $schedule->command(MarkOverdueInvoicesAsFailed::class)->hourly();
@@ -128,19 +131,23 @@ class TbeBillingServiceProvider extends ServiceProvider
     }
 
     /**
-     * user-management is not a dependency of this package, so the header of its
-     * user list is only fed when the app happens to have it installed.
+     * Optional: user-management is not a dependency of this package. A member's profile in user management gets a button
+     * into the invoice list narrowed to that member.
      */
-    private function registerUserStat(): void
+    private function registerUserSection(): void
     {
-        if (! class_exists(UserManagementStats::class)) {
+        if (! class_exists(UserSection::class)) {
             return;
         }
 
-        app(UserManagementStats::class)->addStat(new UserStat(
-            key: 'billing',
-            order: 20,
-            content: fn () => app(InvoiceStats::class)->render(),
+        app(UserManagementSections::class)->addSection(new UserSection(
+            key: 'invoices',
+            order: 30,
+            mode: SectionMode::BUTTON,
+            label: fn (BotUser $user) => __('tbe-billing::user_management.section.label', [
+                'count' => Invoice::query()->where('bot_user_id', $user->id)->count(),
+            ]),
+            target: fn (BotUser $user) => encodeCallback(ManageInvoicesFeature::$type, 'user', [$user->id]),
         ));
     }
 
