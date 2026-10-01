@@ -865,12 +865,6 @@ parameters:
 			path: src/Services/OfferService.php
 
 		-
-			message: '#^Instantiated class TelegramBotEssentials\\UserManagement\\DTOs\\UserStat not found\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/TbeBillingServiceProvider.php
-
-		-
 			message: '#^Parameter \#1 \$value of function collect expects Illuminate\\Contracts\\Support\\Arrayable\<\(int\|string\), mixed\>\|iterable\<\(int\|string\), mixed\>\|null, mixed given\.$#'
 			identifier: argument.type
 			count: 1

@@ -40,7 +40,8 @@
         "laravel/pint": "^1.18",
         "orchestra/testbench": "^10.0 || ^11.0",
         "pestphp/pest": "^3.7 || ^4.0",
-        "pestphp/pest-plugin-laravel": "^3.1 || ^4.0"
+        "pestphp/pest-plugin-laravel": "^3.1 || ^4.0",
+        "telegram-bot-essentials/user-management": "~0.0.17"
     },
     "autoload-dev": {
         "psr-4": {
