@@ -8,6 +8,7 @@ use TelegramBotEssentials\Billing\Models\Invoice;
 use TelegramBotEssentials\Billing\Telegram\Features\Admin\ManageInvoicesFeature;
 use TelegramBotEssentials\Essence\Enums\Roles;
 use TelegramBotEssentials\Essence\Exceptions\LogicException;
+use TelegramBotEssentials\Essence\Models\BotUser;
 use TelegramBotEssentials\Essence\Models\MessageMeta;
 use TelegramBotEssentials\Essence\Telegram\CallbackQueries\CallbackQuery;
 
@@ -17,23 +18,31 @@ class ManageInvoicesQuery extends CallbackQuery
 
     protected int $perm = Roles::ADMIN->value;
 
-    public function start(int $page = 1, int $currentPage = 0, string $sortBy = 'id', string $sortDir = 'desc'): void
+    public function start(int $page = 1, int $currentPage = 0, string $sortBy = 'id', string $sortDir = 'desc', int $userId = 0): void
     {
-        ManageInvoicesFeature::menu($page, $currentPage, $sortBy, $sortDir)->update();
+        ManageInvoicesFeature::menu($page, $currentPage, $sortBy, $sortDir, $userId)->update();
+    }
+
+    /**
+     * The "invoices" section of a member's profile in user management.
+     */
+    public function user(BotUser $botUser): void
+    {
+        ManageInvoicesFeature::menu(userId: $botUser->id)->update();
     }
 
     /**
      * @throws TelegramSDKException
      */
-    public function show(Invoice $invoice, int $lastPage = 1, string $sortBy = 'id', string $sortDir = 'desc'): void
+    public function show(Invoice $invoice, int $lastPage = 1, string $sortBy = 'id', string $sortDir = 'desc', int $userId = 0): void
     {
-        ManageInvoicesFeature::show($invoice, $lastPage, $sortBy, $sortDir)->update();
+        ManageInvoicesFeature::show($invoice, $lastPage, $sortBy, $sortDir, $userId)->update();
     }
 
     /**
      * @throws TelegramSDKException
      */
-    public function markAsPaid(Invoice $invoice, int $lastPage = 1, string $sortBy = 'id', string $sortDir = 'desc'): void
+    public function markAsPaid(Invoice $invoice, int $lastPage = 1, string $sortBy = 'id', string $sortDir = 'desc', int $userId = 0): void
     {
         if ($invoice->status == 'paid') {
             wHook()->api()->answerCallbackQuery([
@@ -45,13 +54,13 @@ class ManageInvoicesQuery extends CallbackQuery
             return;
         }
         $invoice->markAsPaid();
-        ManageInvoicesFeature::show($invoice, $lastPage, $sortBy, $sortDir)->update();
+        ManageInvoicesFeature::show($invoice, $lastPage, $sortBy, $sortDir, $userId)->update();
     }
 
     /**
      * @throws TelegramSDKException
      */
-    public function markAsPending(Invoice $invoice, int $lastPage = 1, string $sortBy = 'id', string $sortDir = 'desc'): void
+    public function markAsPending(Invoice $invoice, int $lastPage = 1, string $sortBy = 'id', string $sortDir = 'desc', int $userId = 0): void
     {
         if ($invoice->status == 'pending') {
             wHook()->api()->answerCallbackQuery([
@@ -63,13 +72,13 @@ class ManageInvoicesQuery extends CallbackQuery
             return;
         }
         $invoice->markAsPending();
-        ManageInvoicesFeature::show($invoice, $lastPage, $sortBy, $sortDir)->update();
+        ManageInvoicesFeature::show($invoice, $lastPage, $sortBy, $sortDir, $userId)->update();
     }
 
     /**
      * @throws TelegramSDKException
      */
-    public function markAsFailed(Invoice $invoice, int $lastPage = 1, string $sortBy = 'id', string $sortDir = 'desc'): void
+    public function markAsFailed(Invoice $invoice, int $lastPage = 1, string $sortBy = 'id', string $sortDir = 'desc', int $userId = 0): void
     {
         if ($invoice->status == 'failed') {
             wHook()->api()->answerCallbackQuery([
@@ -81,7 +90,7 @@ class ManageInvoicesQuery extends CallbackQuery
             return;
         }
         $invoice->markAsFailed();
-        ManageInvoicesFeature::show($invoice, $lastPage, $sortBy, $sortDir)->update();
+        ManageInvoicesFeature::show($invoice, $lastPage, $sortBy, $sortDir, $userId)->update();
     }
 
     /**
@@ -89,7 +98,7 @@ class ManageInvoicesQuery extends CallbackQuery
      * @throws BindingResolutionException
      * @throws TelegramSDKException
      */
-    public function setStartPage(string $sortBy = 'id', string $sortDir = 'desc'): void
+    public function setStartPage(string $sortBy = 'id', string $sortDir = 'desc', int $userId = 0): void
     {
         $messageMeta = MessageMeta::makeWithCurrentMessage();
         $messageMeta->lockAction(__('tbe-billing::manage_invoices.main.text.waiting_page'));
@@ -97,6 +106,7 @@ class ManageInvoicesQuery extends CallbackQuery
             'message_meta_id' => $messageMeta->id,
             'sortBy' => $sortBy,
             'sortDir' => $sortDir,
+            'userId' => $userId,
         ]));
         wHook()->api()->sendMessage([
             'chat_id' => wHook()->user()->telegramUser->peer_id,
