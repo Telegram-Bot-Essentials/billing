@@ -7,6 +7,7 @@ namespace TelegramBotEssentials\Billing\Tests;
 use TelegramBotEssentials\Billing\TbeBillingServiceProvider;
 use TelegramBotEssentials\Essence\Testing\TestCase as EssenceTestCase;
 use TelegramBotEssentials\Settings\TbeSettingsServiceProvider;
+use TelegramBotEssentials\UserManagement\TbeUserManagementServiceProvider;
 
 abstract class TestCase extends EssenceTestCase
 {
@@ -14,6 +15,7 @@ abstract class TestCase extends EssenceTestCase
     {
         return array_merge(parent::getPackageProviders($app), [
             TbeSettingsServiceProvider::class,
+            TbeUserManagementServiceProvider::class,
             TbeBillingServiceProvider::class,
         ]);
     }
