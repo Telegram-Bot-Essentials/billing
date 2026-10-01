@@ -6,6 +6,8 @@ stabilizes at 1.0 a `0.0.x` bump may carry breaking changes.
 
 ## [Unreleased]
 
+## [0.0.41] - 2026-10-01
+
 ### Added
 
 - With user-management installed, a member's profile gets an "Invoices" button into the invoice list narrowed to that member.
