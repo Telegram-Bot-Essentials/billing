@@ -6,6 +6,12 @@ stabilizes at 1.0 a `0.0.x` bump may carry breaking changes.
 
 ## [Unreleased]
 
+## [0.0.42] - 2026-10-01
+
+### Fixed
+
+- Static analysis passes with the optional user-management section classes present.
+
 ## [0.0.41] - 2026-10-01
 
 ### Added
