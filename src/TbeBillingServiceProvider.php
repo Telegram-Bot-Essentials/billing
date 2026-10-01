@@ -4,6 +4,7 @@ namespace TelegramBotEssentials\Billing;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\ServiceProvider;
 use TelegramBotEssentials\Billing\Console\Commands\MarkOverdueInvoicesAsFailed;
 use TelegramBotEssentials\Billing\Models\Invoice;
@@ -25,8 +26,10 @@ use TelegramBotEssentials\Essence\Exceptions\LogicException;
 use TelegramBotEssentials\Essence\Models\BotUser;
 use TelegramBotEssentials\Settings\DTOs\Setting;
 use TelegramBotEssentials\Settings\Enums\SettingType;
+use TelegramBotEssentials\UserManagement\DTOs\BotUserSort;
 use TelegramBotEssentials\UserManagement\DTOs\UserSection;
 use TelegramBotEssentials\UserManagement\Enums\SectionMode;
+use TelegramBotEssentials\UserManagement\Services\BotUserSorts;
 use TelegramBotEssentials\UserManagement\Services\UserManagementSections;
 
 class TbeBillingServiceProvider extends ServiceProvider
@@ -149,6 +152,29 @@ class TbeBillingServiceProvider extends ServiceProvider
             ]),
             target: fn (BotUser $user) => encodeCallback(ManageInvoicesFeature::$type, 'user', [$user->id]),
         ));
+
+        // Paid invoices only: pending and failed ones are not money the member has spent.
+        app(BotUserSorts::class)->addSort(new BotUserSort(
+            key: 'total_paid',
+            label: fn () => __('tbe-billing::user_management.sorts.total_paid'),
+            apply: fn (Builder $query, string $direction) => $direction === 'asc'
+                ? $query->orderBy(self::paidTotal())
+                : $query->orderByDesc(self::paidTotal()),
+            display: fn (BotUser $user) => currency()->priceFormat((string) Invoice::query()->where('bot_user_id', $user->id)->where('status', 'paid')->sum('price')),
+        ));
+    }
+
+    /**
+     * The sum of the paid invoices of the outer bot_users row, as a subquery.
+     *
+     * @return Builder<Invoice>
+     */
+    private static function paidTotal(): Builder
+    {
+        return Invoice::query()
+            ->selectRaw('COALESCE(SUM(price), 0)')
+            ->where('status', 'paid')
+            ->whereColumn('bot_user_id', 'bot_users.id');
     }
 
     private function addSettings(): void
