@@ -2,8 +2,10 @@
 
 namespace TelegramBotEssentials\Billing\Telegram\Features\Admin;
 
+use Telegram\Bot\Keyboard\Button;
 use Telegram\Bot\Keyboard\Keyboard;
 use TelegramBotEssentials\Billing\Models\Invoice;
+use TelegramBotEssentials\Billing\Services\InvoiceStats;
 use TelegramBotEssentials\Billing\Telegram\Features\Member\InvoiceFeature;
 use TelegramBotEssentials\Essence\Exceptions\InvalidPageNumber;
 use TelegramBotEssentials\Essence\Services\TelegramPaginator;
@@ -16,9 +18,11 @@ class ManageInvoicesFeature
     // TODO: Implement static functions for generating bot messages
 
     /**
+     * @param  int  $userId  narrows the list to one member's invoices (their user-management profile links here); 0 lists every invoice
+     *
      * @throws InvalidPageNumber
      */
-    public static function menu(int $page = 1, int $currentPage = 0, string $sortBy = 'id', string $sortDir = 'desc'): TelegramResponse
+    public static function menu(int $page = 1, int $currentPage = 0, string $sortBy = 'id', string $sortDir = 'desc', int $userId = 0): TelegramResponse
     {
         $allowedSortColumns = ['id', 'bot_user_id', 'payable_type', 'status', 'created_at', 'price'];
         $sortBy = in_array($sortBy, $allowedSortColumns) ? $sortBy : 'id';
@@ -26,10 +30,15 @@ class ManageInvoicesFeature
 
         $text = __('tbe-billing::manage_invoices.main.text.list');
 
+        // The whole shop's figures, so a single member's list leaves them out.
+        if (! $userId && $stats = app(InvoiceStats::class)->render()) {
+            $text .= "\r\n\r\n".$stats;
+        }
+
         $replyMarkup = Keyboard::make()
             ->inline();
 
-        $invoices = Invoice::query()->orderBy($sortBy, $sortDir)->paginate(perPage: 10, page: $page);
+        $invoices = Invoice::query()->when($userId, fn ($query) => $query->where('bot_user_id', $userId))->orderBy($sortBy, $sortDir)->paginate(perPage: 10, page: $page);
 
         TelegramPaginator::validatePageNumber($page, $currentPage, $invoices);
 
@@ -38,6 +47,7 @@ class ManageInvoicesFeature
 
             return new TelegramResponse(
                 text: $text,
+                replyMarkup: $userId ? Keyboard::make()->inline()->row([self::backToProfile($userId)]) : null,
                 parseMode: 'HTML'
             );
         }
@@ -58,15 +68,15 @@ class ManageInvoicesFeature
         $replyMarkup->row([
             Keyboard::inlineButton([
                 'text' => __('tbe-billing::manage_invoices.main.keys.col_id').$sortIndicator('bot_user_id'),
-                'callback_data' => encodeCallback(self::$type, 'start', [$page, 0, 'bot_user_id', $nextDir('bot_user_id')]),
+                'callback_data' => encodeCallback(self::$type, 'start', [$page, 0, 'bot_user_id', $nextDir('bot_user_id'), $userId]),
             ]),
             Keyboard::inlineButton([
                 'text' => __('tbe-billing::manage_invoices.main.keys.col_type').$typeDateIndicator,
-                'callback_data' => encodeCallback(self::$type, 'start', [$page, 0, $nextTypeDateSortBy, $nextTypeDateSortDir]),
+                'callback_data' => encodeCallback(self::$type, 'start', [$page, 0, $nextTypeDateSortBy, $nextTypeDateSortDir, $userId]),
             ]),
             Keyboard::inlineButton([
                 'text' => __('tbe-billing::manage_invoices.main.keys.col_status').$sortIndicator('price'),
-                'callback_data' => encodeCallback(self::$type, 'start', [$page, 0, 'price', $nextDir('price')]),
+                'callback_data' => encodeCallback(self::$type, 'start', [$page, 0, 'price', $nextDir('price'), $userId]),
             ]),
         ]);
 
@@ -78,11 +88,11 @@ class ManageInvoicesFeature
             $replyMarkup->row([
                 Keyboard::inlineButton([
                     'text' => $userLabel,
-                    'callback_data' => encodeCallback(self::$type, 'show', [$invoice->id, $page, $sortBy, $sortDir]),
+                    'callback_data' => encodeCallback(self::$type, 'show', [$invoice->id, $page, $sortBy, $sortDir, $userId]),
                 ]),
                 Keyboard::inlineButton([
                     'text' => $invoice->created_at->format('y-m-d')." {$typeAbbrev}",
-                    'callback_data' => encodeCallback(self::$type, 'show', [$invoice->id, $page, $sortBy, $sortDir]),
+                    'callback_data' => encodeCallback(self::$type, 'show', [$invoice->id, $page, $sortBy, $sortDir, $userId]),
                 ]),
                 Keyboard::inlineButton(array_filter([
                     'text' => currency()->priceFormat($invoice->price, currency: $invoice->currency),
@@ -91,12 +101,16 @@ class ManageInvoicesFeature
                         'failed' => 'danger',
                         default => null
                     },
-                    'callback_data' => encodeCallback(self::$type, 'show', [$invoice->id, $page, $sortBy, $sortDir]),
+                    'callback_data' => encodeCallback(self::$type, 'show', [$invoice->id, $page, $sortBy, $sortDir, $userId]),
                 ])),
             ]);
         }
 
-        TelegramPaginator::addNavigationRow($replyMarkup, self::$type, $page, $invoices->lastPage(), extraParams: [$sortBy, $sortDir]);
+        TelegramPaginator::addNavigationRow($replyMarkup, self::$type, $page, $invoices->lastPage(), extraParams: [$sortBy, $sortDir, $userId]);
+
+        if ($userId) {
+            $replyMarkup->row([self::backToProfile($userId)]);
+        }
 
         return new TelegramResponse(
             text: $text,
@@ -123,7 +137,7 @@ class ManageInvoicesFeature
         };
     }
 
-    public static function show(Invoice $invoice, int $lastPage = 1, string $sortBy = 'id', string $sortDir = 'desc'): TelegramResponse
+    public static function show(Invoice $invoice, int $lastPage = 1, string $sortBy = 'id', string $sortDir = 'desc', int $userId = 0): TelegramResponse
     {
         $statusIndicator = self::statusIndicator($invoice->status);
         $attemptStatus = $invoice->paymentAttempt
@@ -159,28 +173,28 @@ class ManageInvoicesFeature
             Keyboard::inlineButton(array_filter([
                 'text' => __('tbe-billing::manage_invoices.main.keys.status_paid'),
                 'style' => ($invoice->status == 'paid') ? 'success' : null,
-                'callback_data' => encodeCallback(self::$type, 'mark_as_paid', [$invoice->id, $lastPage, $sortBy, $sortDir]),
+                'callback_data' => encodeCallback(self::$type, 'mark_as_paid', [$invoice->id, $lastPage, $sortBy, $sortDir, $userId]),
             ])),
         ]);
         $replyMarkup->row([
             Keyboard::inlineButton(array_filter([
                 'text' => __('tbe-billing::manage_invoices.main.keys.status_pending'),
                 'style' => ($invoice->status == 'pending') ? 'success' : null,
-                'callback_data' => encodeCallback(self::$type, 'mark_as_pending', [$invoice->id, $lastPage, $sortBy, $sortDir]),
+                'callback_data' => encodeCallback(self::$type, 'mark_as_pending', [$invoice->id, $lastPage, $sortBy, $sortDir, $userId]),
             ])),
         ]);
         $replyMarkup->row([
             Keyboard::inlineButton(array_filter([
                 'text' => __('tbe-billing::manage_invoices.main.keys.status_failed'),
                 'style' => ($invoice->status == 'failed') ? 'success' : null,
-                'callback_data' => encodeCallback(self::$type, 'mark_as_failed', [$invoice->id, $lastPage, $sortBy, $sortDir]),
+                'callback_data' => encodeCallback(self::$type, 'mark_as_failed', [$invoice->id, $lastPage, $sortBy, $sortDir, $userId]),
             ])),
         ]);
 
         $replyMarkup->row([
             Keyboard::inlineButton([
                 'text' => __('tbe-billing::manage_invoices.main.keys.back_to_list'),
-                'callback_data' => encodeCallback(self::$type, 'start', [$lastPage, 0, $sortBy, $sortDir]),
+                'callback_data' => encodeCallback(self::$type, 'start', [$lastPage, 0, $sortBy, $sortDir, $userId]),
             ]),
         ]);
 
@@ -189,5 +203,14 @@ class ManageInvoicesFeature
             replyMarkup: $replyMarkup,
             parseMode: 'HTML'
         );
+    }
+
+    /** The way back to the member's profile in user management. */
+    private static function backToProfile(int $userId): Button
+    {
+        return Keyboard::inlineButton([
+            'text' => __('tbe-billing::manage_invoices.main.keys.back_to_profile'),
+            'callback_data' => encodeCallback('BOTUSERS', 'show', [$userId]),
+        ]);
     }
 }
