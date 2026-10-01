@@ -15,16 +15,16 @@ return [
                 ."\r\n🚧 No payment methods are available right now. Please try again soon ✨",
         ],
         'answers' => [
-            'main' => '🧾 Invoice loaded successfully',
+            'main' => '🧾 Invoice ready',
             'created' => '🎉 Invoice created',
             'noPaymentMethods' => '🚧 No payment method is currently available',
         ],
         'keys' => [
-            'to_card' => 'Pay To Card 💳 - :price تومان',
-            'by_wallet' => 'Pay Using wallet 💰 - :price',
-            'to_zarinpal' => 'Pay with zarinpal 💰 - :price تومان',
-            'to_zibal' => 'Pay with zibal 💰 - :price تومان',
-            'back_to_previous' => '🔙 Back to previous action',
+            'to_card' => 'Pay by card 💳 - :price تومان',
+            'by_wallet' => 'Pay with wallet 💰 - :price',
+            'to_zarinpal' => 'Pay with Zarinpal 💰 - :price تومان',
+            'to_zibal' => 'Pay with Zibal 💰 - :price تومان',
+            'back_to_previous' => '🔙 Go back',
         ],
     ],
 
@@ -58,13 +58,13 @@ return [
         'status_changed' => [
             'paid' => '✅ Good news! Your invoice is now paid.',
             'pending' => '🕒 Your invoice is currently pending review.',
-            'failed' => '❌ Your invoice unfortunately failed to process.',
+            'failed' => '❌ Your invoice couldn\'t be processed.',
         ],
     ],
 
     'locks' => [
         'user_payment' => [
-            'accepted' => '✅ Payment locked in — thank you for settling the invoice!',
+            'accepted' => '✅ Payment received — thank you!',
             'rejected' => '⚠️ Payment was declined. Please retry or choose another method.',
             'cancelled' => '🚫 Payment was cancelled. Start a new attempt whenever you are ready.',
         ],

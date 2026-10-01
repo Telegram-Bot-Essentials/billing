@@ -4,9 +4,9 @@ return [
     'main' => [
         'text' => [
             'list' => '📋 Invoice dashboard — pick an invoice to review.',
-            'empty' => '😕 No invoices found yet. Check back soon!',
-            'waiting_page' => '⌛ Waiting for page number.',
-            'enter_page' => '🔢 Enter page number:',
+            'empty' => '😕 No invoices yet.',
+            'waiting_page' => '⌛ Waiting for the page number.',
+            'enter_page' => '🔢 Enter the page number:',
             'page_loaded' => '📄 Page :page loaded.',
             'show' => '🧾 Invoice #:invoiceId'
                 ."\r\n"
@@ -30,9 +30,9 @@ return [
             'col_id' => 'User',
             'col_type' => 'Type/Date',
             'col_status' => 'Price',
-            'status_failed' => '❌ Mark as Failed',
-            'status_pending' => '🕒 Mark as Pending',
-            'status_paid' => '✅ Mark as Paid',
+            'status_failed' => '❌ Mark as failed',
+            'status_pending' => '🕒 Mark as pending',
+            'status_paid' => '✅ Mark as paid',
             'status_indicator' => [
                 'paid' => '✅ Paid',
                 'pending' => '🕒 Pending',
@@ -53,7 +53,7 @@ return [
         'keys' => [
             'manage_invoices' => [
                 'text' => '🧾 Manage invoices',
-                'response' => '📋 Invoice manager opened successfully.',
+                'response' => '📋 Invoice manager opened.',
             ],
         ],
     ],

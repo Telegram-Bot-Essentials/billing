@@ -59,8 +59,8 @@ return [
 
     'wizard' => [
         'lockLabel' => 'Creating offer code…',
-        'waitingPage' => '⌛ Waiting for page number.',
-        'enterPage' => '🔢 Enter page number:',
+        'waitingPage' => '⌛ Waiting for the page number.',
+        'enterPage' => '🔢 Enter the page number:',
         'pageLoaded' => '📄 Page :page loaded.',
         'finished' => '🎉 Offer code created and enabled!',
         'summary' => '🏷️ Review the new offer code',
@@ -123,19 +123,19 @@ return [
             'mustNotBeNegative' => '⚠️ Enter a number that is not negative.',
             'mustBeNumeric' => '⚠️ Enter a valid number.',
             'mustBePositiveInteger' => '⚠️ Enter a whole number of 1 or more.',
-            'maxBelowMin' => '⚠️ The max order price cannot be lower than the min order price already set.',
+            'maxBelowMin' => '⚠️ The max order price can\'t be lower than the min order price you already set.',
         ],
     ],
 
     'redeem' => [
         'errors' => [
-            'notFound' => '❌ That offer code was not found.',
+            'notFound' => '❌ We couldn\'t find that offer code.',
             'expired' => '❌ That offer code has expired.',
             'belowMin' => '❌ This code needs an order of at least :min.',
             'aboveMax' => '❌ This code only applies to orders up to :max.',
             'exhausted' => '❌ This offer code has already reached its usage limit.',
-            'userExhausted' => '❌ You have already used this offer code the maximum number of times.',
-            'notAllowed' => '❌ Offer codes cannot be used on this order.',
+            'userExhausted' => '❌ You\'ve already used this offer code as many times as allowed.',
+            'notAllowed' => '❌ Offer codes can\'t be used on this order.',
         ],
     ],
 
@@ -143,7 +143,7 @@ return [
         'keys' => [
             'offers' => [
                 'text' => '🏷️ Offer codes',
-                'response' => '📋 Offer manager opened successfully.',
+                'response' => '📋 Offer manager opened.',
             ],
         ],
     ],
