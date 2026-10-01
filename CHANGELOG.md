@@ -6,6 +6,8 @@ stabilizes at 1.0 a `0.0.x` bump may carry breaking changes.
 
 ## [Unreleased]
 
+## [0.0.43] - 2026-10-01
+
 ### Added
 
 - With user-management installed, the user list can be sorted by what a member has paid.
