@@ -40,6 +40,7 @@ return [
             ],
             'no_attempt' => '— No payment attempt yet',
             'back_to_list' => '🔙 Back to invoice list',
+            'back_to_profile' => '🔙 Back to the profile',
         ],
     ],
 
