@@ -85,7 +85,7 @@ function offerKeyLabels(): array
 
 function offerFormState(): ?FormState
 {
-    return FormState::fromStateString(test()->bot->botUsers()->where('telegram_user_peer_id', ADMIN_PEER)->sole()->state);
+    return FormState::fromStateString(test()->bot->botUsers()->where('telegram_user_peer_id', ADMIN_PEER)->sole()->privateConversation()->state);
 }
 
 function startOfferForm(): void
@@ -167,7 +167,7 @@ it('creates the enabled offer with typed values on Confirm and clears the form',
         ->and($offer->usage_limit)->toBe(100)
         ->and($offer->usage_limit_per_user)->toBe(1)
         ->and($offer->expires_at->isBetween(now()->addDays(29), now()->addDays(31)))->toBeTrue()
-        ->and($this->bot->botUsers()->where('telegram_user_peer_id', ADMIN_PEER)->sole()->state)->toBeNull();
+        ->and($this->bot->botUsers()->where('telegram_user_peer_id', ADMIN_PEER)->sole()->privateConversation()->state)->toBeNull();
 
     // The offer's detail screen is sent as a new message, and the list is refreshed in place.
     expect(offerSentTexts(4))->toContain('SAVE20');
@@ -301,7 +301,7 @@ it('creates nothing when the form is cancelled', function () {
     tell(__('tbe::cancel_process.reply_key'));
 
     expect(Offer::count())->toBe(0)
-        ->and($this->bot->botUsers()->where('telegram_user_peer_id', ADMIN_PEER)->sole()->state)->toBeNull();
+        ->and($this->bot->botUsers()->where('telegram_user_peer_id', ADMIN_PEER)->sole()->privateConversation()->state)->toBeNull();
 });
 
 it('does not start for a member', function () {
@@ -309,5 +309,5 @@ it('does not start for a member', function () {
 
     test()->postWebhookUpdate($this->bot, $this->makeCallbackQueryUpdate('OFFERS#create?1', peerId: 701))->assertOk();
 
-    expect($this->bot->botUsers()->where('telegram_user_peer_id', 701)->sole()->state)->toBeNull();
+    expect($this->bot->botUsers()->where('telegram_user_peer_id', 701)->sole()->privateConversation()->state)->toBeNull();
 });
