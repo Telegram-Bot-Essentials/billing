@@ -7,7 +7,6 @@ use TelegramBotEssentials\Billing\Models\Offer;
 use TelegramBotEssentials\Billing\Services\OfferService;
 use TelegramBotEssentials\Billing\Telegram\Features\Admin\OffersFeature;
 use TelegramBotEssentials\Billing\Telegram\Forms\CreateOfferForm;
-use TelegramBotEssentials\Essence\Enums\Roles;
 use TelegramBotEssentials\Essence\Exceptions\InvalidPageNumber;
 use TelegramBotEssentials\Essence\Models\MessageMeta;
 use TelegramBotEssentials\Essence\Telegram\CallbackQueries\CallbackQuery;
@@ -16,7 +15,7 @@ class OffersQuery extends CallbackQuery
 {
     protected string $type = 'OFFERS';
 
-    protected int $perm = Roles::ADMIN->value;
+    protected ?string $permission = 'billing.offers.manage';
 
     /**
      * @throws InvalidPageNumber
@@ -38,7 +37,7 @@ class OffersQuery extends CallbackQuery
         wHook()->api()->sendMessage([
             'chat_id' => wHook()->peerId(),
             'text' => __('tbe-billing::offers.wizard.enterPage'),
-            'reply_markup' => wHook()->user()->getKeyboard(),
+            'reply_markup' => replyKeyboard(),
         ]);
 
         $this->answer();
@@ -114,7 +113,7 @@ class OffersQuery extends CallbackQuery
             'text' => $field === 'amount'
                 ? __('tbe-billing::offers.wizard.fields.amount.prompt.'.$offer->type)
                 : __('tbe-billing::offers.wizard.fields.'.$field.'.prompt'),
-            'reply_markup' => wHook()->user()->getKeyboard(),
+            'reply_markup' => replyKeyboard(),
             'parse_mode' => 'HTML',
         ]);
 

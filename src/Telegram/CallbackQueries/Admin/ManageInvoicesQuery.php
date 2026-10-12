@@ -6,7 +6,6 @@ use Illuminate\Contracts\Container\BindingResolutionException;
 use Telegram\Bot\Exceptions\TelegramSDKException;
 use TelegramBotEssentials\Billing\Models\Invoice;
 use TelegramBotEssentials\Billing\Telegram\Features\Admin\ManageInvoicesFeature;
-use TelegramBotEssentials\Essence\Enums\Roles;
 use TelegramBotEssentials\Essence\Exceptions\LogicException;
 use TelegramBotEssentials\Essence\Models\BotUser;
 use TelegramBotEssentials\Essence\Models\MessageMeta;
@@ -16,7 +15,7 @@ class ManageInvoicesQuery extends CallbackQuery
 {
     protected string $type = 'MANAGEINVOICES';
 
-    protected int $perm = Roles::ADMIN->value;
+    protected ?string $permission = 'billing.invoices.manage';
 
     public function start(int $page = 1, int $currentPage = 0, string $sortBy = 'id', string $sortDir = 'desc', int $userId = 0): void
     {
@@ -111,7 +110,7 @@ class ManageInvoicesQuery extends CallbackQuery
         wHook()->api()->sendMessage([
             'chat_id' => wHook()->user()->telegramUser->peer_id,
             'text' => __('tbe-billing::manage_invoices.main.text.enter_page'),
-            'reply_markup' => wHook()->user()->getKeyboard(),
+            'reply_markup' => replyKeyboard(),
         ]);
     }
 }
