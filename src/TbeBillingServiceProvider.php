@@ -44,6 +44,9 @@ class TbeBillingServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         $this->loadTranslationsFrom(__DIR__.'/../lang', 'tbe-billing');
 
+        permissionRegistry()->register('billing.offers.manage', fn () => __('tbe-billing::permissions.offers'), 'billing');
+        permissionRegistry()->register('billing.invoices.manage', fn () => __('tbe-billing::permissions.invoices'), 'billing');
+
         if ($this->app->runningInConsole()) {
             $this->commands([
                 MarkOverdueInvoicesAsFailed::class,
