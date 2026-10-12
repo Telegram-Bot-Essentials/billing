@@ -37,7 +37,7 @@ class ManageInvoicesAnswer extends StateAnswer
 
         $data = ManageInvoicesFeature::menu(intval($page), sortBy: $sortBy, sortDir: $sortDir, userId: $userId);
 
-        wHook()->user()->changeState();
+        wHook()->conversation()->changeState();
         wHook()->api()->sendMessage([
             'chat_id' => wHook()->user()->telegramUser->peer_id,
             'text' => __('tbe-billing::manage_invoices.main.text.page_loaded', ['page' => $page]),

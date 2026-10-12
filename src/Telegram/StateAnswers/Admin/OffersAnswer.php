@@ -32,7 +32,7 @@ class OffersAnswer extends StateAnswer
 
         $data = OffersFeature::menu(intval($page));
 
-        wHook()->user()->changeState();
+        wHook()->conversation()->changeState();
         wHook()->api()->sendMessage([
             'chat_id' => wHook()->peerId(),
             'text' => __('tbe-billing::offers.wizard.pageLoaded', ['page' => $page]),
@@ -53,7 +53,7 @@ class OffersAnswer extends StateAnswer
         }
 
         $offer->save();
-        wHook()->user()->changeState();
+        wHook()->conversation()->changeState();
 
         $this->requireMessageMeta()->updateAndContinueAction(OffersFeature::show($offer, $lastPage));
     }
