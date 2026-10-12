@@ -19,7 +19,7 @@ class InvoiceQuery extends CallbackQuery
         $messageMeta = MessageMeta::makeWithCurrentMessage();
         $messageMeta->cancelableLockAction(__('tbe-billing::invoice.offer.lockLabel'));
 
-        wHook()->user()->changeState(encodeAnswerState($this->type, 'redeemCode', [
+        wHook()->conversation()->changeState(encodeAnswerState($this->type, 'redeemCode', [
             'invoice' => $invoice->id,
             'message_meta' => $messageMeta->id,
         ]));
