@@ -3,12 +3,11 @@
 namespace TelegramBotEssentials\Billing\Telegram\ReplyKeys\Admin;
 
 use TelegramBotEssentials\Billing\Telegram\Features\Admin\ManageInvoicesFeature;
-use TelegramBotEssentials\Essence\Enums\Roles;
 use TelegramBotEssentials\Essence\Telegram\ReplyKeys\ReplyKey;
 
 class ManageInvoicesKey extends ReplyKey
 {
-    protected int $perm = Roles::ADMIN->value;
+    protected ?string $permission = 'billing.invoices.manage';
 
     protected function text(): string
     {

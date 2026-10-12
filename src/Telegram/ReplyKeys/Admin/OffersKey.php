@@ -3,12 +3,11 @@
 namespace TelegramBotEssentials\Billing\Telegram\ReplyKeys\Admin;
 
 use TelegramBotEssentials\Billing\Telegram\Features\Admin\OffersFeature;
-use TelegramBotEssentials\Essence\Enums\Roles;
 use TelegramBotEssentials\Essence\Telegram\ReplyKeys\ReplyKey;
 
 class OffersKey extends ReplyKey
 {
-    protected int $perm = Roles::ADMIN->value;
+    protected ?string $permission = 'billing.offers.manage';
 
     protected function text(): string
     {
