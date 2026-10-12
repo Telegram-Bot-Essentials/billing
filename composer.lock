@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d322c6334da8c01fd79ca72e447697dc",
+    "content-hash": "16d82828d90ab39e47cbf6af5a1b5a28",
     "packages": [
         {
             "name": "brick/math",
@@ -1198,16 +1198,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v13.34.0",
+            "version": "v13.35.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "c829b4982d29344cbcf1d7ad78eb5d2bb8ae66c4"
+                "reference": "a413a9da94884e5e9d58f4e6612884f712827804"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/c829b4982d29344cbcf1d7ad78eb5d2bb8ae66c4",
-                "reference": "c829b4982d29344cbcf1d7ad78eb5d2bb8ae66c4",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/a413a9da94884e5e9d58f4e6612884f712827804",
+                "reference": "a413a9da94884e5e9d58f4e6612884f712827804",
                 "shasum": ""
             },
             "require": {
@@ -1425,20 +1425,20 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2026-09-29T12:46:21+00:00"
+            "time": "2026-10-06T13:52:37+00:00"
         },
         {
             "name": "laravel/prompts",
-            "version": "v0.3.24",
+            "version": "v0.3.25",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/prompts.git",
-                "reference": "5d3cdef29e93ca3b62b1871359db3078cd99908b"
+                "reference": "21b7b49d60fcb700016dd27b582ae739c75de816"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/prompts/zipball/5d3cdef29e93ca3b62b1871359db3078cd99908b",
-                "reference": "5d3cdef29e93ca3b62b1871359db3078cd99908b",
+                "url": "https://api.github.com/repos/laravel/prompts/zipball/21b7b49d60fcb700016dd27b582ae739c75de816",
+                "reference": "21b7b49d60fcb700016dd27b582ae739c75de816",
                 "shasum": ""
             },
             "require": {
@@ -1481,10 +1481,9 @@
             ],
             "description": "Add beautiful and user-friendly forms to your command-line applications.",
             "support": {
-                "issues": "https://github.com/laravel/prompts/issues",
-                "source": "https://github.com/laravel/prompts/tree/v0.3.24"
+                "source": "https://github.com/laravel/prompts/tree/v0.3.25"
             },
-            "time": "2026-08-20T12:55:36+00:00"
+            "time": "2026-10-06T02:25:49+00:00"
         },
         {
             "name": "laravel/serializable-closure",
@@ -2272,16 +2271,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "3.14.1",
+            "version": "3.14.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CarbonPHP/carbon.git",
-                "reference": "34e9109535165bf1d7ff17a610492372ae73a896"
+                "reference": "94cfc34887f07ab5c0efa07914c8f527544e3224"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CarbonPHP/carbon/zipball/34e9109535165bf1d7ff17a610492372ae73a896",
-                "reference": "34e9109535165bf1d7ff17a610492372ae73a896",
+                "url": "https://api.github.com/repos/CarbonPHP/carbon/zipball/94cfc34887f07ab5c0efa07914c8f527544e3224",
+                "reference": "94cfc34887f07ab5c0efa07914c8f527544e3224",
                 "shasum": ""
             },
             "require": {
@@ -2301,7 +2300,7 @@
                 "doctrine/orm": "^2.15.2 || ^3.0",
                 "friendsofphp/php-cs-fixer": "^v3.87.1",
                 "kylekatarnls/multi-tester": "^2.5.3",
-                "phpmd/phpmd": "^2.15.0",
+                "phpmd/phpmd": "^3.0@dev",
                 "phpstan/extension-installer": "^1.4.3",
                 "phpstan/phpstan": "^2.1.22",
                 "phpunit/phpunit": "^10.5.53",
@@ -2373,7 +2372,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-09-27T12:07:26+00:00"
+            "time": "2026-10-02T07:26:52+00:00"
         },
         {
             "name": "nette/schema",
@@ -5960,16 +5959,16 @@
         },
         {
             "name": "telegram-bot-essentials/essence",
-            "version": "v0.15.0",
+            "version": "v0.17.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Telegram-Bot-Essentials/essence.git",
-                "reference": "4e6ffb433a155fe536ae839c11668b156f9ba943"
+                "reference": "c0b02ef89462addca37f0bc68f7ecca73a6fe078"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Telegram-Bot-Essentials/essence/zipball/4e6ffb433a155fe536ae839c11668b156f9ba943",
-                "reference": "4e6ffb433a155fe536ae839c11668b156f9ba943",
+                "url": "https://api.github.com/repos/Telegram-Bot-Essentials/essence/zipball/c0b02ef89462addca37f0bc68f7ecca73a6fe078",
+                "reference": "c0b02ef89462addca37f0bc68f7ecca73a6fe078",
                 "shasum": ""
             },
             "require": {
@@ -6029,28 +6028,28 @@
             ],
             "support": {
                 "issues": "https://github.com/Telegram-Bot-Essentials/essence/issues",
-                "source": "https://github.com/Telegram-Bot-Essentials/essence/tree/v0.15.0"
+                "source": "https://github.com/Telegram-Bot-Essentials/essence/tree/v0.17.1"
             },
-            "time": "2026-09-27T09:55:50+00:00"
+            "time": "2026-10-12T12:57:16+00:00"
         },
         {
             "name": "telegram-bot-essentials/settings",
-            "version": "v0.0.21",
+            "version": "v0.0.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Telegram-Bot-Essentials/settings.git",
-                "reference": "aedfb131c6af02bab100e25472a3f69b18e2e83f"
+                "reference": "9d4eb942b90745584fca75c7a90326edb90f3abe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Telegram-Bot-Essentials/settings/zipball/aedfb131c6af02bab100e25472a3f69b18e2e83f",
-                "reference": "aedfb131c6af02bab100e25472a3f69b18e2e83f",
+                "url": "https://api.github.com/repos/Telegram-Bot-Essentials/settings/zipball/9d4eb942b90745584fca75c7a90326edb90f3abe",
+                "reference": "9d4eb942b90745584fca75c7a90326edb90f3abe",
                 "shasum": ""
             },
             "require": {
                 "laravel/framework": "^12 || ^13",
                 "php": "^8.3",
-                "telegram-bot-essentials/essence": "^0.15"
+                "telegram-bot-essentials/essence": "^0.17"
             },
             "require-dev": {
                 "larastan/larastan": "^3.0",
@@ -6088,9 +6087,9 @@
             "description": "Per-bot typed key/value settings for telegram-bot-essentials/essence",
             "support": {
                 "issues": "https://github.com/Telegram-Bot-Essentials/settings/issues",
-                "source": "https://github.com/Telegram-Bot-Essentials/settings/tree/v0.0.21"
+                "source": "https://github.com/Telegram-Bot-Essentials/settings/tree/v0.0.24"
             },
-            "time": "2026-09-27T09:57:20+00:00"
+            "time": "2026-10-12T11:24:10+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
@@ -6152,12 +6151,12 @@
             "version": "v5.7.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/vlucas/phpdotenv.git",
+                "url": "https://github.com/phpdotenv/phpdotenv.git",
                 "reference": "301c07936b16d88628b126b01d082ba153cf4c40"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/301c07936b16d88628b126b01d082ba153cf4c40",
+                "url": "https://api.github.com/repos/phpdotenv/phpdotenv/zipball/301c07936b16d88628b126b01d082ba153cf4c40",
                 "reference": "301c07936b16d88628b126b01d082ba153cf4c40",
                 "shasum": ""
             },
@@ -10605,22 +10604,22 @@
         },
         {
             "name": "telegram-bot-essentials/user-management",
-            "version": "v0.0.23",
+            "version": "v0.0.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Telegram-Bot-Essentials/user-management.git",
-                "reference": "a84821cf82b7f15a7d7dc20ce33ce524d00be51f"
+                "reference": "6bfe44895c8c8548c19c597b7ac0ff2bcb6f0e33"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Telegram-Bot-Essentials/user-management/zipball/a84821cf82b7f15a7d7dc20ce33ce524d00be51f",
-                "reference": "a84821cf82b7f15a7d7dc20ce33ce524d00be51f",
+                "url": "https://api.github.com/repos/Telegram-Bot-Essentials/user-management/zipball/6bfe44895c8c8548c19c597b7ac0ff2bcb6f0e33",
+                "reference": "6bfe44895c8c8548c19c597b7ac0ff2bcb6f0e33",
                 "shasum": ""
             },
             "require": {
                 "laravel/framework": "^12 || ^13",
                 "php": "^8.3",
-                "telegram-bot-essentials/essence": "^0.15 || ^0.16"
+                "telegram-bot-essentials/essence": "^0.17"
             },
             "require-dev": {
                 "larastan/larastan": "^3.0",
@@ -10659,9 +10658,9 @@
             "description": "Admin bot-user list with filters, sections and interaction logging for telegram-bot-essentials/essence",
             "support": {
                 "issues": "https://github.com/Telegram-Bot-Essentials/user-management/issues",
-                "source": "https://github.com/Telegram-Bot-Essentials/user-management/tree/v0.0.23"
+                "source": "https://github.com/Telegram-Bot-Essentials/user-management/tree/v0.0.24"
             },
-            "time": "2026-10-01T08:13:42+00:00"
+            "time": "2026-10-12T11:24:01+00:00"
         },
         {
             "name": "theseer/tokenizer",
@@ -10715,16 +10714,16 @@
         },
         {
             "name": "webmozart/assert",
-            "version": "2.4.1",
+            "version": "2.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webmozarts/assert.git",
-                "reference": "2ccb7c2e821038c03a3e6e1700c570c158c55f70"
+                "reference": "8a163706bbcac613733dba03f51e13b5eb1bb819"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozarts/assert/zipball/2ccb7c2e821038c03a3e6e1700c570c158c55f70",
-                "reference": "2ccb7c2e821038c03a3e6e1700c570c158c55f70",
+                "url": "https://api.github.com/repos/webmozarts/assert/zipball/8a163706bbcac613733dba03f51e13b5eb1bb819",
+                "reference": "8a163706bbcac613733dba03f51e13b5eb1bb819",
                 "shasum": ""
             },
             "require": {
@@ -10775,9 +10774,9 @@
             ],
             "support": {
                 "issues": "https://github.com/webmozarts/assert/issues",
-                "source": "https://github.com/webmozarts/assert/tree/2.4.1"
+                "source": "https://github.com/webmozarts/assert/tree/2.5.0"
             },
-            "time": "2026-06-15T15:31:57+00:00"
+            "time": "2026-10-05T23:14:19+00:00"
         }
     ],
     "aliases": [],
