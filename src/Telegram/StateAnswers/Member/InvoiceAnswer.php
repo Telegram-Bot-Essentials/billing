@@ -6,14 +6,11 @@ use TelegramBotEssentials\Billing\Models\Invoice;
 use TelegramBotEssentials\Billing\Services\OfferService;
 use TelegramBotEssentials\Billing\Telegram\Features\Member\InvoiceFeature;
 use TelegramBotEssentials\Essence\Enums\AllowableFields;
-use TelegramBotEssentials\Essence\Enums\Roles;
 use TelegramBotEssentials\Essence\Telegram\StateAnswers\StateAnswer;
 
 class InvoiceAnswer extends StateAnswer
 {
     protected string $type = 'INVOICE';
-
-    protected int $perm = Roles::MEMBER->value;
 
     protected array $allowedFields = [
         AllowableFields::TEXT->value,
@@ -34,7 +31,7 @@ class InvoiceAnswer extends StateAnswer
         wHook()->api()->sendMessage([
             'chat_id' => wHook()->peerId(),
             'text' => __('tbe-billing::invoice.offer.applied'),
-            'reply_markup' => wHook()->user()->getKeyboard(),
+            'reply_markup' => replyKeyboard(),
         ]);
 
         $this->requireMessageMeta()->updateAndContinueAction(InvoiceFeature::invoice($invoice));
