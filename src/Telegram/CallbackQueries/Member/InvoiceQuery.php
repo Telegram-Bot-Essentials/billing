@@ -5,15 +5,12 @@ namespace TelegramBotEssentials\Billing\Telegram\CallbackQueries\Member;
 use TelegramBotEssentials\Billing\Models\Invoice;
 use TelegramBotEssentials\Billing\Services\OfferService;
 use TelegramBotEssentials\Billing\Telegram\Features\Member\InvoiceFeature;
-use TelegramBotEssentials\Essence\Enums\Roles;
 use TelegramBotEssentials\Essence\Models\MessageMeta;
 use TelegramBotEssentials\Essence\Telegram\CallbackQueries\CallbackQuery;
 
 class InvoiceQuery extends CallbackQuery
 {
     protected string $type = 'INVOICE';
-
-    protected int $perm = Roles::MEMBER->value;
 
     public function useOfferCode(Invoice $invoice): void
     {
@@ -30,7 +27,7 @@ class InvoiceQuery extends CallbackQuery
         wHook()->api()->sendMessage([
             'chat_id' => wHook()->peerId(),
             'text' => __('tbe-billing::invoice.offer.prompt'),
-            'reply_markup' => wHook()->user()->getKeyboard(),
+            'reply_markup' => replyKeyboard(),
             'parse_mode' => 'HTML',
         ]);
 
