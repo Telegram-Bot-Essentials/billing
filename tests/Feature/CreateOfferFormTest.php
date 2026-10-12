@@ -7,14 +7,13 @@ use Illuminate\Http\Client\Factory;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 use TelegramBotEssentials\Billing\Models\Offer;
-use TelegramBotEssentials\Essence\Enums\Roles;
 use TelegramBotEssentials\Essence\Forms\FormState;
 
 const ADMIN_PEER = 700;
 
 beforeEach(function () {
     $this->bot = $this->makeBot();
-    $this->makeBotUser($this->bot, ADMIN_PEER, ['power' => Roles::ADMIN->value]);
+    $this->grant($this->makeBotUser($this->bot, ADMIN_PEER), 'billing.offers.manage');
 
     // Every sendMessage answers with a fresh message id, like Telegram. And
     // like Telegram, editing a message that carries a reply keyboard is
