@@ -26,7 +26,7 @@ class InvoiceAnswer extends StateAnswer
     {
         app(OfferService::class)->redeem($invoice, trim(wHook()->update()->message->text));
 
-        wHook()->user()->changeState();
+        wHook()->conversation()->changeState();
 
         wHook()->api()->sendMessage([
             'chat_id' => wHook()->peerId(),
