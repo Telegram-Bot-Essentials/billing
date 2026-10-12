@@ -6,7 +6,6 @@ use Closure;
 use Illuminate\Validation\ValidationException;
 use TelegramBotEssentials\Billing\Services\OfferService;
 use TelegramBotEssentials\Billing\Telegram\Features\Admin\OffersFeature;
-use TelegramBotEssentials\Essence\Enums\Roles;
 use TelegramBotEssentials\Essence\Forms\Form;
 use TelegramBotEssentials\Essence\Forms\Steps\Choice;
 use TelegramBotEssentials\Essence\Forms\Steps\Text;
@@ -20,7 +19,7 @@ class CreateOfferForm extends Form
 {
     protected string $type = 'OFFER_CREATE';
 
-    protected int $perm = Roles::ADMIN->value;
+    protected ?string $permission = 'billing.offers.manage';
 
     protected string $lang = 'tbe-billing::offers.wizard';
 
