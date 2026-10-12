@@ -101,7 +101,7 @@ class ManageInvoicesQuery extends CallbackQuery
     {
         $messageMeta = MessageMeta::makeWithCurrentMessage();
         $messageMeta->lockAction(__('tbe-billing::manage_invoices.main.text.waiting_page'));
-        wHook()->user()->changeState(encodeAnswerState($this->type, 'setStartPage', [
+        wHook()->conversation()->changeState(encodeAnswerState($this->type, 'setStartPage', [
             'message_meta_id' => $messageMeta->id,
             'sortBy' => $sortBy,
             'sortDir' => $sortDir,

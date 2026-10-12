@@ -30,7 +30,7 @@ class OffersQuery extends CallbackQuery
         $messageMeta = MessageMeta::makeWithCurrentMessage();
         $messageMeta->lockAction(__('tbe-billing::offers.wizard.waitingPage'));
 
-        wHook()->user()->changeState(encodeAnswerState($this->type, 'setStartPage', [
+        wHook()->conversation()->changeState(encodeAnswerState($this->type, 'setStartPage', [
             'message_meta' => $messageMeta->id,
         ]));
 
@@ -101,7 +101,7 @@ class OffersQuery extends CallbackQuery
         $messageMeta = MessageMeta::makeWithCurrentMessage();
         $messageMeta->cancelableLockAction(__('tbe-billing::offers.wizard.fields.'.$field.'.label'));
 
-        wHook()->user()->changeState(encodeAnswerState($this->type, 'updateField', [
+        wHook()->conversation()->changeState(encodeAnswerState($this->type, 'updateField', [
             'offer' => $offer->id,
             'field' => $field,
             'lastPage' => $lastPage,
