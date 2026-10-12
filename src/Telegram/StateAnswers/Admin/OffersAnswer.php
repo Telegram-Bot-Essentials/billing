@@ -6,7 +6,6 @@ use TelegramBotEssentials\Billing\Models\Offer;
 use TelegramBotEssentials\Billing\Services\OfferService;
 use TelegramBotEssentials\Billing\Telegram\Features\Admin\OffersFeature;
 use TelegramBotEssentials\Essence\Enums\AllowableFields;
-use TelegramBotEssentials\Essence\Enums\Roles;
 use TelegramBotEssentials\Essence\Exceptions\InvalidPageNumber;
 use TelegramBotEssentials\Essence\Services\TelegramPaginator;
 use TelegramBotEssentials\Essence\Telegram\StateAnswers\StateAnswer;
@@ -15,7 +14,7 @@ class OffersAnswer extends StateAnswer
 {
     protected string $type = 'OFFERS';
 
-    protected int $perm = Roles::ADMIN->value;
+    protected ?string $permission = 'billing.offers.manage';
 
     protected array $allowedFields = [
         AllowableFields::TEXT->value,
@@ -37,7 +36,7 @@ class OffersAnswer extends StateAnswer
         wHook()->api()->sendMessage([
             'chat_id' => wHook()->peerId(),
             'text' => __('tbe-billing::offers.wizard.pageLoaded', ['page' => $page]),
-            'reply_markup' => wHook()->user()->getKeyboard(),
+            'reply_markup' => replyKeyboard(),
         ]);
 
         $this->requireMessageMeta()->updateAndContinueAction($data);

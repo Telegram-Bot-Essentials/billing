@@ -7,7 +7,6 @@ use Telegram\Bot\Exceptions\TelegramSDKException;
 use TelegramBotEssentials\Billing\Models\Invoice;
 use TelegramBotEssentials\Billing\Telegram\Features\Admin\ManageInvoicesFeature;
 use TelegramBotEssentials\Essence\Enums\AllowableFields;
-use TelegramBotEssentials\Essence\Enums\Roles;
 use TelegramBotEssentials\Essence\Exceptions\InvalidPageNumber;
 use TelegramBotEssentials\Essence\Exceptions\LogicException;
 use TelegramBotEssentials\Essence\Services\TelegramPaginator;
@@ -17,7 +16,7 @@ class ManageInvoicesAnswer extends StateAnswer
 {
     protected string $type = 'MANAGEINVOICES';
 
-    protected int $perm = Roles::ADMIN->value;
+    protected ?string $permission = 'billing.invoices.manage';
 
     protected array $allowedFields = [
         AllowableFields::TEXT->value,
@@ -42,7 +41,7 @@ class ManageInvoicesAnswer extends StateAnswer
         wHook()->api()->sendMessage([
             'chat_id' => wHook()->user()->telegramUser->peer_id,
             'text' => __('tbe-billing::manage_invoices.main.text.page_loaded', ['page' => $page]),
-            'reply_markup' => wHook()->user()->getKeyboard(),
+            'reply_markup' => replyKeyboard(),
         ]);
 
         $this->requireMessageMeta()->updateAndContinueAction($data);
