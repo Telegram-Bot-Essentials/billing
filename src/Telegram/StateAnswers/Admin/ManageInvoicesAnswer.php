@@ -16,7 +16,7 @@ class ManageInvoicesAnswer extends StateAnswer
 {
     protected string $type = 'MANAGEINVOICES';
 
-    protected ?string $permission = 'billing.invoices.manage';
+    protected ?string $ability = 'billing.invoices.manage';
 
     protected array $allowedFields = [
         AllowableFields::TEXT->value,

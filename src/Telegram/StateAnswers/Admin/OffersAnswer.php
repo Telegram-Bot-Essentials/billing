@@ -14,7 +14,7 @@ class OffersAnswer extends StateAnswer
 {
     protected string $type = 'OFFERS';
 
-    protected ?string $permission = 'billing.offers.manage';
+    protected ?string $ability = 'billing.offers.manage';
 
     protected array $allowedFields = [
         AllowableFields::TEXT->value,
