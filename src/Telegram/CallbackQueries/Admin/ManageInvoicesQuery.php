@@ -15,7 +15,7 @@ class ManageInvoicesQuery extends CallbackQuery
 {
     protected string $type = 'MANAGEINVOICES';
 
-    protected ?string $permission = 'billing.invoices.manage';
+    protected ?string $ability = 'billing.invoices.manage';
 
     public function start(int $page = 1, int $currentPage = 0, string $sortBy = 'id', string $sortDir = 'desc', int $userId = 0): void
     {

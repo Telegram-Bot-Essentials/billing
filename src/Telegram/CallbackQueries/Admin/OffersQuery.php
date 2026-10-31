@@ -15,7 +15,7 @@ class OffersQuery extends CallbackQuery
 {
     protected string $type = 'OFFERS';
 
-    protected ?string $permission = 'billing.offers.manage';
+    protected ?string $ability = 'billing.offers.manage';
 
     /**
      * @throws InvalidPageNumber
