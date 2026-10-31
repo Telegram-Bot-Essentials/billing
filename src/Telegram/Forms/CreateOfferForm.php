@@ -19,7 +19,7 @@ class CreateOfferForm extends Form
 {
     protected string $type = 'OFFER_CREATE';
 
-    protected ?string $permission = 'billing.offers.manage';
+    protected ?string $ability = 'billing.offers.manage';
 
     protected string $lang = 'tbe-billing::offers.wizard';
 
