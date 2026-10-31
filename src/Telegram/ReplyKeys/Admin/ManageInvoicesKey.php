@@ -7,7 +7,7 @@ use TelegramBotEssentials\Essence\Telegram\ReplyKeys\ReplyKey;
 
 class ManageInvoicesKey extends ReplyKey
 {
-    protected ?string $permission = 'billing.invoices.manage';
+    protected ?string $ability = 'billing.invoices.manage';
 
     protected function text(): string
     {
