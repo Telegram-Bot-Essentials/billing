@@ -103,25 +103,25 @@ parameters:
 			path: src/Events/InvoiceStatusEvent.php
 
 		-
-			message: '#^Parameter \#1 \$invoice of method TelegramBotEssentials\\Billing\\Services\\OfferService\:\:confirmRedemption\(\) expects TelegramBotEssentials\\Billing\\Models\\Invoice, Illuminate\\Database\\Eloquent\\Collection\<\(int\|string\), TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice given\.$#'
+			message: '#^Parameter \#1 \$invoice of method TelegramBotEssentials\\Billing\\Services\\OfferService\:\:confirmRedemption\(\) expects TelegramBotEssentials\\Billing\\Models\\Invoice, Illuminate\\Database\\Eloquent\\Collection\<int, TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Listeners/Invoices/ConfirmOfferRedemptionOnInvoicePaid.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<\(int\|string\), TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:\$botUser\.$#'
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:\$botUser\.$#'
 			identifier: property.notFound
 			count: 1
 			path: src/Listeners/Invoices/DispatchInvoiceFailedHooks.php
 
 		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<\(int\|string\), TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:getKey\(\)\.$#'
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<int, TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:getKey\(\)\.$#'
 			identifier: method.notFound
 			count: 1
 			path: src/Listeners/Invoices/DispatchInvoiceFailedHooks.php
 
 		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<\(int\|string\), TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:messageMeta\(\)\.$#'
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<int, TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:messageMeta\(\)\.$#'
 			identifier: method.notFound
 			count: 1
 			path: src/Listeners/Invoices/DispatchInvoiceFailedHooks.php
@@ -145,19 +145,19 @@ parameters:
 			path: src/Listeners/Invoices/DispatchInvoiceFailedHooks.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<\(int\|string\), TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:\$botUser\.$#'
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:\$botUser\.$#'
 			identifier: property.notFound
 			count: 1
 			path: src/Listeners/Invoices/DispatchInvoicePaidHooks.php
 
 		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<\(int\|string\), TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:getKey\(\)\.$#'
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<int, TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:getKey\(\)\.$#'
 			identifier: method.notFound
 			count: 1
 			path: src/Listeners/Invoices/DispatchInvoicePaidHooks.php
 
 		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<\(int\|string\), TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:messageMeta\(\)\.$#'
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<int, TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:messageMeta\(\)\.$#'
 			identifier: method.notFound
 			count: 1
 			path: src/Listeners/Invoices/DispatchInvoicePaidHooks.php
@@ -181,19 +181,19 @@ parameters:
 			path: src/Listeners/Invoices/DispatchInvoicePaidHooks.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<\(int\|string\), TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:\$botUser\.$#'
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:\$botUser\.$#'
 			identifier: property.notFound
 			count: 1
 			path: src/Listeners/Invoices/DispatchInvoicePendingHooks.php
 
 		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<\(int\|string\), TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:getKey\(\)\.$#'
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<int, TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:getKey\(\)\.$#'
 			identifier: method.notFound
 			count: 1
 			path: src/Listeners/Invoices/DispatchInvoicePendingHooks.php
 
 		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<\(int\|string\), TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:messageMeta\(\)\.$#'
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<int, TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:messageMeta\(\)\.$#'
 			identifier: method.notFound
 			count: 1
 			path: src/Listeners/Invoices/DispatchInvoicePendingHooks.php
@@ -217,25 +217,25 @@ parameters:
 			path: src/Listeners/Invoices/DispatchInvoicePendingHooks.php
 
 		-
-			message: '#^Parameter \#1 \$invoice of static method TelegramBotEssentials\\Billing\\Telegram\\Features\\Member\\InvoiceFeature\:\:invoice\(\) expects TelegramBotEssentials\\Billing\\Models\\Invoice, Illuminate\\Database\\Eloquent\\Collection\<\(int\|string\), TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice given\.$#'
+			message: '#^Parameter \#1 \$invoice of static method TelegramBotEssentials\\Billing\\Telegram\\Features\\Member\\InvoiceFeature\:\:invoice\(\) expects TelegramBotEssentials\\Billing\\Models\\Invoice, Illuminate\\Database\\Eloquent\\Collection\<int, TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Listeners/Invoices/DispatchInvoicePendingHooks.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<\(int\|string\), TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:\$botUser\.$#'
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:\$botUser\.$#'
 			identifier: property.notFound
 			count: 1
 			path: src/Listeners/Invoices/DispatchInvoiceRevokedHooks.php
 
 		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<\(int\|string\), TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:getKey\(\)\.$#'
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<int, TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:getKey\(\)\.$#'
 			identifier: method.notFound
 			count: 1
 			path: src/Listeners/Invoices/DispatchInvoiceRevokedHooks.php
 
 		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<\(int\|string\), TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:messageMeta\(\)\.$#'
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<int, TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:messageMeta\(\)\.$#'
 			identifier: method.notFound
 			count: 1
 			path: src/Listeners/Invoices/DispatchInvoiceRevokedHooks.php
@@ -259,13 +259,13 @@ parameters:
 			path: src/Listeners/Invoices/DispatchInvoiceRevokedHooks.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<\(int\|string\), TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:\$payable\.$#'
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:\$payable\.$#'
 			identifier: property.notFound
 			count: 1
 			path: src/Listeners/Invoices/InvokeInvoiceHooks.php
 
 		-
-			message: '#^Parameter \#1 \$invoice of method TelegramBotEssentials\\Billing\\Services\\OfferService\:\:releaseRedemption\(\) expects TelegramBotEssentials\\Billing\\Models\\Invoice, Illuminate\\Database\\Eloquent\\Collection\<\(int\|string\), TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice given\.$#'
+			message: '#^Parameter \#1 \$invoice of method TelegramBotEssentials\\Billing\\Services\\OfferService\:\:releaseRedemption\(\) expects TelegramBotEssentials\\Billing\\Models\\Invoice, Illuminate\\Database\\Eloquent\\Collection\<int, TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Listeners/Invoices/ReleaseOfferRedemptionOnInvoiceRevoked.php
