@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 use TelegramBotEssentials\Billing\Events\InvoiceFailed;
+use TelegramBotEssentials\Billing\Events\InvoiceFulfillmentFailed;
 use TelegramBotEssentials\Billing\Events\InvoicePaid;
 use TelegramBotEssentials\Billing\Events\InvoicePending;
 use TelegramBotEssentials\Billing\Events\InvoiceRevoked;
@@ -17,6 +18,7 @@ use TelegramBotEssentials\Essence\Database\factories\InvoiceFactory;
 use TelegramBotEssentials\Essence\Models\Bot;
 use TelegramBotEssentials\Essence\Models\BotUser;
 use TelegramBotEssentials\Essence\Traits\HasMessageMeta;
+use Throwable;
 
 class Invoice extends Model
 {
@@ -140,6 +142,33 @@ class Invoice extends Model
         wHook()->runForUser($this->botUser, function () use ($previousStatus) {
             event(new InvoicePaid($this, $previousStatus));
         });
+    }
+
+    /**
+     * Deliver what this invoice paid for, recording how it went. Never throws:
+     * a paid invoice stays paid, and a failure is there to see and to retry.
+     */
+    public function fulfill(): bool
+    {
+        return isolated('fulfill invoice #'.$this->getKey(), function () {
+            $payable = $this->payable;
+
+            if ($payable && method_exists($payable, 'invoicePaidHook')) {
+                $payable->invoicePaidHook();
+            }
+
+            $this->forceFill(['fulfilled_at' => now(), 'fulfillment_error' => null])->save();
+        }, onFail: function (Throwable $e) {
+            $this->forceFill(['fulfilled_at' => null, 'fulfillment_error' => mb_substr($e->getMessage(), 0, 1000)])->save();
+
+            event(new InvoiceFulfillmentFailed($this));
+        });
+    }
+
+    /** Paid for, but not delivered: for an admin to retry. */
+    public function needsFulfillment(): bool
+    {
+        return $this->getAttribute('status') === 'paid' && $this->getAttribute('fulfilled_at') === null;
     }
 
     public function markAsFailed(): void
