@@ -103,6 +103,18 @@ parameters:
 			path: src/Events/InvoiceStatusEvent.php
 
 		-
+			message: '#^Binary operation "\." between ''confirm offer of…'' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: src/Listeners/Invoices/ConfirmOfferRedemptionOnInvoicePaid.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<int, TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:getKey\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Listeners/Invoices/ConfirmOfferRedemptionOnInvoicePaid.php
+
+		-
 			message: '#^Parameter \#1 \$invoice of method TelegramBotEssentials\\Billing\\Services\\OfferService\:\:confirmRedemption\(\) expects TelegramBotEssentials\\Billing\\Models\\Invoice, Illuminate\\Database\\Eloquent\\Collection\<int, TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice given\.$#'
 			identifier: argument.type
 			count: 1
@@ -151,6 +163,12 @@ parameters:
 			path: src/Listeners/Invoices/DispatchInvoicePaidHooks.php
 
 		-
+			message: '#^Binary operation "\." between ''tell member invoice…'' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: src/Listeners/Invoices/DispatchInvoicePaidHooks.php
+
+		-
 			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<int, TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:getKey\(\)\.$#'
 			identifier: method.notFound
 			count: 1
@@ -169,14 +187,14 @@ parameters:
 			path: src/Listeners/Invoices/DispatchInvoicePaidHooks.php
 
 		-
-			message: '#^Cannot access property \$peer_id on mixed\.$#'
+			message: '#^Cannot access property \$peer_id on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
 			identifier: property.nonObject
 			count: 1
 			path: src/Listeners/Invoices/DispatchInvoicePaidHooks.php
 
 		-
-			message: '#^Cannot access property \$telegramUser on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
-			identifier: property.nonObject
+			message: '#^Parameter \$for of function background expects TelegramBotEssentials\\Essence\\Models\\BotUser\|null, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
+			identifier: argument.type
 			count: 1
 			path: src/Listeners/Invoices/DispatchInvoicePaidHooks.php
 
@@ -265,10 +283,40 @@ parameters:
 			path: src/Listeners/Invoices/InvokeInvoiceHooks.php
 
 		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<int, TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:fulfill\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Listeners/Invoices/InvokeInvoiceHooks.php
+
+		-
 			message: '#^Parameter \#1 \$invoice of method TelegramBotEssentials\\Billing\\Services\\OfferService\:\:releaseRedemption\(\) expects TelegramBotEssentials\\Billing\\Models\\Invoice, Illuminate\\Database\\Eloquent\\Collection\<int, TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Listeners/Invoices/ReleaseOfferRedemptionOnInvoiceRevoked.php
+
+		-
+			message: '#^Binary operation "\." between ''billing\.fulfillment\.'' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: src/Listeners/Invoices/TellAboutFailedFulfillment.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 1
+			path: src/Listeners/Invoices/TellAboutFailedFulfillment.php
+
+		-
+			message: '#^Parameter \#2 \$replace of function __ expects array\<string, bool\|\(Closure\(string\)\: string\)\|float\|int\|string\|null\>, array\{invoiceId\: mixed, error\: string\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Listeners/Invoices/TellAboutFailedFulfillment.php
+
+		-
+			message: '#^Parameter \$for of function background expects TelegramBotEssentials\\Essence\\Models\\BotUser\|null, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Listeners/Invoices/TellAboutFailedFulfillment.php
 
 		-
 			message: '#^Method TelegramBotEssentials\\Billing\\Models\\Abstract\\Order\:\:botUser\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
@@ -328,6 +376,12 @@ parameters:
 			message: '#^Access to an undefined property TelegramBotEssentials\\Billing\\Models\\Invoice\:\:\$status\.$#'
 			identifier: property.notFound
 			count: 4
+			path: src/Models/Invoice.php
+
+		-
+			message: '#^Binary operation "\." between ''fulfill invoice \#'' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
 			path: src/Models/Invoice.php
 
 		-
@@ -891,12 +945,18 @@ parameters:
 		-
 			message: '#^Cannot access property \$id on Telegram\\Bot\\Objects\\CallbackQuery\|null\.$#'
 			identifier: property.nonObject
-			count: 3
+			count: 5
 			path: src/Telegram/CallbackQueries/Admin/ManageInvoicesQuery.php
 
 		-
 			message: '#^Cannot access property \$peer_id on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
 			identifier: property.nonObject
+			count: 1
+			path: src/Telegram/CallbackQueries/Admin/ManageInvoicesQuery.php
+
+		-
+			message: '#^Parameter \#1 \$user of method TelegramBotEssentials\\Essence\\Support\\Webhook\:\:runForUser\(\) expects TelegramBotEssentials\\Essence\\Models\\BotUser, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
+			identifier: argument.type
 			count: 1
 			path: src/Telegram/CallbackQueries/Admin/ManageInvoicesQuery.php
 
@@ -1023,6 +1083,12 @@ parameters:
 		-
 			message: '#^Cannot call method format\(\) on mixed\.$#'
 			identifier: method.nonObject
+			count: 1
+			path: src/Telegram/Features/Admin/ManageInvoicesFeature.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
 			count: 1
 			path: src/Telegram/Features/Admin/ManageInvoicesFeature.php
 
