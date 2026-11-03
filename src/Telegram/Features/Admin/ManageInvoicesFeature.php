@@ -168,6 +168,19 @@ class ManageInvoicesFeature
         $replyMarkup = Keyboard::make()
             ->inline();
 
+        if ($invoice->needsFulfillment()) {
+            $text .= "\r\n".__('tbe-billing::manage_invoices.main.text.not_fulfilled', [
+                'error' => e((string) $invoice->getAttribute('fulfillment_error')),
+            ]);
+
+            $replyMarkup->row([
+                Keyboard::inlineButton([
+                    'text' => __('tbe-billing::manage_invoices.main.keys.retry_fulfillment'),
+                    'callback_data' => encodeCallback(self::$type, 'retry_fulfillment', [$invoice->id, $lastPage, $sortBy, $sortDir, $userId]),
+                ]),
+            ]);
+        }
+
         $replyMarkup->row([
             Keyboard::inlineButton(array_filter([
                 'text' => __('tbe-billing::manage_invoices.main.keys.status_paid'),
