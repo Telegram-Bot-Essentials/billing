@@ -6119,22 +6119,22 @@
         },
         {
             "name": "telegram-bot-essentials/settings",
-            "version": "v0.0.30",
+            "version": "v0.0.31",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Telegram-Bot-Essentials/settings.git",
-                "reference": "9c8516f8efffb7b927b06cec8bf7b1305545d221"
+                "reference": "e553342ad3e862ae31932da079b772091d5669b1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Telegram-Bot-Essentials/settings/zipball/9c8516f8efffb7b927b06cec8bf7b1305545d221",
-                "reference": "9c8516f8efffb7b927b06cec8bf7b1305545d221",
+                "url": "https://api.github.com/repos/Telegram-Bot-Essentials/settings/zipball/e553342ad3e862ae31932da079b772091d5669b1",
+                "reference": "e553342ad3e862ae31932da079b772091d5669b1",
                 "shasum": ""
             },
             "require": {
                 "laravel/framework": "^12 || ^13",
                 "php": "^8.3",
-                "telegram-bot-essentials/essence": "^0.19.0-beta.5@beta"
+                "telegram-bot-essentials/essence": "^0.19.0-beta.7@beta"
             },
             "require-dev": {
                 "larastan/larastan": "^3.0",
@@ -6172,9 +6172,9 @@
             "description": "Per-bot typed key/value settings for telegram-bot-essentials/essence",
             "support": {
                 "issues": "https://github.com/Telegram-Bot-Essentials/settings/issues",
-                "source": "https://github.com/Telegram-Bot-Essentials/settings/tree/v0.0.30"
+                "source": "https://github.com/Telegram-Bot-Essentials/settings/tree/v0.0.31"
             },
-            "time": "2026-11-01T12:57:51+00:00"
+            "time": "2026-11-03T06:50:01+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
