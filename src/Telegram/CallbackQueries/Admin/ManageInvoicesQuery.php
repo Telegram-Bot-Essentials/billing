@@ -57,6 +57,36 @@ class ManageInvoicesQuery extends CallbackQuery
     }
 
     /**
+     * Try again to deliver what a paid invoice paid for.
+     *
+     * @throws TelegramSDKException
+     */
+    public function retryFulfillment(Invoice $invoice, int $lastPage = 1, string $sortBy = 'id', string $sortDir = 'desc', int $userId = 0): void
+    {
+        if (! $invoice->needsFulfillment()) {
+            wHook()->api()->answerCallbackQuery([
+                'callback_query_id' => wHook()->update()->callbackQuery->id,
+                'text' => __('tbe-billing::manage_invoices.alerts.already_fulfilled'),
+                'show_alert' => true,
+            ]);
+
+            return;
+        }
+
+        $done = wHook()->runForUser($invoice->botUser, fn () => $invoice->fulfill());
+
+        tbeLog('billing')->audit('Retried fulfillment of invoice #{invoice_id}', ['invoice_id' => $invoice->getKey(), 'succeeded' => $done]);
+
+        wHook()->api()->answerCallbackQuery([
+            'callback_query_id' => wHook()->update()->callbackQuery->id,
+            'text' => __($done ? 'tbe-billing::manage_invoices.alerts.fulfilled' : 'tbe-billing::manage_invoices.alerts.still_not_fulfilled'),
+            'show_alert' => true,
+        ]);
+
+        ManageInvoicesFeature::show($invoice, $lastPage, $sortBy, $sortDir, $userId)->update();
+    }
+
+    /**
      * @throws TelegramSDKException
      */
     public function markAsPending(Invoice $invoice, int $lastPage = 1, string $sortBy = 'id', string $sortDir = 'desc', int $userId = 0): void
