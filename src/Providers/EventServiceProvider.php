@@ -8,6 +8,7 @@ use TelegramBotEssentials\Billing\Events\InvoiceFulfillmentFailed;
 use TelegramBotEssentials\Billing\Events\InvoicePaid;
 use TelegramBotEssentials\Billing\Events\InvoicePending;
 use TelegramBotEssentials\Billing\Events\InvoiceRevoked;
+use TelegramBotEssentials\Billing\Listeners\Invoices\AlertStaffOfPurchase;
 use TelegramBotEssentials\Billing\Listeners\Invoices\ConfirmOfferRedemptionOnInvoicePaid;
 use TelegramBotEssentials\Billing\Listeners\Invoices\DispatchInvoiceFailedHooks;
 use TelegramBotEssentials\Billing\Listeners\Invoices\DispatchInvoicePaidHooks;
@@ -26,6 +27,7 @@ class EventServiceProvider extends ServiceProvider
         InvoicePaid::class => [
             ConfirmOfferRedemptionOnInvoicePaid::class,
             DispatchInvoicePaidHooks::class,
+            AlertStaffOfPurchase::class,
             InvokeInvoiceHooks::class,
         ],
         InvoiceFailed::class => [
