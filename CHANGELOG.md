@@ -6,6 +6,14 @@ stabilizes at 1.0 a `0.0.x` bump may carry breaking changes.
 
 ## [Unreleased]
 
+## [0.0.53] - 2026-11-03
+
+### Changed
+
+- The messages about an invoice (pending, paid, failed, reverted, not delivered)
+  reply to the member's invoice message, and go out as plain messages if it was
+  deleted. `Invoice::replyToView()` gives the reply parameters.
+
 ## [0.0.52] - 2026-11-03
 
 ### Changed
