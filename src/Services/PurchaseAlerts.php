@@ -3,35 +3,28 @@
 namespace TelegramBotEssentials\Billing\Services;
 
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
-use TelegramBotEssentials\Access\Models\Role;
 use TelegramBotEssentials\Billing\Models\Invoice;
+use TelegramBotEssentials\Essence\Contracts\RecipientGroups;
 use TelegramBotEssentials\Essence\Models\Bot;
 use TelegramBotEssentials\Essence\Models\BotUser;
 use Throwable;
 
 /**
  * Tells the bot's staff about a purchase, when the owner asked for that. Who
- * hears is a setting: any mix of the owner and roles from tbe-access. When that
- * reaches nobody it falls back to the owner, so a sale is never announced to no
- * one.
+ * hears is a setting: any mix of the owner and the bot's recipient groups, which
+ * another package may bring. When that reaches nobody it falls back to the owner,
+ * so a sale is never announced to no one.
  */
 class PurchaseAlerts
 {
     public const TARGET_OWNER = 'owner';
 
-    /** @return array<string, string> setting options: the owner, then each role */
+    /** @return array<string, string> setting options: the owner, then each group the bot has */
     public function targets(): array
     {
-        $targets = [self::TARGET_OWNER => __('tbe-billing::settings.options.purchase_alerts_owner')];
+        $groups = wHook()->hasBot() ? app(RecipientGroups::class)->options(wHook()->bot()) : [];
 
-        if (class_exists(Role::class)) {
-            foreach (Role::query()->orderBy('name')->get() as $role) {
-                $targets[(string) $role->getKey()] = $role->name;
-            }
-        }
-
-        return $targets;
+        return [self::TARGET_OWNER => __('tbe-billing::settings.options.purchase_alerts_owner')] + $groups;
     }
 
     public function send(Invoice $invoice): void
@@ -41,7 +34,7 @@ class PurchaseAlerts
         $targets = settings()->get('billing.purchase_alerts.targets');
         $targets = is_array($targets) ? array_map('strval', $targets) : [];
 
-        $recipients = $this->roleHolders($invoice, $targets);
+        $recipients = $this->groupMembers($invoice, $targets);
 
         // notifyUser() contains each failure: one admin who blocked the bot
         // does not cost the others the alert.
@@ -55,29 +48,17 @@ class PurchaseAlerts
     }
 
     /**
-     * Everyone holding any of the targeted roles, once each however many of them
-     * they hold.
-     *
      * @param  list<string>  $targets
      * @return Collection<int, BotUser>
      */
-    private function roleHolders(Invoice $invoice, array $targets): Collection
+    private function groupMembers(Invoice $invoice, array $targets): Collection
     {
-        $roleIds = array_filter($targets, 'is_numeric');
+        $bot = $invoice->bot;
+        $groupIds = array_values(array_diff($targets, [self::TARGET_OWNER]));
 
-        if (! class_exists(Role::class) || $roleIds === []) {
-            return collect();
-        }
-
-        $botId = $invoice->getAttribute('bot_id');
-
-        return BotUser::query()
-            ->where('bot_id', $botId)
-            ->where('has_private_chat', true)
-            ->whereIn('id', DB::table('access_role_user')
-                ->select('bot_user_id')
-                ->whereIn('role_id', Role::withoutGlobalScopes()->where('bot_id', $botId)->whereIn('id', $roleIds)->select('id')))
-            ->get();
+        return $bot instanceof Bot && $groupIds !== []
+            ? app(RecipientGroups::class)->members($bot, $groupIds)
+            : collect();
     }
 
     /**
@@ -88,7 +69,7 @@ class PurchaseAlerts
         $bot = $invoice->bot;
         $peerId = $bot instanceof Bot ? $bot->getAttribute('bot_owner_peer_id') : null;
 
-        // An owner may hold a targeted role too: one message, not two.
+        // An owner may be in a targeted group too: one message, not two.
         if ($peerId === null || $alreadyTold->contains(fn (BotUser $user) => (string) $user->getAttribute('telegram_user_peer_id') === (string) $peerId)) {
             return;
         }
