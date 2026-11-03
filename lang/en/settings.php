@@ -20,6 +20,6 @@ return [
         'currency' => 'The currency used to display and charge prices.',
         'purchase_alerts' => 'Tell your staff when someone buys something.',
         'purchase_alerts_status' => 'Send an alert for every paid invoice. Free orders and prizes are left out.',
-        'purchase_alerts_target' => 'Pick the owner, any roles, or both. Everyone holding a picked role gets one alert. If that reaches nobody, it goes to the owner.',
+        'purchase_alerts_target' => 'Pick the owner, any of the groups listed, or both. Everyone in a picked group gets one alert. If that reaches nobody, it goes to the owner.',
     ],
 ];
