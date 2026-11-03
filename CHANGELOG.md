@@ -6,6 +6,8 @@ stabilizes at 1.0 a `0.0.x` bump may carry breaking changes.
 
 ## [Unreleased]
 
+## [0.0.49] - 2026-11-03
+
 ### Added
 
 - Invoices record whether what they paid for was delivered (`fulfilled_at`,
