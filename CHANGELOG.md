@@ -6,6 +6,8 @@ stabilizes at 1.0 a `0.0.x` bump may carry breaking changes.
 
 ## [Unreleased]
 
+## [0.0.50] - 2026-11-03
+
 ### Added
 
 - Purchase alerts: an optional message for every paid invoice, off by default,
