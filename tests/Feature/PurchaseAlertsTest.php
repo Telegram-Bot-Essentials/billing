@@ -3,14 +3,48 @@
 declare(strict_types=1);
 
 use Illuminate\Http\Client\Factory;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Telegram\Bot\Objects\Update;
-use TelegramBotEssentials\Access\Models\Role;
 use TelegramBotEssentials\Billing\Models\Invoice;
 use TelegramBotEssentials\Billing\Services\PurchaseAlerts;
+use TelegramBotEssentials\Essence\Contracts\RecipientGroups;
+use TelegramBotEssentials\Essence\Models\Bot;
 use TelegramBotEssentials\Essence\Models\BotUser;
 use TelegramBotEssentials\Settings\Telegram\Features\Admin\BotSettingsFeature;
+
+class FakeRecipientGroups implements RecipientGroups
+{
+    /** @var array<string, array{label: string, users: list<BotUser>}> */
+    public array $groups = [];
+
+    public function add(array $users): object
+    {
+        $id = (string) (count($this->groups) + 1);
+        $this->groups[$id] = ['label' => 'Group '.$id, 'users' => $users];
+
+        return (object) ['id' => $id];
+    }
+
+    public function remove(string $id): void
+    {
+        unset($this->groups[$id]);
+    }
+
+    public function options(Bot $bot): array
+    {
+        return array_map(fn (array $group) => $group['label'], $this->groups);
+    }
+
+    public function members(Bot $bot, array $ids): Collection
+    {
+        return collect($ids)
+            ->flatMap(fn (string $id) => $this->groups[$id]['users'] ?? [])
+            ->unique(fn (BotUser $user) => $user->id)
+            ->values();
+    }
+}
 
 const BUYER_PEER = 7401;
 const STAFF_PEER = 7402;
@@ -45,19 +79,20 @@ beforeEach(function () {
         && (int) $request['chat_id'] === $peerId
         && str_contains((string) $request['text'], 'New purchase'))->count();
 
-    $this->roleWith = function (int ...$peers): Role {
-        $role = Role::create(['bot_id' => $this->bot->id, 'name' => 'Sales '.Role::count(), 'abilities' => []]);
+    $this->groups = new FakeRecipientGroups;
+    app()->instance(RecipientGroups::class, $this->groups);
+
+    $this->roleWith = function (int ...$peers): object {
+        $users = [];
 
         foreach ($peers as $peer) {
             // The owner already has a telegram user, from makeBot().
-            $user = $peer === (int) $this->bot->bot_owner_peer_id
+            $users[] = $peer === (int) $this->bot->bot_owner_peer_id
                 ? BotUser::factory()->create(['bot_id' => $this->bot->id, 'telegram_user_peer_id' => $peer, 'suspend' => false])
                 : $this->makeBotUser($this->bot, $peer);
-
-            $role->users()->attach($user->id);
         }
 
-        return $role;
+        return $this->groups->add($users);
     };
 });
 
@@ -78,7 +113,7 @@ it('goes to the owner by default', function () {
 it('goes to everyone holding the chosen role, and not the owner', function () {
     $role = ($this->roleWith)(STAFF_PEER, OTHER_STAFF_PEER);
     settings()->set('billing.purchase_alerts.status', true);
-    settings()->set('billing.purchase_alerts.targets', [(string) $role->id]);
+    settings()->set('billing.purchase_alerts.targets', [$role->id]);
 
     ($this->paidInvoice)();
 
@@ -90,7 +125,7 @@ it('goes to everyone holding the chosen role, and not the owner', function () {
 it('falls back to the owner when nobody holds the role', function () {
     $role = ($this->roleWith)();
     settings()->set('billing.purchase_alerts.status', true);
-    settings()->set('billing.purchase_alerts.targets', [(string) $role->id]);
+    settings()->set('billing.purchase_alerts.targets', [$role->id]);
 
     ($this->paidInvoice)();
 
@@ -100,8 +135,8 @@ it('falls back to the owner when nobody holds the role', function () {
 it('falls back to the owner when the role was deleted', function () {
     $role = ($this->roleWith)(STAFF_PEER);
     settings()->set('billing.purchase_alerts.status', true);
-    settings()->set('billing.purchase_alerts.targets', [(string) $role->id]);
-    $role->delete();
+    settings()->set('billing.purchase_alerts.targets', [$role->id]);
+    $this->groups->remove($role->id);
 
     ($this->paidInvoice)();
 
@@ -111,7 +146,7 @@ it('falls back to the owner when the role was deleted', function () {
 it('reaches the other staff when one has blocked the bot', function () {
     $role = ($this->roleWith)(STAFF_PEER, OTHER_STAFF_PEER);
     settings()->set('billing.purchase_alerts.status', true);
-    settings()->set('billing.purchase_alerts.targets', [(string) $role->id]);
+    settings()->set('billing.purchase_alerts.targets', [$role->id]);
 
     $factory = new Factory;
     $factory->fake(fn ($request) => (int) ($request['chat_id'] ?? 0) === STAFF_PEER
@@ -149,14 +184,14 @@ it('alerts nobody when the payment rolls back', function () {
 it('offers the owner and every role as targets', function () {
     $role = ($this->roleWith)();
 
-    expect(app(PurchaseAlerts::class)->targets())->toHaveKeys(['owner', (string) $role->id]);
+    expect(app(PurchaseAlerts::class)->targets())->toHaveKeys(['owner', $role->id]);
 });
 
 it('reaches the owner and several roles together', function () {
     $sales = ($this->roleWith)(STAFF_PEER);
     $support = ($this->roleWith)(OTHER_STAFF_PEER);
     settings()->set('billing.purchase_alerts.status', true);
-    settings()->set('billing.purchase_alerts.targets', ['owner', (string) $sales->id, (string) $support->id]);
+    settings()->set('billing.purchase_alerts.targets', ['owner', $sales->id, $support->id]);
 
     ($this->paidInvoice)();
 
@@ -167,10 +202,9 @@ it('reaches the owner and several roles together', function () {
 
 it('sends one message to someone holding two targeted roles', function () {
     $sales = ($this->roleWith)(STAFF_PEER);
-    $support = ($this->roleWith)();
-    $support->users()->attach($sales->users()->first()->id);
+    $support = $this->groups->add($this->groups->groups[$sales->id]['users']);
     settings()->set('billing.purchase_alerts.status', true);
-    settings()->set('billing.purchase_alerts.targets', [(string) $sales->id, (string) $support->id]);
+    settings()->set('billing.purchase_alerts.targets', [$sales->id, $support->id]);
 
     ($this->paidInvoice)();
 
@@ -181,7 +215,7 @@ it('sends one message to an owner who is targeted and holds the role', function 
     $owner = (int) $this->bot->bot_owner_peer_id;
     $role = ($this->roleWith)($owner);
     settings()->set('billing.purchase_alerts.status', true);
-    settings()->set('billing.purchase_alerts.targets', ['owner', (string) $role->id]);
+    settings()->set('billing.purchase_alerts.targets', ['owner', $role->id]);
 
     ($this->paidInvoice)();
 
@@ -192,7 +226,7 @@ it('reaches an owner holding a targeted role when the owner is not picked', func
     $owner = (int) $this->bot->bot_owner_peer_id;
     $role = ($this->roleWith)($owner);
     settings()->set('billing.purchase_alerts.status', true);
-    settings()->set('billing.purchase_alerts.targets', [(string) $role->id]);
+    settings()->set('billing.purchase_alerts.targets', [$role->id]);
 
     ($this->paidInvoice)();
 
@@ -210,8 +244,8 @@ it('renders the target picker and remembers choices across a rename', function (
     $keyboard = fn () => collect(BotSettingsFeature::multiselect($setting)->replyMarkup->toArray()['inline_keyboard'])
         ->flatten(1)->pluck('text')->all();
 
-    settings()->set('billing.purchase_alerts.targets', [(string) $role->id]);
-    $role->update(['name' => 'Renamed']);
+    settings()->set('billing.purchase_alerts.targets', [$role->id]);
+    $this->groups->groups[$role->id]['label'] = 'Renamed';
 
     expect($keyboard())->toContain('Renamed ✅');
 });
