@@ -6,6 +6,12 @@ stabilizes at 1.0 a `0.0.x` bump may carry breaking changes.
 
 ## [Unreleased]
 
+### Changed
+
+- Purchase alerts can target several recipients: the owner, any roles, or both.
+  Someone holding several targeted roles, or an owner who also holds one, still
+  gets one message. Needs settings with `MULTISELECT` storing keys.
+
 ## [0.0.50] - 2026-11-03
 
 ### Added
