@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1e8941f94f2b928ff08e180e83c5891f",
+    "content-hash": "50e6a68e320482a16d83eebbfbe3e8d0",
     "packages": [
         {
             "name": "brick/math",
@@ -10688,71 +10688,6 @@
             "time": "2026-02-17T17:25:14+00:00"
         },
         {
-            "name": "telegram-bot-essentials/access",
-            "version": "v0.1.0-beta.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Telegram-Bot-Essentials/access.git",
-                "reference": "5d057e5611b54580f412d3fcb1a711938212d85d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Telegram-Bot-Essentials/access/zipball/5d057e5611b54580f412d3fcb1a711938212d85d",
-                "reference": "5d057e5611b54580f412d3fcb1a711938212d85d",
-                "shasum": ""
-            },
-            "require": {
-                "laravel/framework": "^12 || ^13",
-                "php": "^8.3",
-                "telegram-bot-essentials/essence": "^0.19.0-beta.4@beta",
-                "telegram-bot-essentials/user-management": "~0.0.27"
-            },
-            "require-dev": {
-                "larastan/larastan": "^3.0",
-                "laravel/pint": "^1.18",
-                "orchestra/testbench": "^10.0 || ^11.0",
-                "pestphp/pest": "^3.7 || ^4.0",
-                "pestphp/pest-plugin-laravel": "^3.1 || ^4.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "TelegramBotEssentials\\Access\\TbeAccessServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "TelegramBotEssentials\\Access\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Elyar",
-                    "email": "elyar.gpt@operavps.com"
-                }
-            ],
-            "description": "Role-based access for telegram-bot-essentials bots: owner-managed roles of Gate abilities",
-            "keywords": [
-                "abilities",
-                "bot",
-                "gate",
-                "laravel",
-                "roles",
-                "telegram"
-            ],
-            "support": {
-                "issues": "https://github.com/Telegram-Bot-Essentials/access/issues",
-                "source": "https://github.com/Telegram-Bot-Essentials/access/tree/v0.1.0-beta.4"
-            },
-            "time": "2026-11-03T07:34:38+00:00"
-        },
-        {
             "name": "telegram-bot-essentials/user-management",
             "version": "v0.0.29",
             "source": {
@@ -10932,7 +10867,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "telegram-bot-essentials/access": 10,
         "telegram-bot-essentials/essence": 10
     },
     "prefer-stable": false,

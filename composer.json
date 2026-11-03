@@ -10,7 +10,6 @@
         "telegram-bot-essentials/settings": "~0.0.32"
     },
     "suggest": {
-        "telegram-bot-essentials/access": "Lets purchase alerts go to the holders of a role instead of the owner.",
         "telegram-bot-essentials/user-management": "Adds an invoices section to a member's profile in the admin user list."
     },
     "license": "MIT",
@@ -42,7 +41,6 @@
         "orchestra/testbench": "^10.0 || ^11.0",
         "pestphp/pest": "^3.7 || ^4.0",
         "pestphp/pest-plugin-laravel": "^3.1 || ^4.0",
-        "telegram-bot-essentials/access": "^0.1.0-beta.3@beta",
         "telegram-bot-essentials/user-management": "~0.0.17"
     },
     "autoload-dev": {

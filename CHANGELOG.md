@@ -6,6 +6,12 @@ stabilizes at 1.0 a `0.0.x` bump may carry breaking changes.
 
 ## [Unreleased]
 
+### Changed
+
+- Purchase alerts target essence's `RecipientGroups` and no longer know about
+  tbe-access. Roles still appear as targets when tbe-access is installed, and
+  stored choices keep working.
+
 ## [0.0.51] - 2026-11-03
 
 ### Changed
