@@ -54,6 +54,7 @@ return [
     ],
 
     'alerts' => [
+        'purchase' => "🛒 <b>خرید جدید</b>\n\nفاکتور: #:invoiceId\nخریدار: :buyer\nمبلغ: :amount\n\n:description",
         'fulfillment_failed' => "فاکتور #:invoiceId پرداخت شده، ولی سفارشش تحویل داده نشد.\n\n:error\n\nمشکل رو برطرف کنید و بعد از همون فاکتور در مدیریت فاکتورها دوباره امتحان کنید.",
     ],
 
