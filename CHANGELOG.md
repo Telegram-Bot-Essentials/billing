@@ -6,6 +6,8 @@ stabilizes at 1.0 a `0.0.x` bump may carry breaking changes.
 
 ## [Unreleased]
 
+## [0.0.52] - 2026-11-03
+
 ### Changed
 
 - Purchase alerts target essence's `RecipientGroups` and no longer know about
