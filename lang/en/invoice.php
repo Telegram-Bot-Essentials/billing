@@ -53,8 +53,13 @@ return [
         ],
     ],
 
+    'alerts' => [
+        'fulfillment_failed' => "Invoice #:invoiceId is paid, but its order could not be delivered.\n\n:error\n\nFix the cause, then retry it from the invoice in invoice management.",
+    ],
+
     'hooks' => [
         'order_reverted' => '🛑 Your order has been reverted.',
+        'fulfillment_failed' => '⏳ Your payment went through, but we could not deliver your order yet. Our team has been told and will sort it out.',
         'status_changed' => [
             'paid' => '✅ Good news! Your invoice is now paid.',
             'pending' => '🕒 Your invoice is currently pending review.',
