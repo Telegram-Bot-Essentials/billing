@@ -6,6 +6,14 @@ stabilizes at 1.0 a `0.0.x` bump may carry breaking changes.
 
 ## [Unreleased]
 
+### Added
+
+- Purchase alerts: an optional message for every paid invoice, off by default,
+  under Billing in the settings. It goes to everyone holding a chosen role from
+  tbe-access, or to the owner when none is chosen or nobody holds it. Free orders
+  and prizes are left out, a payment that rolls back alerts nobody, and a failed
+  alert cannot affect the order.
+
 ## [0.0.49] - 2026-11-03
 
 ### Added
