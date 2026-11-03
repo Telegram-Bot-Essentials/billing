@@ -6,6 +6,8 @@ stabilizes at 1.0 a `0.0.x` bump may carry breaking changes.
 
 ## [Unreleased]
 
+## [0.0.51] - 2026-11-03
+
 ### Changed
 
 - Purchase alerts can target several recipients: the owner, any roles, or both.
