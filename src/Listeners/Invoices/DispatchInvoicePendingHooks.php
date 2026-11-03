@@ -25,6 +25,7 @@ class DispatchInvoicePendingHooks
                 'chat_id' => $invoice->botUser->telegramUser->peer_id,
                 'text' => __('tbe-billing::invoice.hooks.status_changed.pending'),
                 'reply_markup' => replyKeyboard(),
+                ...$invoice->replyToView(),
             ]);
 
             $telegramResponse = InvoiceFeature::invoice($invoice);

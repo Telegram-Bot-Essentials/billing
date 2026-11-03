@@ -171,6 +171,28 @@ class Invoice extends Model
         return $this->getAttribute('status') === 'paid' && $this->getAttribute('fulfilled_at') === null;
     }
 
+    /**
+     * Parameters that make a message to the member quote their invoice message.
+     * Empty when there is nothing to quote; one deleted since is not an error,
+     * Telegram sends it as a plain message.
+     *
+     * @return array{reply_parameters?: array{message_id: int, allow_sending_without_reply: bool}}
+     */
+    public function replyToView(): array
+    {
+        $messageId = $this->messageMeta()
+            ->where('tag', 'invoice_view')
+            ->where('chat_id', $this->botUser->telegramUser->peer_id)
+            ->latest('id')
+            ->value('message_id');
+
+        if (! $messageId) {
+            return [];
+        }
+
+        return ['reply_parameters' => ['message_id' => (int) $messageId, 'allow_sending_without_reply' => true]];
+    }
+
     public function markAsFailed(): void
     {
         $previousStatus = $this->status;

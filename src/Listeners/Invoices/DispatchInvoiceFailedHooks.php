@@ -24,6 +24,7 @@ class DispatchInvoiceFailedHooks
                 'chat_id' => $invoice->botUser->telegramUser->peer_id,
                 'text' => __('tbe-billing::invoice.hooks.status_changed.failed'),
                 'reply_markup' => replyKeyboard(),
+                ...$invoice->replyToView(),
             ]);
 
             $invoice->messageMeta()->where('tag', 'invoice_view')->get()->each(function ($messageMeta) {

@@ -24,6 +24,7 @@ class DispatchInvoiceRevokedHooks
                 'chat_id' => $invoice->botUser->telegramUser->peer_id,
                 'text' => __('tbe-billing::invoice.hooks.order_reverted'),
                 'reply_markup' => replyKeyboard(),
+                ...$invoice->replyToView(),
             ]);
 
             $invoice->messageMeta()->where('tag', 'invoice_view')->get()->each(function ($messageMeta) {

@@ -18,8 +18,8 @@ class TellAboutFailedFulfillment
         ]));
 
         // After any commit: if the payment rolls back there is nothing to apologise for.
-        background('tell member about failed fulfillment', static function () {
-            notifyUser(wHook()->user(), __('tbe-billing::invoice.hooks.fulfillment_failed'));
+        background('tell member about failed fulfillment', static function () use ($invoice) {
+            notifyUser(wHook()->user(), __('tbe-billing::invoice.hooks.fulfillment_failed'), $invoice->replyToView());
         }, for: $invoice->botUser);
     }
 }
