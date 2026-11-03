@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "08c9ace11a6c04d938d6f6d99c066ff5",
+    "content-hash": "1e8941f94f2b928ff08e180e83c5891f",
     "packages": [
         {
             "name": "brick/math",
@@ -6119,16 +6119,16 @@
         },
         {
             "name": "telegram-bot-essentials/settings",
-            "version": "v0.0.31",
+            "version": "v0.0.32",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Telegram-Bot-Essentials/settings.git",
-                "reference": "e553342ad3e862ae31932da079b772091d5669b1"
+                "reference": "03cfda5f32d1b82885c3b7eed9058c2d6229832d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Telegram-Bot-Essentials/settings/zipball/e553342ad3e862ae31932da079b772091d5669b1",
-                "reference": "e553342ad3e862ae31932da079b772091d5669b1",
+                "url": "https://api.github.com/repos/Telegram-Bot-Essentials/settings/zipball/03cfda5f32d1b82885c3b7eed9058c2d6229832d",
+                "reference": "03cfda5f32d1b82885c3b7eed9058c2d6229832d",
                 "shasum": ""
             },
             "require": {
@@ -6172,9 +6172,9 @@
             "description": "Per-bot typed key/value settings for telegram-bot-essentials/essence",
             "support": {
                 "issues": "https://github.com/Telegram-Bot-Essentials/settings/issues",
-                "source": "https://github.com/Telegram-Bot-Essentials/settings/tree/v0.0.31"
+                "source": "https://github.com/Telegram-Bot-Essentials/settings/tree/v0.0.32"
             },
-            "time": "2026-11-03T06:50:01+00:00"
+            "time": "2026-11-03T07:56:21+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
@@ -10689,16 +10689,16 @@
         },
         {
             "name": "telegram-bot-essentials/access",
-            "version": "v0.1.0-beta.3",
+            "version": "v0.1.0-beta.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Telegram-Bot-Essentials/access.git",
-                "reference": "03b26158601e71c9d0e8fe2e0cf2c29134ea38d6"
+                "reference": "5d057e5611b54580f412d3fcb1a711938212d85d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Telegram-Bot-Essentials/access/zipball/03b26158601e71c9d0e8fe2e0cf2c29134ea38d6",
-                "reference": "03b26158601e71c9d0e8fe2e0cf2c29134ea38d6",
+                "url": "https://api.github.com/repos/Telegram-Bot-Essentials/access/zipball/5d057e5611b54580f412d3fcb1a711938212d85d",
+                "reference": "5d057e5611b54580f412d3fcb1a711938212d85d",
                 "shasum": ""
             },
             "require": {
@@ -10748,9 +10748,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Telegram-Bot-Essentials/access/issues",
-                "source": "https://github.com/Telegram-Bot-Essentials/access/tree/v0.1.0-beta.3"
+                "source": "https://github.com/Telegram-Bot-Essentials/access/tree/v0.1.0-beta.4"
             },
-            "time": "2026-11-01T10:09:43+00:00"
+            "time": "2026-11-03T07:34:38+00:00"
         },
         {
             "name": "telegram-bot-essentials/user-management",
