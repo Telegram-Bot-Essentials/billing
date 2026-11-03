@@ -13,6 +13,7 @@ use TelegramBotEssentials\Billing\Services\Billing;
 use TelegramBotEssentials\Billing\Services\Currency;
 use TelegramBotEssentials\Billing\Services\Gateways;
 use TelegramBotEssentials\Billing\Services\OfferService;
+use TelegramBotEssentials\Billing\Services\PurchaseAlerts;
 use TelegramBotEssentials\Billing\Telegram\CallbackQueries\Admin\ManageInvoicesQuery;
 use TelegramBotEssentials\Billing\Telegram\CallbackQueries\Admin\OffersQuery;
 use TelegramBotEssentials\Billing\Telegram\CallbackQueries\Member\InvoiceQuery;
@@ -203,6 +204,30 @@ class TbeBillingServiceProvider extends ServiceProvider
                 ['USD']
             ),
             description: fn () => __('tbe-billing::settings.descriptions.currency'),
+        ));
+
+        settings()->addSetting(new Setting(
+            key: 'billing.purchase_alerts',
+            label: fn () => __('tbe-billing::settings.labels.purchase_alerts'),
+            type: SettingType::DIRECTORY,
+            description: fn () => __('tbe-billing::settings.descriptions.purchase_alerts'),
+        ));
+
+        settings()->addSetting(new Setting(
+            key: 'billing.purchase_alerts.status',
+            label: fn () => __('tbe-billing::settings.labels.purchase_alerts_status'),
+            type: SettingType::CHECKBOX,
+            default: false,
+            description: fn () => __('tbe-billing::settings.descriptions.purchase_alerts_status'),
+        ));
+
+        settings()->addSetting(new Setting(
+            key: 'billing.purchase_alerts.target',
+            label: fn () => __('tbe-billing::settings.labels.purchase_alerts_target'),
+            type: SettingType::SELECT,
+            default: PurchaseAlerts::TARGET_OWNER,
+            options: fn () => app(PurchaseAlerts::class)->targets(),
+            description: fn () => __('tbe-billing::settings.descriptions.purchase_alerts_target'),
         ));
     }
 }
