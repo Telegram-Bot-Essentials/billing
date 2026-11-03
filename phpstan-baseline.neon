@@ -103,6 +103,36 @@ parameters:
 			path: src/Events/InvoiceStatusEvent.php
 
 		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:\$price\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Listeners/Invoices/AlertStaffOfPurchase.php
+
+		-
+			message: '#^Binary operation "\." between ''alert staff of…'' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: src/Listeners/Invoices/AlertStaffOfPurchase.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<int, TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice\:\:getKey\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Listeners/Invoices/AlertStaffOfPurchase.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 1
+			path: src/Listeners/Invoices/AlertStaffOfPurchase.php
+
+		-
+			message: '#^Parameter \#1 \$invoice of method TelegramBotEssentials\\Billing\\Services\\PurchaseAlerts\:\:send\(\) expects TelegramBotEssentials\\Billing\\Models\\Invoice, Illuminate\\Database\\Eloquent\\Collection\<int, TelegramBotEssentials\\Billing\\Models\\Invoice\>\|TelegramBotEssentials\\Billing\\Models\\Invoice given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Listeners/Invoices/AlertStaffOfPurchase.php
+
+		-
 			message: '#^Binary operation "\." between ''confirm offer of…'' and mixed results in an error\.$#'
 			identifier: binaryOp.invalid
 			count: 1
@@ -917,6 +947,84 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: src/Services/OfferService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$description\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Services/PurchaseAlerts.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$telegramUser\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Services/PurchaseAlerts.php
+
+		-
+			message: '#^Access to an undefined property TelegramBotEssentials\\Billing\\Models\\Invoice\:\:\$price\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Services/PurchaseAlerts.php
+
+		-
+			message: '#^Binary operation "\." between ''\<a href\="tg\://user…'' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: src/Services/PurchaseAlerts.php
+
+		-
+			message: '#^Cannot access property \$full_name on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/Services/PurchaseAlerts.php
+
+		-
+			message: '#^Cannot access property \$peer_id on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/Services/PurchaseAlerts.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 1
+			path: src/Services/PurchaseAlerts.php
+
+		-
+			message: '#^Dead catch \- Throwable is never thrown in the try block\.$#'
+			identifier: catch.neverThrown
+			count: 1
+			path: src/Services/PurchaseAlerts.php
+
+		-
+			message: '#^Method TelegramBotEssentials\\Billing\\Services\\PurchaseAlerts\:\:roleHolders\(\) should return Illuminate\\Support\\Collection\<int, TelegramBotEssentials\\Essence\\Models\\BotUser\> but returns Illuminate\\Support\\Collection\<\(int\|string\), mixed\>\.$#'
+			identifier: return.type
+			count: 2
+			path: src/Services/PurchaseAlerts.php
+
+		-
+			message: '#^Parameter \#1 \$amount of method TelegramBotEssentials\\Billing\\Services\\Currency\:\:priceFormat\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Services/PurchaseAlerts.php
+
+		-
+			message: '#^Parameter \#1 \$value of function e expects BackedEnum\|float\|Illuminate\\Contracts\\Support\\DeferringDisplayableValue\|Illuminate\\Contracts\\Support\\Htmlable\|int\|string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Services/PurchaseAlerts.php
+
+		-
+			message: '#^Parameter \#2 \$replace of function __ expects array\<string, bool\|\(Closure\(string\)\: string\)\|float\|int\|string\|null\>, array\{invoiceId\: mixed, buyer\: non\-falsy\-string, amount\: string, description\: mixed\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Services/PurchaseAlerts.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>description" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: src/Services/PurchaseAlerts.php
 
 		-
 			message: '#^Parameter \#1 \$value of function collect expects Illuminate\\Contracts\\Support\\Arrayable\<\(int\|string\), mixed\>\|iterable\<\(int\|string\), mixed\>\|null, mixed given\.$#'
