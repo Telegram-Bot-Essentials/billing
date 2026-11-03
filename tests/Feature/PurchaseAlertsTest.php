@@ -215,3 +215,12 @@ it('renders the target picker and remembers choices across a rename', function (
 
     expect($keyboard())->toContain('Renamed ✅');
 });
+
+it('carries a target chosen before several were allowed over to the new setting', function () {
+    DB::table('bot_settings')->insert(['bot_id' => $this->bot->id, 'key' => 'billing.purchase_alerts.target', 'value' => '7']);
+
+    (require __DIR__.'/../../database/migrations/2026_11_03_130000_rename_purchase_alert_target_setting.php')->up();
+
+    expect(DB::table('bot_settings')->where('key', 'billing.purchase_alerts.targets')->value('value'))->toBe('7')
+        ->and(DB::table('bot_settings')->where('key', 'billing.purchase_alerts.target')->exists())->toBeFalse();
+});
