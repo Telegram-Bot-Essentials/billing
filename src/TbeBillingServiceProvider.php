@@ -222,10 +222,10 @@ class TbeBillingServiceProvider extends ServiceProvider
         ));
 
         settings()->addSetting(new Setting(
-            key: 'billing.purchase_alerts.target',
+            key: 'billing.purchase_alerts.targets',
             label: fn () => __('tbe-billing::settings.labels.purchase_alerts_target'),
-            type: SettingType::SELECT,
-            default: PurchaseAlerts::TARGET_OWNER,
+            type: SettingType::MULTISELECT,
+            default: [PurchaseAlerts::TARGET_OWNER],
             options: fn () => app(PurchaseAlerts::class)->targets(),
             description: fn () => __('tbe-billing::settings.descriptions.purchase_alerts_target'),
         ));
