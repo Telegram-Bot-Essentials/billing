@@ -54,6 +54,7 @@ return [
     ],
 
     'alerts' => [
+        'purchase' => "🛒 <b>New purchase</b>\n\nInvoice: #:invoiceId\nBuyer: :buyer\nAmount: :amount\n\n:description",
         'fulfillment_failed' => "Invoice #:invoiceId is paid, but its order could not be delivered.\n\n:error\n\nFix the cause, then retry it from the invoice in invoice management.",
     ],
 
