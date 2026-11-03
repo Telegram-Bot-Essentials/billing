@@ -19,9 +19,10 @@ class DispatchInvoicePaidHooks
             return;
         }
 
-        try {
+        // Its own task: however Telegram is doing, delivering the order goes on.
+        background('tell member invoice #'.$invoice->getKey().' is paid', static function () use ($invoice) {
             wHook()->api()->sendMessage([
-                'chat_id' => $invoice->botUser->telegramUser->peer_id,
+                'chat_id' => wHook()->user()->telegramUser->peer_id,
                 'text' => __('tbe-billing::invoice.hooks.status_changed.paid'),
                 'reply_markup' => replyKeyboard(),
             ]);
@@ -29,8 +30,6 @@ class DispatchInvoicePaidHooks
             $invoice->messageMeta()->where('tag', 'invoice_view')->get()->each(function ($messageMeta) {
                 $messageMeta->lockAction(__('tbe-billing::invoice.locks.user_payment.accepted'), customEmoji: '✅');
             });
-        } catch (\Exception $e) {
-            tbeLog('billing')->error('Could not tell the user invoice #{invoice_id} is paid: '.$e->getMessage(), ['exception' => $e, 'invoice_id' => $invoice->getKey()]);
-        }
+        }, for: $invoice->botUser, tries: 3, backoff: [10, 60]);
     }
 }

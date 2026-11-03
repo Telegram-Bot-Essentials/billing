@@ -18,6 +18,7 @@ class ConfirmOfferRedemptionOnInvoicePaid
             return;
         }
 
-        $this->offerService->confirmRedemption($invoice);
+        // Its own step: a redemption that cannot be recorded must not hold up the order.
+        isolated('confirm offer of invoice #'.$invoice->getKey(), fn () => $this->offerService->confirmRedemption($invoice));
     }
 }

@@ -23,6 +23,12 @@ class InvokeInvoiceHooks
             return;
         }
 
+        if ($event instanceof InvoicePaid) {
+            $invoice->fulfill();
+
+            return;
+        }
+
         $method = $this->resolveHookMethod($event);
 
         if (! $method) {
@@ -39,7 +45,6 @@ class InvokeInvoiceHooks
     private function resolveHookMethod(InvoiceStatusEvent $event): ?string
     {
         return match (true) {
-            $event instanceof InvoicePaid => 'invoicePaidHook',
             $event instanceof InvoiceFailed => 'invoiceFailedHook',
             $event instanceof InvoicePending => 'invoicePendingHook',
             $event instanceof InvoiceRevoked => 'cancelOrderHook',
