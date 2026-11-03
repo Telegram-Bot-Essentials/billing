@@ -10,6 +10,7 @@ use TelegramBotEssentials\Access\Models\Role;
 use TelegramBotEssentials\Billing\Models\Invoice;
 use TelegramBotEssentials\Billing\Services\PurchaseAlerts;
 use TelegramBotEssentials\Essence\Models\BotUser;
+use TelegramBotEssentials\Settings\Telegram\Features\Admin\BotSettingsFeature;
 
 const BUYER_PEER = 7401;
 const STAFF_PEER = 7402;
@@ -45,10 +46,15 @@ beforeEach(function () {
         && str_contains((string) $request['text'], 'New purchase'))->count();
 
     $this->roleWith = function (int ...$peers): Role {
-        $role = Role::create(['bot_id' => $this->bot->id, 'name' => 'Sales', 'abilities' => []]);
+        $role = Role::create(['bot_id' => $this->bot->id, 'name' => 'Sales '.Role::count(), 'abilities' => []]);
 
         foreach ($peers as $peer) {
-            $role->users()->attach($this->makeBotUser($this->bot, $peer)->id);
+            // The owner already has a telegram user, from makeBot().
+            $user = $peer === (int) $this->bot->bot_owner_peer_id
+                ? BotUser::factory()->create(['bot_id' => $this->bot->id, 'telegram_user_peer_id' => $peer, 'suspend' => false])
+                : $this->makeBotUser($this->bot, $peer);
+
+            $role->users()->attach($user->id);
         }
 
         return $role;
@@ -72,7 +78,7 @@ it('goes to the owner by default', function () {
 it('goes to everyone holding the chosen role, and not the owner', function () {
     $role = ($this->roleWith)(STAFF_PEER, OTHER_STAFF_PEER);
     settings()->set('billing.purchase_alerts.status', true);
-    settings()->set('billing.purchase_alerts.target', (string) $role->id);
+    settings()->set('billing.purchase_alerts.targets', [(string) $role->id]);
 
     ($this->paidInvoice)();
 
@@ -84,7 +90,7 @@ it('goes to everyone holding the chosen role, and not the owner', function () {
 it('falls back to the owner when nobody holds the role', function () {
     $role = ($this->roleWith)();
     settings()->set('billing.purchase_alerts.status', true);
-    settings()->set('billing.purchase_alerts.target', (string) $role->id);
+    settings()->set('billing.purchase_alerts.targets', [(string) $role->id]);
 
     ($this->paidInvoice)();
 
@@ -94,7 +100,7 @@ it('falls back to the owner when nobody holds the role', function () {
 it('falls back to the owner when the role was deleted', function () {
     $role = ($this->roleWith)(STAFF_PEER);
     settings()->set('billing.purchase_alerts.status', true);
-    settings()->set('billing.purchase_alerts.target', (string) $role->id);
+    settings()->set('billing.purchase_alerts.targets', [(string) $role->id]);
     $role->delete();
 
     ($this->paidInvoice)();
@@ -105,7 +111,7 @@ it('falls back to the owner when the role was deleted', function () {
 it('reaches the other staff when one has blocked the bot', function () {
     $role = ($this->roleWith)(STAFF_PEER, OTHER_STAFF_PEER);
     settings()->set('billing.purchase_alerts.status', true);
-    settings()->set('billing.purchase_alerts.target', (string) $role->id);
+    settings()->set('billing.purchase_alerts.targets', [(string) $role->id]);
 
     $factory = new Factory;
     $factory->fake(fn ($request) => (int) ($request['chat_id'] ?? 0) === STAFF_PEER
@@ -144,4 +150,68 @@ it('offers the owner and every role as targets', function () {
     $role = ($this->roleWith)();
 
     expect(app(PurchaseAlerts::class)->targets())->toHaveKeys(['owner', (string) $role->id]);
+});
+
+it('reaches the owner and several roles together', function () {
+    $sales = ($this->roleWith)(STAFF_PEER);
+    $support = ($this->roleWith)(OTHER_STAFF_PEER);
+    settings()->set('billing.purchase_alerts.status', true);
+    settings()->set('billing.purchase_alerts.targets', ['owner', (string) $sales->id, (string) $support->id]);
+
+    ($this->paidInvoice)();
+
+    expect(($this->alertsTo)((int) $this->bot->bot_owner_peer_id))->toBe(1)
+        ->and(($this->alertsTo)(STAFF_PEER))->toBe(1)
+        ->and(($this->alertsTo)(OTHER_STAFF_PEER))->toBe(1);
+});
+
+it('sends one message to someone holding two targeted roles', function () {
+    $sales = ($this->roleWith)(STAFF_PEER);
+    $support = ($this->roleWith)();
+    $support->users()->attach($sales->users()->first()->id);
+    settings()->set('billing.purchase_alerts.status', true);
+    settings()->set('billing.purchase_alerts.targets', [(string) $sales->id, (string) $support->id]);
+
+    ($this->paidInvoice)();
+
+    expect(($this->alertsTo)(STAFF_PEER))->toBe(1);
+});
+
+it('sends one message to an owner who is targeted and holds the role', function () {
+    $owner = (int) $this->bot->bot_owner_peer_id;
+    $role = ($this->roleWith)($owner);
+    settings()->set('billing.purchase_alerts.status', true);
+    settings()->set('billing.purchase_alerts.targets', ['owner', (string) $role->id]);
+
+    ($this->paidInvoice)();
+
+    expect(($this->alertsTo)($owner))->toBe(1);
+});
+
+it('reaches an owner holding a targeted role when the owner is not picked', function () {
+    $owner = (int) $this->bot->bot_owner_peer_id;
+    $role = ($this->roleWith)($owner);
+    settings()->set('billing.purchase_alerts.status', true);
+    settings()->set('billing.purchase_alerts.targets', [(string) $role->id]);
+
+    ($this->paidInvoice)();
+
+    expect(($this->alertsTo)($owner))->toBe(1);
+});
+
+it('fits the longest picker button in telegram\'s callback limit', function () {
+    expect(strlen(encodeCallback('BTSTNG', 'multiSelect', ['billing.purchase_alerts.targets', 99999999, true])))->toBeLessThanOrEqual(64);
+});
+
+it('renders the target picker and remembers choices across a rename', function () {
+    $role = ($this->roleWith)();
+    $setting = settings()->getSetting('billing.purchase_alerts.targets');
+
+    $keyboard = fn () => collect(BotSettingsFeature::multiselect($setting)->replyMarkup->toArray()['inline_keyboard'])
+        ->flatten(1)->pluck('text')->all();
+
+    settings()->set('billing.purchase_alerts.targets', [(string) $role->id]);
+    $role->update(['name' => 'Renamed']);
+
+    expect($keyboard())->toContain('Renamed ✅');
 });
