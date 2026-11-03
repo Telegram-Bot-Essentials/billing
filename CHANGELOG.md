@@ -6,6 +6,21 @@ stabilizes at 1.0 a `0.0.x` bump may carry breaking changes.
 
 ## [Unreleased]
 
+### Added
+
+- Invoices record whether what they paid for was delivered (`fulfilled_at`,
+  `fulfillment_error`). When delivery fails the invoice stays paid, the owner is
+  alerted, the member is told it is delayed, and an admin can retry from the
+  invoice. Invoices already paid are taken as delivered. `Invoice::fulfill()`
+  and the `InvoiceFulfillmentFailed` event are the hooks for bots and packages.
+
+### Changed
+
+- Reacting to a paid invoice no longer depends on anything else working: a failed
+  order hook no longer stops other listeners or aborts the request that paid it,
+  an offer that cannot be confirmed no longer holds up the order, and the "paid"
+  message is its own queued task with retries. Needs essence with `isolated()`.
+
 ## [0.0.48] - 2026-11-01
 
 ### Added
