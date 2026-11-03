@@ -987,7 +987,7 @@ parameters:
 		-
 			message: '#^Cannot cast mixed to string\.$#'
 			identifier: cast.string
-			count: 3
+			count: 2
 			path: src/Services/PurchaseAlerts.php
 
 		-
@@ -997,7 +997,7 @@ parameters:
 			path: src/Services/PurchaseAlerts.php
 
 		-
-			message: '#^Method TelegramBotEssentials\\Billing\\Services\\PurchaseAlerts\:\:roleHolders\(\) should return Illuminate\\Support\\Collection\<int, TelegramBotEssentials\\Essence\\Models\\BotUser\> but returns Illuminate\\Support\\Collection\<\(int\|string\), mixed\>\.$#'
+			message: '#^Method TelegramBotEssentials\\Billing\\Services\\PurchaseAlerts\:\:groupMembers\(\) should return Illuminate\\Support\\Collection\<int, TelegramBotEssentials\\Essence\\Models\\BotUser\> but returns Illuminate\\Support\\Collection\<\(int\|string\), mixed\>\.$#'
 			identifier: return.type
 			count: 1
 			path: src/Services/PurchaseAlerts.php
@@ -1027,7 +1027,7 @@ parameters:
 			path: src/Services/PurchaseAlerts.php
 
 		-
-			message: '#^Parameter \#2 \$targets of method TelegramBotEssentials\\Billing\\Services\\PurchaseAlerts\:\:roleHolders\(\) expects list\<string\>, array\<string\> given\.$#'
+			message: '#^Parameter \#2 \$targets of method TelegramBotEssentials\\Billing\\Services\\PurchaseAlerts\:\:groupMembers\(\) expects list\<string\>, array\<string\> given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Services/PurchaseAlerts.php
